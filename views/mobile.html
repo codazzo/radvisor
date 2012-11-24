@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="public/stylesheets/styles.less" />
     <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
     <script src="/javascripts/jqm-config.js"></script>
-    <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.js"></script>
     <script src="http://underscorejs.org/underscore-min.js"></script>
     <script src="http://backbonejs.org/backbone-min.js"></script>
     <script src="http://cloud.github.com/downloads/wycats/handlebars.js/handlebars-1.0.rc.1.js"></script>
@@ -16,38 +16,46 @@
 </head> 
 <body> 
 
-    <div data-role="page">
+    <div data-role="page" id="eventsPage">
+            <div data-role="header">
+                <a href="/#" data-icon="back">Back</a>
+                <h1>Hello!</h1>
+            </div>
+            <div data-role="content">
+            </div>
+    </div>
 
-        <div data-role="content" id="mainView"> 
-            ...
-        </div><!-- /content -->
+    <div data-role="page" id="eventPage">
+            <div data-role="header">
+                <a href="/#" data-icon="back">Back</a>
+                <h1>{{title}}</h1>
+            </div>
+            <div data-role="content">
+            </div>
+    </div>
 
-    </div><!-- /page -->
-
-    <script id="events-template" type="text/x-handlebars-template">
-        <ul class="listView" id="playlists-entries" data-role="listview" data-inset="true">
-            {{#each events}}
-                <li class="eventLi">
-                	<img class="ilb" src="{{this.img}}" />
-                	<a class="ilb" href="#/event/{{this.id}}">{{this.title}}</a>
-                	<span class="ilb ui-li-count">{{this.ppl}}</span>
-                </li>
-            {{/each}}
-        </ul>
+    <script id="events-template" type="text/x-handlebars-template">            
+            
+                <ul class="listView" data-role="listview" data-inset="true">
+                    {{#each events}}
+                        <li class="eventLi">
+                            <img class="ilb" src="{{this.img}}" />
+                            <a class="ilb" href="#/event/{{this.id}}">{{this.title}}</a>
+                            <span class="ilb ui-li-count">{{this.ppl}}</span>
+                        </li>
+                    {{/each}}
+                </ul>    
     </script>
 
     <script id="event-template" type="text/x-handlebars-template">
-        <div data-role="header">
-            <a href="index.html" href="#" data-icon="back">Back</a>
-            <h1>{{title}}</h1>
-        </div>
-        {{#if img}}
-            <img class="eventImg" src="{{img}}" />
-        {{/if}}
-        <ul>
-            <li>Date: {{date}}</li>
-            <li>Time: {{time}}</li>
-        </ul>
+
+                {{#if img}}
+                    <img class="eventImg" src="{{img}}" />
+                {{/if}}
+                <ul>
+                    <li>Date: {{date}}</li>
+                    <li>Time: {{time}}</li>
+                </ul>
     </script>
 
 

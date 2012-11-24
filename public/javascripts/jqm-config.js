@@ -4,7 +4,8 @@ $(document).bind("mobileinit", function () {
     $.mobile.linkBindingEnabled = false;
     $.mobile.hashListeningEnabled = false;
     $.mobile.pushStateEnabled = false;
+    // $.mobile.autoInitializePage = false;
     $('div[data-role="page"]').live('pagehide', function (event, ui) {
-        $(event.currentTarget).remove();
+        // $(event.currentTarget).remove(); //this breaks all the things. not sure why article says to use it.
     });
 });

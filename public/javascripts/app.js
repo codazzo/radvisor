@@ -19,9 +19,9 @@ $(document).ready(function(){
         },
      
         changePage:function (page) {
-            $(page.el).attr('data-role', 'page');
+            // $(page.el).attr('data-role', 'page');
             // page.render();
-            $('body').append($(page.el));
+            // $('body').append($(page.el));
             $.mobile.changePage($(page.el), {changeHash:false});
         }
     });
@@ -58,7 +58,7 @@ $(document).ready(function(){
     //------------VIEWS---------------------------//
     //1-Events (landing page ATM)
     var EventsView = Backbone.View.extend({
-        el: $("#mainView"),
+        el: "#eventsPage",
         template: Handlebars.compile($("#events-template").html()),
 
         initialize: function(date){
@@ -77,8 +77,9 @@ $(document).ready(function(){
             var tmpHtml = this.template({
                 events: this.model.toJSON()
             });
-            $el = $(this.el);
+            $el = $(this.el).find("[data-role=content]");
             $el.html(tmpHtml);
+            // $.mobile.initializePage();
             $el.trigger('create'); //jqueryMobile init
             // $("#mainFooter").hide();
         }
@@ -86,7 +87,7 @@ $(document).ready(function(){
 
     //2-Event
     var EventView = Backbone.View.extend({
-        el: $("#mainView"),
+        el: "#eventPage",
         template: Handlebars.compile($("#event-template").html()),
 
         initialize: function(id){
@@ -102,8 +103,9 @@ $(document).ready(function(){
 
         render: function() {
             var tmpHtml = this.template(this.model.toJSON());
-            $el = $(this.el);
+            $el = $(this.el).find("[data-role=content]");;
             $el.html(tmpHtml);
+            // $.mobile.initializePage();
             $el.trigger('create'); //jqueryMobile init
         }
     });

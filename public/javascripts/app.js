@@ -63,7 +63,9 @@ $(document).ready(function(){
 
         initialize: function(date){
             var me = this;
-            date = date || "23112012"; //TODO change to TODAY
+            var currentDate = new Date();
+            var dateStr = "" + currentDate.getDate() + currentDate.getMonth() + currentDate.getFullYear();
+            date = date || dateStr;
             this.model = new Events(date);
             //init models... TODO no need to fetch them every time
             this.model.fetch({
@@ -74,8 +76,11 @@ $(document).ready(function(){
         },
 
         render: function() {
+            var currentDate = new Date();
+            var dateStr = currentDate.getDate() +"/"+ currentDate.getMonth() +"/"+ currentDate.getFullYear() ;
             var tmpHtml = this.template({
-                events: this.model.toJSON()
+                events: this.model.toJSON(),
+                date: dateStr
             });
             $el = $(this.el);
             $content = $el.find("[data-role=content]");

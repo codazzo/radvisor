@@ -35,32 +35,31 @@
     </div>
 
     <script id="events-template" type="text/x-handlebars-template">            
-            
-                <ul class="listView" data-role="listview" data-inset="true">
-                    {{#each events}}
-                        <li class="eventLi">
-                            <img class="ilb" src="{{this.img}}" />
-                            <a class="ilb" href="#/event/{{this.id}}" data-transition="pop">{{this.title}}</a>
-                            <span class="ilb ui-li-count">{{this.ppl}}</span>
-                        </li>
-                    {{/each}}
-                </ul>    
+        Hello! Here's what's happening in Berlin tonight, {{date}}.
+        <ul class="listView" data-role="listview" data-inset="true">
+            {{#each events}}
+                <li class="eventLi">
+                    <img class="ilb" src="{{this.img}}" />
+                    <a class="ilb" href="#/event/{{this.id}}" data-transition="pop">{{this.title}}</a>
+                    <span class="ilb ui-li-count">{{this.ppl}}</span>
+                </li>
+            {{/each}}
+        </ul>    
     </script>
 
     <script id="event-template" type="text/x-handlebars-template">
-
-                {{#if img}}
-                    <img class="eventImg" src="{{img}}" />
-                {{/if}}
-                <ul>
-                    <li>
-                        <span class="key">Venue</span>: {{venue}}
-                    </li>
-                    <li><span class="key">Address</span>: {{address}} (<a href="http://maps.google.com/maps?q={{address}}">map</a>)
-                    </li>
-                    <li><span class="key">Date</span>: {{date}}</li>
-                    <li><span class="key">Time</span>: {{time}}</li>
-                </ul>
+        {{#if img}}
+            <img class="eventImg" src="{{img}}" />
+        {{/if}}
+        <ul>
+            <li>
+                <span class="key">Venue</span>: {{venue}}
+            </li>
+            <li><span class="key">Address</span>: {{address}} (<a href="http://maps.google.com/maps?q={{address}}">map</a>)
+            </li>
+            <li><span class="key">Date</span>: {{date}}</li>
+            <li><span class="key">Time</span>: {{time}}</li>
+        </ul>
     </script>
 
 

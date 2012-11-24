@@ -12,7 +12,8 @@
       "jquery": "*",
       "jsdom": "*",
       "underscore": "*",
-      "less": "*"
+      "less": "*",
+      "cookies": "*"
   },
   "engines": {
       "node": ">= 0.8",

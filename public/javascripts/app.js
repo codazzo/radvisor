@@ -1,19 +1,20 @@
 $(document).ready(function(){
     var AppRouter = Backbone.Router.extend({ 
         routes: {
-            "":"today",
-            "page1":"page1",
+            "": "today",
+            "locations": "locations", //locations view
             "event/:id": "getEvent"
         },
      
         today: function() {
+            //TODO in the future we should force reloading the model when a new location cookie is set
             this.changePage(new EventsView());
             $("#eventPage").find("[data-role=content]").html(""); //hack to avoid superimposing event pages
             $("#eventPage").find("h1.title").html("");
         },
      
-        page1: function() {
-            this.changePage(new Page1View());
+        locations: function() {
+            this.changePage(new LocationsView());
         },
      
         getEvent: function(id) {
@@ -53,6 +54,11 @@ $(document).ready(function(){
         return this.urlBase + this.date;
       }
     });
+
+    var Locations = Backbone.Collection.extend({
+      url: '/regions/'
+    });
+
  
 
     //------------VIEWS---------------------------//
@@ -64,7 +70,10 @@ $(document).ready(function(){
         initialize: function(date){
             var me = this;
             var currentDate = new Date();
-            var dateStr = "" + currentDate.getDate() + currentDate.getMonth() + currentDate.getFullYear();
+            this.day = currentDate.getDate();
+            this.month = currentDate.getMonth() + 1; //lame. so lame.
+            this.year = currentDate.getFullYear();
+            var dateStr = "" + this.day + this.month + this.year;
             date = date || dateStr;
             this.model = new Events(date);
             //init models... TODO no need to fetch them every time
@@ -76,9 +85,13 @@ $(document).ready(function(){
         },
 
         render: function() {
-            var currentDate = new Date();
-            var dateStr = currentDate.getDate() +"/"+ currentDate.getMonth() +"/"+ currentDate.getFullYear() ;
+            var dateStr = this.day + "/"+ this.month + "/" + this.year;
+            var locationData = $.parseJSON($.cookie("ra_location"));
+            if (locationData.name=="All Regions") {
+                locationData.name = locationData.country; //no use in displaying "All Regions"
+            }
             var tmpHtml = this.template({
+                location: locationData,
                 events: this.model.toJSON(),
                 date: dateStr
             });
@@ -119,6 +132,58 @@ $(document).ready(function(){
             $content.trigger('create'); //jqueryMobile init
         }
     });
+
+    //3 - Locations
+    var LocationsView = Backbone.View.extend({
+        el: "#locationsPage",
+        template: Handlebars.compile($("#locations-template").html()),
+        events: {
+            "click a.location" : "setLocation"
+        },
+
+        initialize: function(date){
+            var me = this;
+            this.model = new Locations();
+            //init models... TODO no need to fetch them every time
+            this.model.fetch({
+                success: function(model, response, options){
+                    me.render();
+                }
+            });
+        },
+
+        setLocation: function(evt){
+            //set /{{../name}}/{{this.name}}
+            var $el = $(evt.currentTarget);
+
+            var location = {
+                id: ""+$el.data("id"),
+                country: $el.data("country"),
+                name: $el.data("name"),
+                img: $el.data("img")
+            }
+            var locationStr = JSON.stringify(location);
+            $.cookie('ra_location', locationStr);
+        },
+
+        render: function() {
+            var tmpHtml = this.template({
+                regions: this.model.toJSON()
+            });
+            $el = $(this.el);
+            $content = $el.find("[data-role=content]");
+            $content.html(tmpHtml);
+
+            // $.mobile.initializePage();
+            $content.trigger('create'); //jqueryMobile init
+            this.delegateEvents();
+        }
+    });
+
+
+
+
+
     var app_router = new AppRouter;
     Backbone.history.start();
 

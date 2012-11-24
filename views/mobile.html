@@ -12,6 +12,7 @@
     <script src="http://backbonejs.org/backbone-min.js"></script>
     <script src="http://cloud.github.com/downloads/wycats/handlebars.js/handlebars-1.0.rc.1.js"></script>
     <script src="/javascripts/handlebars-helpers.js"></script>
+    <script src="/javascripts/jquery-cookie.js"></script>
     <script src="/javascripts/app.js"></script>
 
 </head> 
@@ -35,8 +36,20 @@
             </div>
     </div>
 
+    <div data-role="page" id="locationsPage">
+            <div data-role="content">
+            </div>
+    </div>
+
     <script id="events-template" type="text/x-handlebars-template">            
-        Hello! Here's what's happening in Berlin tonight, {{date}}.
+        Hello! Here's what's happening in
+        <a href="#/locations" data-rel="dialog" data-role="button" data-mini="true" data-inline="true">
+            <img class="countryIcon" src="{{location.img}}" />
+            {{location.name}}
+        </a>
+        tonight,
+        <a data-role="button" data-mini="true" data-inline="true">{{date}}</a>
+        .
         <ul class="listView" data-role="listview" data-inset="true">
             {{#each events}}
                 <li class="eventLi">
@@ -68,6 +81,35 @@
                 <br/>
             {{/key_value}}
     </script>
+
+    <script id="locations-template" type="text/x-handlebars-template">
+        Choose your location:
+        <div class="locationsList" data-role="collapsible-set" data-inset="false">
+            {{#each regions}}
+                <div data-role="collapsible" data-theme="b" class="regionLi">
+                    <h2>
+                        <img class="countryIcon" src="{{this.img}}" />
+                        {{this.name}}
+                    </h2>
+                    <ul class="regionContent" data-role="listview">
+                    {{#each this.regions}}
+                        <li class="region">
+                            <a href="#"
+                                data-id = "{{this.id}}"
+                                data-country = "{{../name}}"
+                                data-name="{{this.name}}"
+                                data-img = "{{../img}}"
+                                class="location">
+                                    {{this.name}}
+                            </a>
+                        </li>
+                    {{/each}}
+                    </ul>
+                </div>
+            {{/each}}
+        </ul>    
+    </script>
+
 
     <script type="text/javascript">
       var _gaq = _gaq || [];

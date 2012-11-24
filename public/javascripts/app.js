@@ -8,6 +8,8 @@ $(document).ready(function(){
      
         today: function() {
             this.changePage(new EventsView());
+            $("#eventPage").find("[data-role=content]").html(""); //hack to avoid superimposing event pages
+            $("#eventPage").find("h1.title").html("");
         },
      
         page1: function() {
@@ -75,10 +77,12 @@ $(document).ready(function(){
             var tmpHtml = this.template({
                 events: this.model.toJSON()
             });
-            $el = $(this.el).find("[data-role=content]");
-            $el.html(tmpHtml);
+            $el = $(this.el);
+            $content = $el.find("[data-role=content]");
+            $content.html(tmpHtml);
+
             // $.mobile.initializePage();
-            $el.trigger('create'); //jqueryMobile init
+            $content.trigger('create'); //jqueryMobile init
             // $("#mainFooter").hide();
         }
     });
@@ -100,11 +104,14 @@ $(document).ready(function(){
         },
 
         render: function() {
-            var tmpHtml = this.template(this.model.toJSON());
-            $el = $(this.el).find("[data-role=content]");;
-            $el.html(tmpHtml);
+            var eventJSON = this.model.toJSON();
+            var tmpHtml = this.template(eventJSON);
+            $el = $(this.el);
+            $el.find("h1.title").html(eventJSON.title);
+            $content = $(this.el).find("[data-role=content]");
+            $content.html(tmpHtml);
             // $.mobile.initializePage();
-            $el.trigger('create'); //jqueryMobile init
+            $content.trigger('create'); //jqueryMobile init
         }
     });
     var app_router = new AppRouter;

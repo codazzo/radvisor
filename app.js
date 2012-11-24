@@ -15,6 +15,7 @@ var express = require('express')
 // var store = require('./routes/store');
 var ui = require('./routes/ui');
 var events = require('./routes/events');
+var event = require('./routes/event');
 
 // var jDistiller = require('jdistiller').jDistiller;
 
@@ -62,6 +63,7 @@ app.get('/', ui.mobile);
 
 app.get('/users', user.list);
 app.get('/events/*', events.events);
+app.get('/event/*', event.event);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

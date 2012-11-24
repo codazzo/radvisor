@@ -41,8 +41,6 @@ $(document).ready(function(){
     });
 
     var Events = Backbone.Collection.extend({
-      model: Event,
-
       urlBase: '/events/',
 
       initialize: function(date){
@@ -67,7 +65,7 @@ $(document).ready(function(){
             this.model = new Events(date);
             //init models... TODO no need to fetch them every time
             this.model.fetch({
-                complete: function(){
+                success: function(model, response, options){
                     me.render();
                 }
             });

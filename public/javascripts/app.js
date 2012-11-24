@@ -3,24 +3,24 @@ $(document).ready(function(){
         routes: {
             "":"today",
             "page1":"page1",
-            "page2":"page2"
+            "event/:id": "getEvent"
         },
      
         today: function() {
-            this.changePage(new MenuView());
+            this.changePage(new EventsView());
         },
      
         page1: function() {
             this.changePage(new Page1View());
         },
      
-        page2: function() {
-            this.changePage(new Page2View());
+        getEvent: function(id) {
+            this.changePage(new EventView(id));
         },
      
         changePage:function (page) {
             $(page.el).attr('data-role', 'page');
-            page.render();
+            // page.render();
             $('body').append($(page.el));
             $.mobile.changePage($(page.el), {changeHash:false});
         }
@@ -28,7 +28,17 @@ $(document).ready(function(){
 
 
     //----------------MODELS
-    var Event = Backbone.Model;
+    var Event = Backbone.Model.extend({
+        urlBase: '/event/',
+
+        initialize: function(id){
+            this.id = id; //thought it was automatic?
+        },
+
+        url: function(){
+            return this.urlBase + this.id
+        }
+    });
 
     var Events = Backbone.Collection.extend({
       model: Event,
@@ -43,36 +53,61 @@ $(document).ready(function(){
         return this.urlBase + this.date;
       }
     });
-
-    var theDate = "23112012";
-    theEvents = new Events(theDate);
-
+ 
 
     //------------VIEWS---------------------------//
-    //1-Main menu
-    var MenuView = Backbone.View.extend({
-      el: $("#mainView"),
-      template: Handlebars.compile($("#menu-template").html()),
-      
-      render: function() {
-         var tmpHtml = this.template({
-            events: theEvents.toJSON()
-         });
-         $el = $(this.el);
-         $el.html(tmpHtml);
-         $el.trigger('create'); //jqueryMobile init
-         // $("#mainFooter").hide();
-      }
-    });
-    var menuView = new MenuView; //can be cached here
+    //1-Events (landing page ATM)
+    var EventsView = Backbone.View.extend({
+        el: $("#mainView"),
+        template: Handlebars.compile($("#events-template").html()),
 
+        initialize: function(date){
+            var me = this;
+            date = date || "23112012"; //TODO change to TODAY
+            this.model = new Events(date);
+            //init models... TODO no need to fetch them every time
+            this.model.fetch({
+                complete: function(){
+                    me.render();
+                }
+            });
+        },
+
+        render: function() {
+            var tmpHtml = this.template({
+                events: this.model.toJSON()
+            });
+            $el = $(this.el);
+            $el.html(tmpHtml);
+            $el.trigger('create'); //jqueryMobile init
+            // $("#mainFooter").hide();
+        }
+    });
+
+    //2-Event
+    var EventView = Backbone.View.extend({
+        el: $("#mainView"),
+        template: Handlebars.compile($("#event-template").html()),
+
+        initialize: function(id){
+            var me = this;
+            this.model = new Event(id);
+            //init models... TODO no need to fetch them every time
+            this.model.fetch({
+                complete: function(){
+                    me.render();
+                }
+            });
+        },
+
+        render: function() {
+            var tmpHtml = this.template(this.model.toJSON());
+            $el = $(this.el);
+            $el.html(tmpHtml);
+            $el.trigger('create'); //jqueryMobile init
+        }
+    });
     var app_router = new AppRouter;
     Backbone.history.start();
 
-    //init models
-    theEvents.fetch({
-        complete: function(){
-            menuView.render();
-        }
-    });
 });

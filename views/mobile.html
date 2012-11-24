@@ -18,12 +18,8 @@
 
     <div data-role="page">
 
-        <div data-role="header">
-            <h1>My Title</h1>
-        </div><!-- /header -->
-
         <div data-role="content" id="mainView"> 
-            <p>Hello world</p>
+            ...
         </div><!-- /content -->
 
     </div><!-- /page -->
@@ -33,7 +29,7 @@
             {{#each events}}
                 <li class="eventLi">
                 	<img class="ilb" src="{{this.img}}" />
-                	<a class="ilb" href="#/page2">{{this.title}}</a>
+                	<a class="ilb" href="#/event/{{this.id}}">{{this.title}}</a>
                 	<span class="ilb ui-li-count">{{this.ppl}}</span>
                 </li>
             {{/each}}
@@ -41,14 +37,16 @@
     </script>
 
     <script id="event-template" type="text/x-handlebars-template">
-        <ul class="listView" id="playlists-entries" data-role="listview" data-inset="true">
-            {{#each events}}
-                <li class="eventLi">
-                	<img class="ilb" src="{{this.img}}" />
-                	<a class="ilb" href="#/page2">{{this.title}}</a>
-                	<span class="ilb ui-li-count">{{this.ppl}}</span>
-                </li>
-            {{/each}}
+        <div data-role="header">
+            <a href="index.html" href="#" data-icon="back">Back</a>
+            <h1>{{title}}</h1>
+        </div>
+        {{#if img}}
+            <img class="eventImg" src="{{img}}" />
+        {{/if}}
+        <ul>
+            <li>Date: {{date}}</li>
+            <li>Time: {{time}}</li>
         </ul>
     </script>
 

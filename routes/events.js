@@ -11,10 +11,14 @@ var Cookies = require("cookies");
 
 exports.events = function(req, res){
     var cookies = new Cookies( req, res );
-    var locationCookie = decodeURIComponent(cookies.get("ra_location"));
-    var locationData = $.parseJSON(locationCookie);
-
-    var locationId = locationData ? locationData.id : defaultLocation;
+    var locationCookie = cookies.get("ra_location");
+    var locationId;
+    if(locationCookie) {
+        var locationData = $.parseJSON(decodeURIComponent(locationCookie));
+        locationId = locationData.id;
+    } else {
+        locationId = defaultLocation;
+    }
 
     var urlBase = "http://www.residentadvisor.net/events.aspx";
     var dateStr = req.params[0];

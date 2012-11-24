@@ -12,6 +12,7 @@ var express = require('express')
 var ui = require('./routes/ui');
 var events = require('./routes/events');
 var event = require('./routes/event');
+var regions = require('./routes/regions');
 
 var app = express();
 
@@ -48,6 +49,8 @@ app.configure('development', function(){
 });
 
 app.get('/', ui.mobile);
+
+app.get('/regions', regions.regions);
 
 app.get('/events/*', events.events);
 app.get('/event/*', event.event);

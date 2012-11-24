@@ -4,9 +4,6 @@ var cityCode = "34";
 var $ = require('jquery');
 var _ = require('underscore');
 
-// var jDistiller = require('/Users/antonio/node/jDistiller').jDistiller;
-// var jd = new jDistiller();
-
 var jsdom = require("jsdom");
 
 exports.event = function(req, res){

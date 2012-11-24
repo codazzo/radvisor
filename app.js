@@ -1,34 +1,24 @@
-
 /**
  * Module dependencies.
  */
 
 var express = require('express')
-  // , routes = require('./routes')
-  , user = require('./routes/user')
   , http = require('http')
   , path = require('path')
   , hbs = require('hbs')
   , less = require("less")
   , fs = require("fs");
   
-// var store = require('./routes/store');
 var ui = require('./routes/ui');
 var events = require('./routes/events');
 var event = require('./routes/event');
 
-// var jDistiller = require('jdistiller').jDistiller;
-
-// var jd = new jDistiller();
-
 var app = express();
-// app.locals.layout = false; //we dont use layout... hbs will break without one
 
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
-  // app.set('view engine', 'hbs');
   app.use(express.favicon());
   app.use(express.logger('dev'));
   app.use(express.bodyParser());
@@ -57,11 +47,8 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-// app.get('/', routes.index);
-// app.get('/', store.home);
 app.get('/', ui.mobile);
 
-app.get('/users', user.list);
 app.get('/events/*', events.events);
 app.get('/event/*', event.event);
 

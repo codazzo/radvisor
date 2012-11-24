@@ -1,13 +1,5 @@
-
-/*
- * scrape events
- */
-
-
 //var url = "http://www.residentadvisor.net/events.aspx?ai=34"; //events overview
 var url = "http://www.residentadvisor.net/events.aspx?ai=34&mn=11&yr=2012&dy=23&v=day"; //single day
-
-
 var host = "http://www.residentadvisor.net/";
 var cityCode = "34";
 
@@ -20,29 +12,6 @@ var jd = new jDistiller();
 var jsdom = require("jsdom");
 
 exports.events = function(req, res){
-//using jDistiller    
-    // jd.
-    // set('oldevents', 'tr[valign="bottom"]', function(element, prev, i) {
-    //     if (i<this.___currentElements.length - 2){
-    //         return [element.text()]
-    //     }
-    // }).
-    // set('events', 'tr.white-bg', function(element, prev, i) {
-    //     var days = element.children().first().children("table").find("tr[valign=bottom]");
-    //     var res = [];
-    //     _.each(days, function(dayTR){
-    //         var date = dayTR.find(".f16").find("a").text().trim();
-    //         res.push(date)
-    //     });
-    //     return res;
-    // })
-    // .distill(url, function(err, distilledPage) {
-    //     var resJSON = JSON.stringify(distilledPage)
-    //     res.send(resJSON);
-    // });
-
-    // Count all of the links from the nodejs build page
-
     var urlBase = "http://www.residentadvisor.net/events.aspx";
     var dateStr = req.params[0];
     var day = dateStr.substr(0,2);
@@ -53,9 +22,6 @@ exports.events = function(req, res){
       url,
       ["http://code.jquery.com/jquery.js"],
       function (errors, window) {
-        // var resStr = "there have been " + window.$("a").length + " nodejs releases!";
-
-        //var eventDivs = window.$(".hr-dark").nextAll().filter("[onmouseover]");
         var eventDivs = window.$(".hr-dark").nextAll().not(".hr");
 
         var resArray = [];

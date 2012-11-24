@@ -11,6 +11,7 @@
     <script src="http://underscorejs.org/underscore-min.js"></script>
     <script src="http://backbonejs.org/backbone-min.js"></script>
     <script src="http://cloud.github.com/downloads/wycats/handlebars.js/handlebars-1.0.rc.1.js"></script>
+    <script src="/javascripts/handlebars-helpers.js"></script>
     <script src="/javascripts/app.js"></script>
 
 </head> 
@@ -51,7 +52,7 @@
         {{#if img}}
             <img class="eventImg" src="{{img}}" />
         {{/if}}
-        <ul>
+        <ul class=".nobullets">
             <li>
                 <span class="key">Venue</span>: {{venue}}
             </li>
@@ -60,6 +61,12 @@
             <li><span class="key">Date</span>: {{date}}</li>
             <li><span class="key">Time</span>: {{time}}</li>
         </ul>
+        <hr/>
+            {{#key_value extraInfo}}
+                <b>{{key}}</b>
+                <div>{{value}}</div>
+                <br/>
+            {{/key_value}}
     </script>
 
 

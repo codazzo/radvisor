@@ -40,6 +40,11 @@
             <div data-role="content">
             </div>
     </div>
+    <div data-role="page" id="datesPage">
+            <div data-role="content">
+            </div>
+    </div>
+
 
     <script id="events-template" type="text/x-handlebars-template">            
         Hello! Here's what's happening in
@@ -47,8 +52,12 @@
             <img class="countryIcon" src="{{location.img}}" />
             {{location.name}}
         </a>
-        tonight,
-        <a data-role="button" data-mini="true" data-inline="true">{{date}}</a>
+        {{#if isTonight}}
+            tonight,
+        {{else}}
+            on
+        {{/if}}
+        <a href="#/dates" data-role="button" data-mini="true" data-inline="true">{{date}}</a>
         .
         <ul class="listView" data-role="listview" data-inset="true">
             {{#each events}}
@@ -108,6 +117,46 @@
                 </div>
             {{/each}}
         </ul>    
+    </script>
+
+    <script id="dates-template" type="text/x-handlebars-template">
+        <h1>Choose a date:</h1>
+        <div data-role="fieldcontain">
+            <fieldset data-role="controlgroup" data-type="horizontal"> 
+                <label for="select-choice-day">Day</label>
+                <select name="select-choice-day" id="select-choice-day">
+                    <option class="null">Day</option>
+                    {{#each days}}
+                        <option value="{{this}}">{{this}}</option>
+                    {{/each}}
+                </select>
+
+                <label for="select-choice-month">Month</label>
+                <select name="select-choice-month" id="select-choice-month">
+                    <option class="null">Month</option>
+                    {{#each months}}
+                        <option value="{{this}}">{{this}}</option>
+                    {{/each}}
+                </select>
+            
+            
+                <label for="select-choice-year">Year</label>
+                <select name="select-choice-year" id="select-choice-year">
+                    <option class="null">Year</option>
+                    {{#each years}}
+                        <option value="{{this}}">{{this}}</option>
+                    {{/each}}
+                </select>
+            </fieldset>
+        </div>
+        or
+        <div>
+            <a id="tonight" data-icon="arrow-r" data-role="button" data-inline="true">Tonight</a>
+        </div>
+        <div class="bottomBar">
+            <a id="datecancel" data-icon="delete" data-role="button" data-inline="true">Cancel</a>
+            <a id="dateok" data-icon="check" data-role="button" data-inline="true" data-theme="b">Save</a>
+        </div>
     </script>
 
 

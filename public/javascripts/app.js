@@ -1,14 +1,16 @@
 $(document).ready(function(){
     var AppRouter = Backbone.Router.extend({ 
         routes: {
-            "": "today",
+            "": "events",
+            "date/:id": "events",
             "locations": "locations", //locations view
-            "event/:id": "getEvent"
+            "event/:id": "getEvent",
+            "dates": "dates"
         },
      
-        today: function() {
+        events: function(date) {
             //TODO in the future we should force reloading the model when a new location cookie is set
-            this.changePage(new EventsView());
+            this.changePage(new EventsView(date));
             $("#eventPage").find("[data-role=content]").html(""); //hack to avoid superimposing event pages
             $("#eventPage").find("h1.title").html("");
         },
@@ -19,6 +21,10 @@ $(document).ready(function(){
      
         getEvent: function(id) {
             this.changePage(new EventView(id));
+        },
+
+        dates: function(){
+            this.changePage(new DatesView());
         },
      
         changePage:function (page) {
@@ -70,21 +76,28 @@ $(document).ready(function(){
         initialize: function(date){
             var me = this;
             var currentDate = new Date();
-            this.day = currentDate.getDate();
-            this.month = currentDate.getMonth() + 1; //lame. so lame.
-            this.year = currentDate.getFullYear();
+            this.day = date ? date.substr(0,2) : currentDate.getDate();
+            this.month = date ? date.substr(2,2) : currentDate.getMonth() + 1; //lame. so lame.
+            this.year = date ? date.substr(4,4) : currentDate.getFullYear();
             var dateStr = "" + this.day + this.month + this.year;
-            date = date || dateStr;
-            this.model = new Events(date);
+            this.model = new Events(dateStr);
             //init models... TODO no need to fetch them every time
+            var isTonight;
+            if (date) {
+                isTonight = false;
+            } else {
+                isTonight = true;
+            }
             this.model.fetch({
                 success: function(model, response, options){
-                    me.render();
+                    me.render({
+                        isTonight: isTonight
+                    });
                 }
             });
         },
 
-        render: function() {
+        render: function(options) {
             var dateStr = this.day + "/"+ this.month + "/" + this.year;
             var locationData = $.parseJSON($.cookie("ra_location"));
             if (locationData.name=="All Regions") {
@@ -93,7 +106,8 @@ $(document).ready(function(){
             var tmpHtml = this.template({
                 location: locationData,
                 events: this.model.toJSON(),
-                date: dateStr
+                date: dateStr,
+                isTonight: options.isTonight
             });
             $el = $(this.el);
             $content = $el.find("[data-role=content]");
@@ -180,6 +194,62 @@ $(document).ready(function(){
         }
     });
 
+    //4 - Dates
+    var DatesView = Backbone.View.extend({
+        el: "#datesPage",
+        template: Handlebars.compile($("#dates-template").html()),
+        events: {
+            "click #dateok": "chooseDate",
+            "click #datecancel": "cancelDate",
+            "click #tonight": "chooseTonight"
+        },
+
+        initialize: function(date){
+            var monthsArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            var days = [];
+            for(var i =0; i<31; i++){
+                days.push(i+1);
+            }
+            var years = [2011, 2012, 2013];
+            this.render({
+                months: monthsArray,
+                days: days,
+                years: years
+            });
+        },
+
+        chooseDate: function(){
+            var a = 2;
+            var dayVal = ""+$("#select-choice-day").children(":checked").not(".null").index();
+            if (dayVal.length==1) dayVal = "0" + dayVal;
+            var monthVal = ""+$("#select-choice-month").children(":checked").not(".null").index();
+            if (monthVal.length==1) monthVal = "0" + monthVal;
+            var yearVal = $("#select-choice-year").children(":checked").not(".null").val();
+            if (dayVal && monthVal && yearVal) {
+                dateStr = ""+dayVal + monthVal + yearVal;
+                app_router.navigate("date/" + dateStr,  {trigger: true});
+            }
+        },
+
+        cancelDate: function(){
+            window.history.back();
+        },
+
+        chooseTonight: function(){
+            app_router.navigate("",  {trigger: true});
+        },
+
+        render: function(data) {
+            var tmpHtml = this.template(data);
+            $el = $(this.el);
+            $content = $el.find("[data-role=content]");
+            $content.html(tmpHtml);
+
+            // $.mobile.initializePage();
+            $content.trigger('create'); //jqueryMobile init
+            this.delegateEvents();
+        }
+    });
 
 
 

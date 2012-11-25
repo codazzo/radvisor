@@ -2,12 +2,10 @@ var config = require('./config');
 var scraper = require('./scraper');
 
 var app = config.app;
-var uri = app.get("db_uri"),
-    name = app.get("db_name");
+var uri = app.get("db_uri");
 
 var mongojs = require('mongojs');
-var _ = require('underscore');
-var db = mongojs("mongodb://localhost/restful_advisor");
+var db = mongojs(uri);
 
 /**
     page: pageName (e.g. "events")

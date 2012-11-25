@@ -14,13 +14,11 @@ app.configure(function(){
     app.use(app.router);
     app.use(express.static(path.join(__dirname, 'public')));
 
-    app.set("db_name", "restful_advisor");
-
     if ('development' == app.get('env')) {
-        app.set('db_host', 'localhost');
+        app.set('db_uri', 'mongodb://localhost/restful_advisor');
     }
     if ('production' == app.get('env')) {
-        app.set('db_host', 'DERP');
+        app.set('db_uri', 'mongodb://heroku_app9447256:dkmdaactsstuot0bq60bie9ips@ds043497.mongolab.com:43497/heroku_app9447256');
     }
 });
 

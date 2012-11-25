@@ -103,9 +103,13 @@ $(document).ready(function(){
             if (locationData.name=="All Regions") {
                 locationData.name = locationData.country; //no use in displaying "All Regions"
             }
+            var events = this.model.toJSON(); 
+            _.each(events, function(event){
+                event.title = event.title || 'N/A'
+            });
             var tmpHtml = this.template({
                 location: locationData,
-                events: this.model.toJSON(),
+                events: events,
                 date: dateStr,
                 isTonight: options.isTonight
             });

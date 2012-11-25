@@ -6,7 +6,7 @@ exports.event = function(req, res){
     }
 
     db.get("event", options, function(eventData){
-        var resStr = JSON.stringify(eventData[0]);
+        var resStr = JSON.stringify(eventData);
         res.send(resStr);
     });
 }

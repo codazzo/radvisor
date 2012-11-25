@@ -18,9 +18,8 @@ $(document).ready(function(){
      
         locations: function() {
             var me = this;
-            locationsView.update(function(){
-                me.changePage(locationsView);
-            });
+            locationsView.update();
+            me.changePage(locationsView);
         },
      
         getEvent: function(id) {

@@ -17,6 +17,7 @@ $(document).ready(function(){
         },
      
         locations: function() {
+            locationsView.update();
             this.changePage(locationsView);
         },
      
@@ -30,10 +31,7 @@ $(document).ready(function(){
         },
      
         changePage:function (page) {
-            // $(page.el).attr('data-role', 'page');
-            // page.render();
-            // $('body').append($(page.el));
-            $.mobile.changePage($(page.el), {changeHash:false});
+            $.mobile.changePage(page.$el, {changeHash:false});
         }
     });
 
@@ -121,8 +119,8 @@ $(document).ready(function(){
                 date: dateStr,
                 isTonight: options.isTonight
             });
-            $el = $(this.el);
-            $content = $el.find("[data-role=content]");
+
+            $content = this.$el.find("[data-role=content]");
             $content.html(tmpHtml);
 
             // $.mobile.initializePage();
@@ -155,9 +153,9 @@ $(document).ready(function(){
         render: function() {
             var eventJSON = this.model.toJSON();
             var tmpHtml = this.template(eventJSON);
-            $el = $(this.el);
-            $el.find("h1.title").html(eventJSON.title);
-            $content = $(this.el).find("[data-role=content]");
+
+            this.$el.find("h1.title").html(eventJSON.title);
+            $content = this.$el.find("[data-role=content]");
             $content.html(tmpHtml);
             // $.mobile.initializePage();
             $content.trigger('create'); //jqueryMobile init
@@ -176,17 +174,18 @@ $(document).ready(function(){
             this.model = new Locations();
         },
 
-        show: function(){
+        update: function(){
+            if (this.isLoaded) return;
             var me = this;
             this.model.fetch({
                 success: function(model, response, options){
                     me.render();
                 }
             });
+            this.isLoaded = true;
         },
 
         setLocation: function(evt){
-            //set /{{../name}}/{{this.name}}
             var $el = $(evt.currentTarget);
 
             var location = {
@@ -203,8 +202,7 @@ $(document).ready(function(){
             var tmpHtml = this.template({
                 regions: this.model.toJSON()
             });
-            $el = $(this.el);
-            $content = $el.find("[data-role=content]");
+            $content = this.$el.find("[data-role=content]");
             $content.html(tmpHtml);
 
             // $.mobile.initializePage();
@@ -235,17 +233,19 @@ $(document).ready(function(){
                 days: days,
                 years: years
             });
+            this.$day = $("#select-choice-day");
+            this.$month = $("#select-choice-month");
+            this.$year = $("#select-choice-year");
         },
 
         chooseDate: function(){
-            var a = 2;
-            var dayVal = ""+$("#select-choice-day").children(":checked").not(".null").index();
+            var dayVal = "" + this.$day.children(":checked").not(".null").index();
             if (dayVal.length==1) dayVal = "0" + dayVal;
-            var monthVal = ""+$("#select-choice-month").children(":checked").not(".null").index();
+            var monthVal = "" + this.$month.children(":checked").not(".null").index();
             if (monthVal.length==1) monthVal = "0" + monthVal;
-            var yearVal = $("#select-choice-year").children(":checked").not(".null").val();
+            var yearVal = this.$year.children(":checked").not(".null").val();
             if (dayVal && monthVal && yearVal) {
-                dateStr = ""+dayVal + monthVal + yearVal;
+                dateStr = "" + dayVal + monthVal + yearVal;
                 app_router.navigate("date/" + dateStr,  {trigger: true});
             }
         },
@@ -260,8 +260,7 @@ $(document).ready(function(){
 
         render: function(data) {
             var tmpHtml = this.template(data);
-            $el = $(this.el);
-            $content = $el.find("[data-role=content]");
+            $content = this.$el.find("[data-role=content]");
             $content.html(tmpHtml);
 
             // $.mobile.initializePage();

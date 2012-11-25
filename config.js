@@ -1,6 +1,5 @@
 var express = require('express'),
-    path = require('path'),
-    hbs = require('hbs');
+    path = require('path');
 
 var app = express();
 

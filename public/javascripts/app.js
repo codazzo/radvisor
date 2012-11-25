@@ -10,20 +10,24 @@ $(document).ready(function(){
      
         events: function(date) {
             //TODO in the future we should force reloading the model when a new location cookie is set
-            eventsView.update(date);
-            this.changePage(eventsView);
-            $("#eventPage").find("[data-role=content]").html(""); //hack to avoid superimposing event pages
-            $("#eventPage").find("h1.title").html("");
+            var me = this;
+            eventsView.update(date, function(){
+                me.changePage(eventsView);    
+            });
         },
      
         locations: function() {
-            locationsView.update();
-            this.changePage(locationsView);
+            var me = this;
+            locationsView.update(function(){
+                me.changePage(locationsView);
+            });
         },
      
         getEvent: function(id) {
-            eventView.update(id);
-            this.changePage(eventView);
+            var me = this;
+            eventView.update(id, function(){
+                me.changePage(eventView);
+            });
         },
 
         dates: function(){
@@ -31,7 +35,7 @@ $(document).ready(function(){
         },
      
         changePage:function (page) {
-            $.mobile.changePage(page.$el, {changeHash:false});
+            $.mobile.changePage(page.$el, {transition:"none", changeHash:false});
         }
     });
 
@@ -77,7 +81,7 @@ $(document).ready(function(){
             this.model = new Events();
         },
 
-        update: function(date){
+        update: function(date, callback){
             var me = this;
             var currentDate = new Date();
             this.day = date ? date.substr(0,2) : currentDate.getDate();
@@ -99,6 +103,7 @@ $(document).ready(function(){
                     me.render({
                         isTonight: isTonight
                     });
+                    callback();
                 }
             });
         },
@@ -138,13 +143,14 @@ $(document).ready(function(){
             this.model = new Event();
         },
 
-        update: function(id){
+        update: function(id, callback){
             var me = this;
             this.model.set({id: id});
             //init models... TODO no need to fetch them every time
             this.model.fetch({
                 complete: function(){
                     me.render();
+                    callback();
                 }
             });
 
@@ -159,6 +165,11 @@ $(document).ready(function(){
             $content.html(tmpHtml);
             // $.mobile.initializePage();
             $content.trigger('create'); //jqueryMobile init
+        },
+
+        cleanView: function(){
+            this.$el.html(""); //hack to avoid superimposing event pages
+            this.$el.closest("#eventPage").find("h1.title").html("");
         }
     });
 
@@ -174,12 +185,13 @@ $(document).ready(function(){
             this.model = new Locations();
         },
 
-        update: function(){
+        update: function(callback){
             if (this.isLoaded) return;
             var me = this;
             this.model.fetch({
                 success: function(model, response, options){
                     me.render();
+                    callback();
                 }
             });
             this.isLoaded = true;

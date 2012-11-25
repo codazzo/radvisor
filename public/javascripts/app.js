@@ -10,21 +10,23 @@ $(document).ready(function(){
      
         events: function(date) {
             //TODO in the future we should force reloading the model when a new location cookie is set
-            this.changePage(new EventsView(date));
+            eventsView.update(date);
+            this.changePage(eventsView);
             $("#eventPage").find("[data-role=content]").html(""); //hack to avoid superimposing event pages
             $("#eventPage").find("h1.title").html("");
         },
      
         locations: function() {
-            this.changePage(new LocationsView());
+            this.changePage(locationsView);
         },
      
         getEvent: function(id) {
-            this.changePage(new EventView(id));
+            eventView.update(id);
+            this.changePage(eventView);
         },
 
         dates: function(){
-            this.changePage(new DatesView());
+            this.changePage(datesView);
         },
      
         changePage:function (page) {
@@ -52,7 +54,7 @@ $(document).ready(function(){
     var Events = Backbone.Collection.extend({
       urlBase: '/events/',
 
-      initialize: function(date){
+      setDate: function(date){
         this.date = date;
       },
 
@@ -74,13 +76,19 @@ $(document).ready(function(){
         template: Handlebars.compile($("#events-template").html()),
 
         initialize: function(date){
+            this.model = new Events();
+        },
+
+        update: function(date){
             var me = this;
             var currentDate = new Date();
             this.day = date ? date.substr(0,2) : currentDate.getDate();
             this.month = date ? date.substr(2,2) : currentDate.getMonth() + 1; //lame. so lame.
             this.year = date ? date.substr(4,4) : currentDate.getFullYear();
             var dateStr = "" + this.day + this.month + this.year;
-            this.model = new Events(dateStr);
+
+            this.model.setDate(dateStr);
+
             //init models... TODO no need to fetch them every time
             var isTonight;
             if (date) {
@@ -128,15 +136,20 @@ $(document).ready(function(){
         el: "#eventPage",
         template: Handlebars.compile($("#event-template").html()),
 
-        initialize: function(id){
+        initialize: function(){
+            this.model = new Event();
+        },
+
+        update: function(id){
             var me = this;
-            this.model = new Event(id);
+            this.model.set({id: id});
             //init models... TODO no need to fetch them every time
             this.model.fetch({
                 complete: function(){
                     me.render();
                 }
             });
+
         },
 
         render: function() {
@@ -160,9 +173,11 @@ $(document).ready(function(){
         },
 
         initialize: function(date){
-            var me = this;
             this.model = new Locations();
-            //init models... TODO no need to fetch them every time
+        },
+
+        show: function(){
+            var me = this;
             this.model.fetch({
                 success: function(model, response, options){
                     me.render();
@@ -256,6 +271,10 @@ $(document).ready(function(){
     });
 
 
+    var locationsView = new LocationsView();
+    var eventsView = new EventsView();
+    var eventView = new EventView();
+    var datesView = new DatesView();
 
 
     var app_router = new AppRouter;

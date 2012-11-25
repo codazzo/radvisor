@@ -1,5 +1,6 @@
 var config = require('./config'),
     fs = require("fs"),
+    db = require("./db"),
     http = require('http'),
     less = require("less");
 
@@ -29,6 +30,9 @@ app.get('/regions', regions.regions);
 
 app.get('/events/*', events.events);
 app.get('/event/*', event.event);
+
+app.get('/getDoc/*', db.getDoc);
+app.get('/saveDoc/*', db.saveDoc);
 
 http.createServer(app).listen(app.get('port'), function(){
     console.log("Express server listening on port " + app.get('port'));

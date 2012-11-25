@@ -13,7 +13,9 @@
       "jsdom": "*",
       "underscore": "*",
       "less": "*",
-      "cookies": "*"
+      "cookies": "*",
+      "mongodb": ">= 0.9.6-7",
+      "mongojs": "*"
   },
   "engines": {
       "node": ">= 0.8",

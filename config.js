@@ -1,7 +1,6 @@
 var express = require('express'),
     path = require('path'),
-    hbs = require('hbs'),
-    less = require("less");
+    hbs = require('hbs');
 
 var app = express();
 
@@ -19,11 +18,10 @@ app.configure(function(){
     app.set("db_name", "restful_advisor");
 
     if ('development' == app.get('env')) {
-        app.set('db_uri', 'localhost');
-        app.set('db_full_uri', 'http://localhost:5984');
+        app.set('db_host', 'localhost');
     }
     if ('production' == app.get('env')) {
-        app.set('db_uri', 'n.n.n.n/prod');
+        app.set('db_host', 'DERP');
     }
 });
 

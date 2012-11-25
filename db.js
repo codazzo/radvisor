@@ -13,8 +13,8 @@ var db = mongojs(uri);
     callback: will be called with scraped data when it is available
 */
 exports.get = function(page, scraperOptions, callback){
-    var events = db.collection(page);
-    var res = events.find({params: scraperOptions}, function(err, doc){
+    var documents = db.collection(page);
+    var res = documents.find({params: scraperOptions}, function(err, doc){
         if (doc.length) {
             //it's in the db: cool!
             callback(doc[0].data);
@@ -25,7 +25,7 @@ exports.get = function(page, scraperOptions, callback){
                     params: scraperOptions,
                     data: data
                 }
-                events.save(savedData);
+                documents.save(savedData);
                 callback(data);
             });
         }

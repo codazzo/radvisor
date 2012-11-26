@@ -3,6 +3,10 @@ $(document).ready(function(){
         return JSON.parse($.cookie("ra_location"));
     }
 
+    $(document).on("click", ".goback", function(){
+        window.history.back(); //back buttons go back in history
+    });
+
     var AppRouter = Backbone.Router.extend({ 
         routes: {
             "": "events",

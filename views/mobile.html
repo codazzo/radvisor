@@ -38,12 +38,16 @@
     <div data-role="page" id="locationsPage">
             <div data-role="header">
                 <a href="/#" data-icon="back">Back</a>
-                <h1 class="title"></h1>
+                <h1 class="title">Choose your location</h1>
             </div>
             <div data-role="content">
             </div>
     </div>
     <div data-role="page" id="datesPage">
+            <div data-role="header">
+                <a href="/#" data-icon="back">Back</a>
+                <h1 class="title">Choose a date</h1>
+            </div>
             <div data-role="content">
             </div>
     </div>
@@ -95,7 +99,47 @@
     </script>
 
     <script id="locations-template" type="text/x-handlebars-template">
-        Choose your location:
+            <div class="ui-grid-a oneline">
+                <div class="ui-block-a">
+                    <label>Country:</label>
+                </div>
+                <select class="ui-block-b" id="countrySelect">
+                    {{#each regions}}
+                        <option
+                            {{#ifequal this.name ../currentCountry }}
+                                selected="selected"
+                            {{/ifequal}}
+                            data-img = "{{img}}"
+                        >
+                            {{this.name}}
+                        </option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="ui-grid-a oneline">
+                <div class="ui-block-a">
+                    <label>City:</label>
+                </div>
+                <select class="ui-block-b" id="regionSelect">
+                    {{#each countryRegions}}
+                        <option
+                            {{#ifequal this.name ../currentRegion }}
+                                selected="selected"
+                            {{/ifequal}}
+                            data-id = "{{this.id}}"
+                            data-name="{{this.name}}"
+                        >
+                            {{this.name}}
+                        </option>
+                    {{/each}}
+                </select>
+            </div>
+
+        <fieldset class="ui-grid-a">
+                <div class="ui-block-a"><button href="#" type="submit" data-theme="d">Cancel</button></div>
+                <div class="ui-block-b"><button id="locationSubmit" type="submit" data-theme="b">Submit</button></div>
+        </fieldset>
+        <!--
         <div class="locationsList" data-role="collapsible-set" data-inset="false">
             {{#each regions}}
                 <div data-role="collapsible" data-theme="b" class="regionLi">
@@ -119,47 +163,59 @@
                     </ul>
                 </div>
             {{/each}}
-        </ul>    
+        </div>
+        -->
     </script>
 
     <script id="dates-template" type="text/x-handlebars-template">
-        <h1>Choose a date:</h1>
         <div data-role="fieldcontain">
             <fieldset data-role="controlgroup" data-type="horizontal"> 
                 <label for="select-choice-day">Day</label>
-                <select name="select-choice-day" id="select-choice-day">
+                <select data-mini="true" name="select-choice-day" id="select-choice-day">
                     <option class="null">Day</option>
                     {{#each days}}
-                        <option value="{{this}}">{{this}}</option>
+                        <option value="{{this}}"
+                            {{#ifequal ../selectedDate.day this }}
+                                selected="selected"
+                            {{/ifequal}}
+                        >{{this}}</option>
                     {{/each}}
                 </select>
 
                 <label for="select-choice-month">Month</label>
-                <select name="select-choice-month" id="select-choice-month">
+                <select data-mini="true" name="select-choice-month" id="select-choice-month">
                     <option class="null">Month</option>
-                    {{#each months}}
-                        <option value="{{this}}">{{this}}</option>
-                    {{/each}}
+                    {{#each_with_index months}}
+                        <option value="{{this}}"
+                            {{#ifequal ../selectedDate.month index }}
+                                selected="selected"
+                            {{/ifequal}}
+                        >{{this.data}}</option>
+                    {{/each_with_index}}
                 </select>
             
             
                 <label for="select-choice-year">Year</label>
-                <select name="select-choice-year" id="select-choice-year">
+                <select data-mini="true" name="select-choice-year" id="select-choice-year">
                     <option class="null">Year</option>
                     {{#each years}}
-                        <option value="{{this}}">{{this}}</option>
+                        <option value="{{this}}"
+                            {{#ifequal ../selectedDate.year this }}
+                                selected="selected"
+                            {{/ifequal}}
+                        >{{this}}</option>
                     {{/each}}
                 </select>
             </fieldset>
         </div>
         or
         <div>
-            <a id="tonight" data-icon="arrow-r" data-role="button" data-inline="true">Tonight</a>
+            <a id="tonight"  data-mini="true" data-icon="arrow-r" data-role="button" data-inline="true">Tonight</a>
         </div>
-        <div class="bottomBar">
-            <a id="datecancel" data-icon="delete" data-role="button" data-inline="true">Cancel</a>
-            <a id="dateok" data-icon="check" data-role="button" data-inline="true" data-theme="b">Save</a>
-        </div>
+        <fieldset class="ui-grid-a">
+            <div class="ui-block-a"><button type="submit" id="datecancel" data-icon="delete" data-theme="d">Cancel</button></div>
+            <div class="ui-block-b"><button type="submit" id="dateok" data-icon="check" data-theme="b">Submit</button></div>
+        </fieldset>
     </script>
 
 

@@ -46,3 +46,28 @@ Handlebars.registerHelper("each_with_key", function(obj, fn) {
 
     return buffer;
 });
+
+
+Handlebars.registerHelper('ifequal', function (v1, v2, options) {
+  if(v1 == v2) {
+    return options.fn(this);
+  }
+  return options.inverse(this);
+});
+
+
+Handlebars.registerHelper("each_with_index", function(array, fn) {
+    var buffer = "";
+    for (var i = 0, j = array.length; i < j; i++) {
+        var item = {data: array[i]};
+
+        // stick an index property onto the item, starting with 1, may make configurable later
+        item.index = i+1;
+
+        // show the inside of the block
+        buffer += fn.fn(item);
+    }
+
+    // return the finished buffer
+    return buffer;
+});

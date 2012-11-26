@@ -1,4 +1,8 @@
 $(document).ready(function(){
+    var getLocation = function(){
+        return JSON.parse($.cookie("ra_location"));
+    }
+
     var AppRouter = Backbone.Router.extend({ 
         routes: {
             "": "events",
@@ -24,6 +28,7 @@ $(document).ready(function(){
      
         getEvent: function(id) {
             var me = this;
+            $.mobile.showPageLoadingMsg();
             eventView.update(id, function(){
                 me.changePage(eventView);
             });
@@ -34,7 +39,7 @@ $(document).ready(function(){
         },
      
         changePage:function (page) {
-            $.mobile.changePage(page.$el, {transition:"none", changeHash:false});
+            $.mobile.changePage(page.$el, {transition:"none", changeHash: false});
         }
     });
 
@@ -83,6 +88,7 @@ $(document).ready(function(){
         update: function(date, callback){
             var me = this;
             var currentDate = new Date();
+            this.date = currentDate;
             this.day = date ? date.substr(0,2) : currentDate.getDate();
             this.month = date ? date.substr(2,2) : currentDate.getMonth() + 1; //lame. so lame.
             this.year = date ? date.substr(4,4) : currentDate.getFullYear();
@@ -105,6 +111,25 @@ $(document).ready(function(){
                     callback();
                 }
             });
+        },
+
+        getDate: function(){
+            if(!this.date){
+                var date = new Date();
+                return {
+                    date: date,
+                    day: ""+date.getDate(),
+                    month: date.getMonth() + 1,
+                    year: ""+date.getFullYear()
+                }
+            } else {
+                return {
+                    date: this.date,
+                    day: this.day,
+                    month: this.month,
+                    year: this.year
+                }
+            }
         },
 
         render: function(options) {
@@ -177,7 +202,8 @@ $(document).ready(function(){
         el: "#locationsPage",
         template: Handlebars.compile($("#locations-template").html()),
         events: {
-            "click a.location" : "setLocation"
+            "click #locationSubmit" : "setLocation",
+            "change #countrySelect" : "changeCountry"
         },
 
         initialize: function(date){
@@ -190,28 +216,44 @@ $(document).ready(function(){
             this.model.fetch({
                 success: function(model, response, options){
                     me.render();
-                    callback();
                 }
             });
             this.isLoaded = true;
         },
 
+        changeCountry: function(evt){
+            var country = $(evt.currentTarget).val();
+            this.render(country);
+        },
+
         setLocation: function(evt){
             var $el = $(evt.currentTarget);
-
+            var $country = $("#countrySelect");
+            var $region = $("#regionSelect");
             var location = {
-                id: ""+$el.data("id"),
-                country: $el.data("country"),
-                name: $el.data("name"),
-                img: $el.data("img")
+                id: $region.children("option:selected").data("id"),
+                country: $country.val(),
+                name: $region.children("option:selected").data("name"),
+                img: $country.children("option:selected").data("img")
             }
             var locationStr = JSON.stringify(location);
             $.cookie('ra_location', locationStr);
+            app_router.navigate("",  {trigger: true});
+            $.mobile.showPageLoadingMsg();
         },
 
-        render: function() {
+        render: function(country) {
+            var currentCountry = country || getLocation().country;
+            var currentRegion = getLocation().name;
+            var allRegions = this.model.toJSON();
+            var countryRegions = _.find(allRegions, function(country){
+                return country.name == currentCountry;
+            }).regions;
             var tmpHtml = this.template({
-                regions: this.model.toJSON()
+                currentCountry: currentCountry,
+                currentRegion: currentRegion,
+                countryRegions: countryRegions,
+                regions: allRegions
             });
             $content = this.$el.find("[data-role=content]");
             $content.html(tmpHtml);
@@ -242,7 +284,8 @@ $(document).ready(function(){
             this.render({
                 months: monthsArray,
                 days: days,
-                years: years
+                years: years,
+                selectedDate: eventsView.getDate()
             });
             this.$day = $("#select-choice-day");
             this.$month = $("#select-choice-month");
@@ -257,6 +300,7 @@ $(document).ready(function(){
             var yearVal = this.$year.children(":checked").not(".null").val();
             if (dayVal && monthVal && yearVal) {
                 dateStr = "" + dayVal + monthVal + yearVal;
+                $.mobile.showPageLoadingMsg();
                 app_router.navigate("date/" + dateStr,  {trigger: true});
             }
         },
@@ -267,6 +311,7 @@ $(document).ready(function(){
 
         chooseTonight: function(){
             app_router.navigate("",  {trigger: true});
+            $.mobile.showPageLoadingMsg();
         },
 
         render: function(data) {

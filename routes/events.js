@@ -2,7 +2,7 @@ var db = require("../db");
 var Cookies = require("cookies");
 var $ = require('jquery');
 
-exports.events = function(req, res){
+module.exports = function(req, res){
     var cookies = new Cookies( req, res );
     var locationCookie = cookies.get("ra_location");
     var locationId;

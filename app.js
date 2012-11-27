@@ -2,7 +2,8 @@ var config = require('./config'),
     fs = require("fs"),
     db = require("./db"),
     http = require('http'),
-    less = require("less");
+    less = require("less"),
+    _ = require("underscore");
 
 var ui = require('./routes/ui'),
     events = require('./routes/events'),
@@ -23,13 +24,15 @@ app.get("*.less", function(req, res) {
     });
 });
 
-
-app.get('/', ui.mobile);
-
-app.get('/regions', regions.regions);
-
-app.get('/events/*', events.events);
-app.get('/event/*', event.event);
+var routes = {
+    '/' : ui.mobile,
+    '/regions': regions,
+    '/events/*': events,
+    '/event/*': event
+}
+_.each(routes, function(handler, route){
+    app.get(route, handler);
+});
 
 http.createServer(app).listen(app.get('port'), function(){
     console.log("Express server listening on port " + app.get('port'));

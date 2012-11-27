@@ -1,6 +1,6 @@
 var db = require("../db");
 
-exports.event = function(req, res){
+module.exports = function(req, res){
     var options = {
         eventId: req.params[0]
     }

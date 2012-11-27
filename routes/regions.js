@@ -1,6 +1,6 @@
 var db = require("../db");
 
-exports.regions = function(req, res){
+module.exports = function(req, res){
     var urlBase = "http://www.residentadvisor.net/events.aspx";
 
     db.get("regions", {}, function(regionsArray){

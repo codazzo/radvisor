@@ -2,6 +2,8 @@ var db = require("../db");
 var Cookies = require("cookies");
 var $ = require('jquery');
 
+var defaultLocation = "34"; //allows this to be used without the UI (which always sets the location cookie)
+
 module.exports = function(req, res){
     var cookies = new Cookies( req, res );
     var locationCookie = cookies.get("ra_location");

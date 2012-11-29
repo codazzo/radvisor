@@ -19,5 +19,5 @@ exports.mobile = function(req, res){
     if(!locationCookie) {
         res.cookie("ra_location", JSON.stringify(defaultLocation), { path: '/'});
     }
-    res.render('mobile');
+    res.sendfile('views/mobile.html');
 };

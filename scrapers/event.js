@@ -34,7 +34,7 @@ module.exports = function(options, callback){
             var infoPanes = window.$("#_contentmain_EventDisplay").find("tr").first().children("td");
             var mainInfo = infoPanes.eq(0);
             var attendees = infoPanes.eq(1);
-
+            var imgURL = mainInfo.find("img").length ? host + mainInfo.find("img").attr("src") : undefined;
             var resObj = {
                 id: eventId,
                 title: title,
@@ -43,7 +43,7 @@ module.exports = function(options, callback){
                 venue: venueName,
                 address: venueAddress,
                 cost: cost,
-                img: host + mainInfo.find("img").attr("src")
+                img: imgURL
             }
 
             var infoMap = {

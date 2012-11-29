@@ -29,9 +29,13 @@ module.exports = function(options, callback){
                     return el.indexOf("event") != -1
                 });
                 if (!idHref) return; //no event id: dirty data! skip
+                var eventAtVenue = $ev.children(".black").text();
+                var eventName = $ev.children(".black").children().first().text();
+                var venueName = eventAtVenue.substr(eventName.length+4, eventAtVenue.length); //" at "
                 var eventObj = {
                     id: idHref.split("?")[1],
-                    title: $ev.children(".black").text(),
+                    title: eventName,
+                    venue: venueName,
                     img: host+$ev.find(".im-list").find("img").attr("src"),
                     info: $ev.children(".pt1.grey").text(),
                     ppl: $ev.children(".pt1").find(".f10").find(".grey").text().split(" ")[0]

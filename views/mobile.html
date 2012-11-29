@@ -84,9 +84,12 @@
         <ul class="listView" data-role="listview" data-inset="true">
             {{#each events}}
                 <li class="eventLi">
-                    <img class="ilb" src="{{this.img}}" />
-                    <a class="ilb" href="#/event/{{this.id}}" data-transition="pop">{{this.title}}</a>
-                    <span class="ilb ui-li-count">{{this.ppl}}</span>
+                    <a href="#/event/{{this.id}}" data-transition="pop">
+                        <img class="ui-li-thumb ui-corner-tl" src="{{this.img}}" />
+                        <h3 class="ui-li-heading">{{this.title}}</h3>
+                        <p class="ui-li-desc">{{this.venue}}</p>
+                        <span class="ilb ui-li-count">{{this.ppl}}</span>
+                    </a>
                 </li>
             {{/each}}
         </ul>    

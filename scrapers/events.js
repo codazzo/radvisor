@@ -29,9 +29,20 @@ module.exports = function(options, callback){
                     return el.indexOf("event") != -1
                 });
                 if (!idHref) return; //no event id: dirty data! skip
-                var eventAtVenue = $ev.children(".black").text();
-                var eventName = $ev.children(".black").children().first().text();
+                
+                var titleEl = $ev.children(".black");
+                var isRAticket;
+                if(!titleEl.length){
+                    titleEl = $ev.children().eq(2); //RA tickets
+                    isRAticket = true;
+                }
+                var eventAtVenue = titleEl.text();
+                var eventName = titleEl.children().first().text();
                 var venueName = eventAtVenue.substr(eventName.length+4, eventAtVenue.length); //" at "
+                if(isRAticket){
+                    venueName = eventAtVenue.split(" at ")[1];
+                    eventName = eventAtVenue.substr(0, eventAtVenue.length-venueName.length-4);
+                }
                 var eventObj = {
                     id: idHref.split("?")[1],
                     title: eventName,

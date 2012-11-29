@@ -99,9 +99,11 @@
         <hr/>
             {{#key_value extraInfo}}
                 <b>{{key}}</b>
-                <div>{{value}}</div>
+                <div>{{{value}}}</div>
                 <br/>
             {{/key_value}}
+            <hr/>
+            {{{extraStrings}}}
     </script>
 
     <script id="locations-template" type="text/x-handlebars-template">

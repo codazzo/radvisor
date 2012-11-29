@@ -23,10 +23,17 @@ module.exports = function(options, callback){
 
             var date = getRowdata(infoRows.eq(1));
             var time = getRowdata(infoRows.eq(2));
+
+            //a bit involved but this accounts for slashes in the venue name
             var venueStr = getRowdata(infoRows.eq(3));
-            var venueName = venueStr.split("/")[0].trim();
-            var venueAddress = venueStr.split("/")[1].trim();
+            var slashTokens = venueStr.split("/");
+            var venueAddress = venueStr.split("/")[slashTokens.length-1].trim();
+            var venueName = venueStr.substr(0, venueStr.length - venueAddress.length - 2); //-2 accounts for '/ '            
             var cost = getRowdata(infoRows.eq(4));
+
+            var infoPanes = window.$("#_contentmain_EventDisplay").find("tr").first().children("td");
+            var mainInfo = infoPanes.eq(0);
+            var attendees = infoPanes.eq(1);
 
             var resObj = {
                 id: eventId,
@@ -35,12 +42,9 @@ module.exports = function(options, callback){
                 time: time,
                 venue: venueName,
                 address: venueAddress,
-                cost: cost
+                cost: cost,
+                img: host + mainInfo.find("img").attr("src")
             }
-
-            var infoPanes = window.$("#_contentmain_EventDisplay").find("tr").first().children("td");
-            var mainInfo = infoPanes.eq(0);
-            var attendees = infoPanes.eq(1);
 
             var infoMap = {
                 lineup: "Line-up",
@@ -51,22 +55,42 @@ module.exports = function(options, callback){
             var extraStrings = "";
             mainInfo.children().each(function(index, el){
                 var $el = $(el);
-                var content = $el.text();
-                var found = false;
+
+                var allText = $el.text().trim();
+                var hasKey = false;
+                var theSection, content;
+                //1. check if it's a named section e.g. "Line-up"
                 _.each(infoMap, function(value, key){
-                    if (content.indexOf(value)==0){
-                        extraInfo[key] = content.split("/")[1]; //simple text..
-                        //extraInfo[key] = $el.first().children().not(":first").html(); //html...
-                        found = true;
+                    if (allText.indexOf(value)==0){
+                        hasKey = true;
+                        theSection = value;
                     }
                 });
-                if (found = false) {
+                if(hasKey){ //it is a named section
+                    var theChildren = $el.children();
+                    for(var i=0; i<theChildren.length; i++){
+                        //let's remove all of the nodes up until and including the value e.g. "Line-up"
+                        var foundIt = false;
+                        var elNino = theChildren.eq(i);
+                        if(elNino.text().indexOf(theSection)==0){
+                            foundIt = true;
+                        }
+                        elNino.remove();
+                        if(foundIt){
+                            break;
+                        }
+                    }
+                    //now we can return the rest with all the markup
+                    content = $el.html();
+                    extraInfo[theSection] = content;
+                } else {
+                    //it's just extra information
+                    content = $el.text();
                     extraStrings += content + "<br/>";
                 }
             });
             resObj.extraInfo = extraInfo;
             resObj.extraStrings = extraStrings;
-            resObj.img = host + mainInfo.find("img").attr("src");
 
             callback(resObj);
         }

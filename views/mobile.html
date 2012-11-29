@@ -58,6 +58,15 @@
             </div>
     </div>
 
+    <div data-role="page" id="djPage">
+            <div data-role="header">
+                <a class="goback" data-icon="back">Back</a>
+                <h1 class="title"></h1>
+            </div>
+            <div data-role="content">
+            </div>
+    </div>
+
 
     <script id="events-template" type="text/x-handlebars-template">            
         Here's what's happening in
@@ -226,6 +235,17 @@
         </fieldset>
     </script>
 
+    <script id="dj-template" type="text/x-handlebars-template">
+        <h2>{{name}}</h2>
+        {{#if img}}
+            <div><img class="eventImg" src="{{img}}" /></div>
+        {{/if}}
+        <ul>
+            {{#key_value links}}
+                <li><a href="http://{{value}}">{{key}}</a></li>
+            {{/key_value}}
+        </ul>
+    </script>
 
     <script type="text/javascript">
       var _gaq = _gaq || [];

@@ -13,7 +13,8 @@ $(document).ready(function(){
             "date/:id": "events",
             "locations": "locations", //locations view
             "event/:id": "getEvent",
-            "dates": "dates"
+            "dates": "dates",
+            "dj/:name": "dj"
         },
      
         events: function(date) {
@@ -40,6 +41,13 @@ $(document).ready(function(){
 
         dates: function(){
             this.changePage(datesView);
+        },
+
+        dj: function(name){
+            var me = this;
+            djView.update(name, function(){
+                me.changePage(djView);
+            });
         },
      
         changePage:function (page) {
@@ -86,6 +94,19 @@ $(document).ready(function(){
 
       url: function(){
         return this.urlBase + this.date;
+      }
+    });
+
+    var Locations = Backbone.Collection.extend({
+      url: '/regions/'
+    });
+
+
+    var Dj = Backbone.Model.extend({
+      urlBase: '/dj/',
+
+      url: function(){
+        return this.urlBase + this.get("name");
       }
     });
 
@@ -345,11 +366,45 @@ $(document).ready(function(){
         }
     });
 
+    //5 - Dj
+    var DjView = Backbone.View.extend({
+        el: "#djPage",
+        template: Handlebars.compile($("#dj-template").html()),
+        events: {
+        },
+
+        initialize: function(date){
+            this.model = new Dj;
+        },
+
+        update: function(name, callback){
+            var me = this;
+            this.model.set({name: name});
+            this.model.fetch({
+                success: function(model, response, options){
+                    me.render();
+                    callback();
+                }
+            });
+        },
+
+        render: function() {
+            var modelJSON = this.model.toJSON();
+            var tmpHtml = this.template(modelJSON);
+            $content = this.$el.find("[data-role=content]");
+            $content.html(tmpHtml);
+
+            $content.trigger('create'); //jqueryMobile init
+            this.delegateEvents();
+        }
+    });
+
 
     var locationsView = new LocationsView();
     var eventsView = new EventsView();
     var eventView = new EventView();
     var datesView = new DatesView();
+    var djView = new DjView();
 
 
     var app_router = new AppRouter;

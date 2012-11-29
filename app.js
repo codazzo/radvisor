@@ -8,7 +8,8 @@ var config = require('./config'),
 var ui = require('./routes/ui'),
     events = require('./routes/events'),
     event = require('./routes/event'),
-    regions = require('./routes/regions');
+    regions = require('./routes/regions'),
+    dj = require('./routes/dj');
 
 var app = config.app;
 
@@ -28,7 +29,8 @@ var routes = {
     '/' : ui.mobile,
     '/regions': regions,
     '/events/*': events,
-    '/event/*': event
+    '/event/*': event,
+    '/dj/*': dj
 }
 _.each(routes, function(handler, route){
     app.get(route, handler);

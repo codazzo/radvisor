@@ -1,3 +1,9 @@
+_.templateSettings = {
+    evaluate    : /\{%([\s\S]+?)%\}/g,
+    interpolate : /\{\{(.+?)\}\}/g,
+    escape : /\{\{\{(.+?)\}\}\}/g
+};
+
 $(document).ready(function(){
     var getLocation = function(){
         return JSON.parse($.cookie("ra_location"));
@@ -120,7 +126,7 @@ $(document).ready(function(){
     //1-Events (landing page ATM)
     var EventsView = Backbone.View.extend({
         el: "#eventsPage",
-        template: Handlebars.compile($("#events-template").html()),
+        template: _.template($("#events-template").html()),
 
         initialize: function(date){
             this.model = new Events();
@@ -202,7 +208,7 @@ $(document).ready(function(){
     //2-Event
     var EventView = Backbone.View.extend({
         el: "#eventPage",
-        template: Handlebars.compile($("#event-template").html()),
+        template: _.template($("#event-template").html()),
 
         initialize: function(){
             this.model = new Event();
@@ -241,7 +247,7 @@ $(document).ready(function(){
     //3 - Locations
     var LocationsView = Backbone.View.extend({
         el: "#locationsPage",
-        template: Handlebars.compile($("#locations-template").html()),
+        template: _.template($("#locations-template").html()),
         events: {
             "click #locationSubmit" : "setLocation",
             "change #countrySelect" : "changeCountry"
@@ -308,7 +314,7 @@ $(document).ready(function(){
     //4 - Dates
     var DatesView = Backbone.View.extend({
         el: "#datesPage",
-        template: Handlebars.compile($("#dates-template").html()),
+        template: _.template($("#dates-template").html()),
         events: {
             "click #dateok": "chooseDate",
             "click #datecancel": "cancelDate",
@@ -369,7 +375,7 @@ $(document).ready(function(){
     //5 - Dj
     var DjView = Backbone.View.extend({
         el: "#djPage",
-        template: Handlebars.compile($("#dj-template").html()),
+        template: _.template($("#dj-template").html()),
         events: {
         },
 

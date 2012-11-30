@@ -10,11 +10,8 @@
     <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.js"></script>
     <script src="http://underscorejs.org/underscore-min.js"></script>
     <script src="http://backbonejs.org/backbone-min.js"></script>
-    <script src="http://cloud.github.com/downloads/wycats/handlebars.js/handlebars-1.0.rc.1.js"></script>
-    <script src="/javascripts/handlebars-helpers.js"></script>
     <script src="/javascripts/jquery-cookie.js"></script>
     <script src="/javascripts/app.js"></script>
-
 </head> 
 <body> 
 
@@ -68,37 +65,37 @@
     </div>
 
 
-    <script id="events-template" type="text/x-handlebars-template">            
+    <script id="events-template" type="text/x-underscore-template">            
         Here's what's happening in
         <a href="#/locations" data-rel="dialog" data-role="button" data-mini="true" data-inline="true">
             <img class="countryIcon" src="{{location.img}}" />
             {{location.name}}
         </a>
-        {{#if isTonight}}
+        {% if(isTonight){ %}
             tonight,
-        {{else}}
+        {% }else{ %}
             on
-        {{/if}}
+        {% } %}
         <a href="#/dates" data-role="button" data-mini="true" data-inline="true">{{date}}</a>
 
         <ul class="listView" data-role="listview" data-inset="true">
-            {{#each events}}
+            {% _.each(events, function(event) { %}
                 <li class="eventLi">
-                    <a href="#/event/{{this.id}}" data-transition="pop">
-                        <img class="ui-li-thumb ui-corner-tl" src="{{this.img}}" />
-                        <h3 class="ui-li-heading">{{this.title}}</h3>
-                        <p class="ui-li-desc">{{this.venue}}</p>
-                        <span class="ilb ui-li-count">{{this.ppl}}</span>
+                    <a href="#/event/{{event.id}}" data-transition="pop">
+                        <img class="ui-li-thumb ui-corner-tl" src="{{event.img}}" />
+                        <h3 class="ui-li-heading">{{event.title}}</h3>
+                        <p class="ui-li-desc">{{event.venue}}</p>
+                        <span class="ilb ui-li-count">{{event.ppl}}</span>
                     </a>
                 </li>
-            {{/each}}
+            {% }); %}
         </ul>    
     </script>
 
-    <script id="event-template" type="text/x-handlebars-template">
-        {{#if img}}
+    <script id="event-template" type="text/x-underscore-template">
+        {% if(img){ %}
             <img class="eventImg" src="{{img}}" />
-        {{/if}}
+        {% } %}
         <ul class=".nobullets">
             <li>
                 <span class="key">Venue</span>: {{venue}}
@@ -109,31 +106,31 @@
             <li><span class="key">Time</span>: {{time}}</li>
         </ul>
         <hr/>
-            {{#key_value extraInfo}}
+            {% _.each(extraInfo, function(value, key){ %}
                 <b>{{key}}</b>
-                <div>{{{value}}}</div>
+                <div>{{value}}</div>
                 <br/>
-            {{/key_value}}
+            {% }) %}
             <hr/>
-            {{{extraStrings}}}
+            {{extraStrings}}
     </script>
 
-    <script id="locations-template" type="text/x-handlebars-template">
+    <script id="locations-template" type="text/x-underscore-template">
             <div class="ui-grid-a oneline">
                 <div class="ui-block-a">
                     <label>Country:</label>
                 </div>
                 <select class="ui-block-b" id="countrySelect">
-                    {{#each regions}}
+                    {% _.each(regions, function(region){ %}
                         <option
-                            {{#ifequal this.name ../currentCountry }}
+                            {% if(region.name == currentCountry){ %}
                                 selected="selected"
-                            {{/ifequal}}
-                            data-img = "{{img}}"
+                            {% } %}
+                            data-img = "{{region.img}}"
                         >
-                            {{this.name}}
+                            {{region.name}}
                         </option>
-                    {{/each}}
+                    {% }); %}
                 </select>
             </div>
             <div class="ui-grid-a oneline">
@@ -141,17 +138,17 @@
                     <label>City:</label>
                 </div>
                 <select class="ui-block-b" id="regionSelect">
-                    {{#each countryRegions}}
+                    {% _.each(countryRegions, function(countryRegion){ %}
                         <option
-                            {{#ifequal this.name ../currentRegion }}
+                            {% if(countryRegion.name == currentRegion){ %}
                                 selected="selected"
-                            {{/ifequal}}
-                            data-id = "{{this.id}}"
-                            data-name="{{this.name}}"
+                            {% } %}
+                            data-id = "{{countryRegion.id}}"
+                            data-name="{{countryRegion.name}}"
                         >
-                            {{this.name}}
+                            {{countryRegion.name}}
                         </option>
-                    {{/each}}
+                    {% }); %}
                 </select>
             </div>
 
@@ -161,70 +158,70 @@
         </fieldset>
         <!--
         <div class="locationsList" data-role="collapsible-set" data-inset="false">
-            {{#each regions}}
+            {% _.each(regions, function(region){ %}
                 <div data-role="collapsible" data-theme="b" class="regionLi">
                     <h2>
-                        <img class="countryIcon" src="{{this.img}}" />
-                        {{this.name}}
+                        <img class="countryIcon" src="{{region.img}}" />
+                        {{region.name}}
                     </h2>
                     <ul class="regionContent" data-role="listview">
-                    {{#each this.regions}}
+                    {% _.each(region.regions, function(subregion){ %}
                         <li class="region">
                             <a href="#"
-                                data-id = "{{this.id}}"
-                                data-country = "{{../name}}"
-                                data-name="{{this.name}}"
-                                data-img = "{{../img}}"
+                                data-id = "{{subregion.id}}"
+                                data-country = "{{region.name}}"
+                                data-name="{{subregion.name}}"
+                                data-img = "{{region.img}}"
                                 class="location">
-                                    {{this.name}}
+                                    {{subregion.name}}
                             </a>
                         </li>
-                    {{/each}}
+                    {% }); %}
                     </ul>
                 </div>
-            {{/each}}
+            {% }); %}
         </div>
         -->
     </script>
 
-    <script id="dates-template" type="text/x-handlebars-template">
+    <script id="dates-template" type="text/x-underscore-template">
         <div data-role="fieldcontain">
             <fieldset data-role="controlgroup" data-type="horizontal"> 
                 <label for="select-choice-day">Day</label>
                 <select data-mini="true" name="select-choice-day" id="select-choice-day">
                     <option class="null">Day</option>
-                    {{#each days}}
-                        <option value="{{this}}"
-                            {{#ifequal ../selectedDate.day this }}
+                    {% _.each(days, function(day){ %}
+                        <option value="{{day}}"
+                            {% if(selectedDate.day == ""+day){ %}
                                 selected="selected"
-                            {{/ifequal}}
-                        >{{this}}</option>
-                    {{/each}}
+                            {% } %}
+                        >{{day}}</option>
+                    {% }); %}
                 </select>
 
                 <label for="select-choice-month">Month</label>
                 <select data-mini="true" name="select-choice-month" id="select-choice-month">
                     <option class="null">Month</option>
-                    {{#each_with_index months}}
-                        <option value="{{this}}"
-                            {{#ifequal ../selectedDate.month index }}
+                    {% _.each(months, function(month, index){ %}
+                        <option value="{{month}}"
+                            {% if(selectedDate.month == index+1){ %}
                                 selected="selected"
-                            {{/ifequal}}
-                        >{{this.data}}</option>
-                    {{/each_with_index}}
+                            {% } %}
+                        >{{month}}</option>
+                    {% }); %}
                 </select>
             
             
                 <label for="select-choice-year">Year</label>
                 <select data-mini="true" name="select-choice-year" id="select-choice-year">
                     <option class="null">Year</option>
-                    {{#each years}}
-                        <option value="{{this}}"
-                            {{#ifequal ../selectedDate.year this }}
+                    {% _.each(years, function(year){ %}
+                        <option value="{{year}}"
+                            {% if(selectedDate.year == ""+year){ %}
                                 selected="selected"
-                            {{/ifequal}}
-                        >{{this}}</option>
-                    {{/each}}
+                            {% } %}
+                        >{{year}}</option>
+                    {% }); %}
                 </select>
             </fieldset>
         </div>
@@ -238,15 +235,15 @@
         </fieldset>
     </script>
 
-    <script id="dj-template" type="text/x-handlebars-template">
+    <script id="dj-template" type="text/x-underscore-template">
         <h2>{{name}}</h2>
-        {{#if img}}
+        {% if(img){ %}
             <div><img class="eventImg" src="{{img}}" /></div>
-        {{/if}}
+        {% } %}
         <ul>
-            {{#key_value links}}
+            {% _.each(links, function(value, key){ %}
                 <li><a href="http://{{value}}">{{key}}</a></li>
-            {{/key_value}}
+            {% }); %}
         </ul>
     </script>
 

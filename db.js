@@ -15,7 +15,7 @@ var db = mongojs(uri);
 exports.get = function(page, scraperOptions, callback){
     var documents = db.collection(page);
     var res = documents.find({params: scraperOptions}, function(err, doc){
-        if (doc.length) {
+        if (doc && doc.length) {
             //it's in the db: cool!
             callback(doc[0].data);
         } else {

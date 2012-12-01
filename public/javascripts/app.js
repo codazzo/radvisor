@@ -126,6 +126,60 @@ $(document).ready(function(){
       }
     });
 
+    //events cache
+    var EventsByDate = Backbone.Collection.extend({
+        addEvents: function(dateStr, events){
+            this.add({
+                date: dateStr,
+                events: events
+            });
+        },
+
+        getEvents: function(dateStr, success){
+            var me = this;
+            var eventsByDate = this.find(function(el){
+                return el.get("date") == dateStr;
+            });
+            if(eventsByDate) {
+                //use cached copy
+                success(eventsByDate.get('events'));
+            } else {
+                //fetch events
+                var events = new Events();
+                events.setDate(dateStr);
+                events.fetch({
+                    success: function(model, response, options){
+                        me.addEvents(dateStr, model);
+                        success(model);
+                    }
+                });
+            }
+        }
+    });
+
+    var EventCache = Backbone.Collection.extend({
+        getEvent: function(eventId, success){
+            var me = this;
+            var event = this.find(function(el){
+                return el.get("id") == eventId;
+            });
+            if(event) {
+                //use cached copy
+                success(event);
+            } else {
+                //fetch event
+                var event = new Event(eventId);
+                event.fetch({
+                    success: function(model, response, options){
+                        me.add(model);
+                        success(model);
+                    }
+                });
+            }
+        }
+    });
+
+
     var Locations = Backbone.Collection.extend({
       url: '/regions/'
     });
@@ -156,26 +210,25 @@ $(document).ready(function(){
         },
 
         initialize: function(date){
-            this.model = new Events();
+            this.model = new EventsByDate(date);
         },
 
         update: function(date, callback){
             var me = this;
             var currentDate = new Date();
             this.date = currentDate;
-            this.day = date ? date.substr(0,2) : currentDate.getDate();
-            this.month = date ? date.substr(2,2) : currentDate.getMonth() + 1; //lame. so lame.
+            this.day = date ? date.substr(0,2) : ""+currentDate.getDate();
+            if(this.day.length==1) this.day = "0" + this.day;
+            this.month = date ? date.substr(2,2) : ""+ (currentDate.getMonth() + 1); //lame. so lame.
+            if(this.month.length==1) this.month = "0" + this.month;
             this.year = date ? date.substr(4,4) : currentDate.getFullYear();
             var dateStr = "" + this.day + this.month + this.year;
 
-            this.model.setDate(dateStr);
-
-            //init models... TODO no need to fetch them every time
-            this.model.fetch({
-                success: function(model, response, options){
-                    me.render();
-                    callback();
-                }
+            this.model.getEvents(dateStr, function(eventsModel){
+                me.render({
+                    model: eventsModel
+                });
+                callback();
             });
         },
 
@@ -209,7 +262,7 @@ $(document).ready(function(){
                 locationData.name = locationData.country; //no use in displaying "All Regions"
             }
             $(".countryIcon").attr("src", locationData.img);
-            var events = this.model.toJSON(); 
+            var events = options.model.toJSON();
             _.each(events, function(event){
                 event.title = event.title || 'N/A'
             });
@@ -257,24 +310,21 @@ $(document).ready(function(){
         template: _.template($("#event-template").html()),
 
         initialize: function(){
-            this.model = new Event();
+            this.model = new EventCache();
         },
 
         update: function(id, callback){
             var me = this;
-            this.model.set({id: id});
-            //init models... TODO no need to fetch them every time
-            this.model.fetch({
-                complete: function(){
-                    me.render();
-                    callback();
-                }
+            this.model.getEvent(id, function(model){
+                me.render({
+                    model: model
+                });
+                callback();
             });
-
         },
 
-        render: function() {
-            var eventJSON = this.model.toJSON();
+        render: function(options) {
+            var eventJSON = options.model.toJSON();
             var tmpHtml = this.template(eventJSON);
 
             this.$el.find("h1.title").html(eventJSON.title);

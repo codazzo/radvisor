@@ -20,7 +20,6 @@ $(document).ready(function(){
             "date/:id": "events",
             "locations": "locations", //locations view
             "event/:id": "getEvent",
-            "dates": "dates",
             "dj/:name": "dj"
         },
      
@@ -67,10 +66,6 @@ $(document).ready(function(){
             eventView.update(id, function(){
                 me.changePage(eventView);
             });
-        },
-
-        dates: function(){
-            this.changePage(datesView);
         },
 
         dj: function(name){
@@ -375,67 +370,6 @@ $(document).ready(function(){
         }
     });
 
-    //4 - Dates
-    var DatesView = Backbone.View.extend({
-        el: "#datesPage",
-        template: _.template($("#dates-template").html()),
-        events: {
-            "click #dateok": "chooseDate",
-            "click #datecancel": "cancelDate",
-            "click #tonight": "chooseTonight"
-        },
-
-        initialize: function(date){
-            var monthsArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-            var days = [];
-            for(var i =0; i<31; i++){
-                days.push(i+1);
-            }
-            var years = [2011, 2012, 2013];
-            this.render({
-                months: monthsArray,
-                days: days,
-                years: years,
-                selectedDate: eventsView.getDate()
-            });
-            this.$day = $("#select-choice-day");
-            this.$month = $("#select-choice-month");
-            this.$year = $("#select-choice-year");
-        },
-
-        chooseDate: function(){
-            var dayVal = "" + this.$day.children(":checked").not(".null").index();
-            if (dayVal.length==1) dayVal = "0" + dayVal;
-            var monthVal = "" + this.$month.children(":checked").not(".null").index();
-            if (monthVal.length==1) monthVal = "0" + monthVal;
-            var yearVal = this.$year.children(":checked").not(".null").val();
-            if (dayVal && monthVal && yearVal) {
-                dateStr = "" + dayVal + monthVal + yearVal;
-                $.mobile.showPageLoadingMsg();
-                app_router.navigate("date/" + dateStr,  {trigger: true});
-            }
-        },
-
-        cancelDate: function(){
-            window.history.back();
-        },
-
-        chooseTonight: function(){
-            app_router.navigate("",  {trigger: true});
-            $.mobile.showPageLoadingMsg();
-        },
-
-        render: function(data) {
-            var tmpHtml = this.template(data);
-            $content = this.$el.find("[data-role=content]");
-            $content.html(tmpHtml);
-
-            // $.mobile.initializePage();
-            $content.trigger('create'); //jqueryMobile init
-            this.delegateEvents();
-        }
-    });
-
     //5 - Dj
     var DjView = Backbone.View.extend({
         el: "#djPage",
@@ -473,7 +407,6 @@ $(document).ready(function(){
     var locationsView = new LocationsView();
     var eventsView = new EventsView();
     var eventView = new EventView();
-    var datesView = new DatesView();
     var djView = new DjView();
 
 

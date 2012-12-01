@@ -66,14 +66,6 @@
             <div data-role="content">
             </div>
     </div>
-    <div data-role="page" id="datesPage">
-            <div data-role="header">
-                <a class="goback" data-icon="back">Back</a>
-                <h1 class="title">Choose a date</h1>
-            </div>
-            <div data-role="content">
-            </div>
-    </div>
 
     <div data-role="page" id="djPage">
             <div data-role="header">
@@ -202,57 +194,6 @@
             {% }); %}
         </div>
         -->
-    </script>
-
-    <script id="dates-template" type="text/x-underscore-template">
-        <div data-role="fieldcontain">
-            <fieldset data-role="controlgroup" data-type="horizontal"> 
-                <label for="select-choice-day">Day</label>
-                <select data-mini="true" name="select-choice-day" id="select-choice-day">
-                    <option class="null">Day</option>
-                    {% _.each(days, function(day){ %}
-                        <option value="{{day}}"
-                            {% if(selectedDate.day == ""+day){ %}
-                                selected="selected"
-                            {% } %}
-                        >{{day}}</option>
-                    {% }); %}
-                </select>
-
-                <label for="select-choice-month">Month</label>
-                <select data-mini="true" name="select-choice-month" id="select-choice-month">
-                    <option class="null">Month</option>
-                    {% _.each(months, function(month, index){ %}
-                        <option value="{{month}}"
-                            {% if(selectedDate.month == index+1){ %}
-                                selected="selected"
-                            {% } %}
-                        >{{month}}</option>
-                    {% }); %}
-                </select>
-            
-            
-                <label for="select-choice-year">Year</label>
-                <select data-mini="true" name="select-choice-year" id="select-choice-year">
-                    <option class="null">Year</option>
-                    {% _.each(years, function(year){ %}
-                        <option value="{{year}}"
-                            {% if(selectedDate.year == ""+year){ %}
-                                selected="selected"
-                            {% } %}
-                        >{{year}}</option>
-                    {% }); %}
-                </select>
-            </fieldset>
-        </div>
-        or
-        <div>
-            <a id="tonight"  data-mini="true" data-icon="arrow-r" data-role="button" data-inline="true">Tonight</a>
-        </div>
-        <fieldset class="ui-grid-a">
-            <div class="ui-block-a"><button type="submit" id="datecancel" data-icon="delete" data-theme="d">Cancel</button></div>
-            <div class="ui-block-b"><button type="submit" id="dateok" data-icon="check" data-theme="b">Submit</button></div>
-        </fieldset>
     </script>
 
     <script id="dj-template" type="text/x-underscore-template">

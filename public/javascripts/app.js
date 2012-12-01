@@ -225,9 +225,12 @@ $(document).ready(function(){
             var dateStr = "" + this.day + this.month + this.year;
 
             this.model.getEvents(dateStr, function(eventsModel){
-                me.render({
-                    model: eventsModel
-                });
+                if(me.cachedModel != eventsModel){
+                    me.render({
+                        model: eventsModel
+                    });
+                }
+                me.cachedModel = eventsModel;
                 callback();
             });
         },
@@ -316,9 +319,12 @@ $(document).ready(function(){
         update: function(id, callback){
             var me = this;
             this.model.getEvent(id, function(model){
-                me.render({
-                    model: model
-                });
+                if(me.cachedModel != model){
+                    me.render({
+                        model: model
+                    });                    
+                }
+                me.cachedModel = model;
                 callback();
             });
         },

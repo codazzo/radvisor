@@ -3,11 +3,17 @@
 <head> 
     <title>¡RADvisor!</title> 
     <meta name="viewport" content="width=device-width, initial-scale=1"> 
-    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
     <link rel="stylesheet" href="public/stylesheets/styles.less" />
     <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
     <script src="/javascripts/jqm-config.js"></script>
     <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+
+    <script src="/javascripts/xdate.js"></script>
+    <script src="/javascripts/xdate.i18n.js"></script>
+    <script src="/javascripts/mobipick.js"></script>
+    <link rel="stylesheet" href="stylesheets/mobipick.css" />
+    
     <script src="http://underscorejs.org/underscore-min.js"></script>
     <script src="http://backbonejs.org/backbone-min.js"></script>
     <script src="/javascripts/jquery-cookie.js"></script>
@@ -27,9 +33,10 @@
                     <li><a href="#" class="todayName">.</a></li>
                     <li><a href="#/tomorrow" class="tomorrowName">.</a></li>
                     <li>
-                        <a href="#/dates" class="calendar">
+                        <a class="calendar">
                             <img src="/images/calendar4.png"/>
                         </a>
+                        <input id="datePicker" type="text" style="display:none;"/>
                     </li>
                 </ul>
             </div>

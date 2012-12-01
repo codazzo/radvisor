@@ -152,6 +152,10 @@ $(document).ready(function(){
         el: "#eventsPage",
         template: _.template($("#events-template").html()),
 
+        events: {
+            'tap .calendar' : 'pickDate'
+        },
+
         initialize: function(date){
             this.model = new Events();
         },
@@ -182,6 +186,10 @@ $(document).ready(function(){
                     callback();
                 }
             });
+        },
+
+        pickDate: function(evt){
+            this.datepicker.tap();
         },
 
         getDate: function(){
@@ -226,6 +234,34 @@ $(document).ready(function(){
 
             $content = this.$el.find("[data-role=content]");
             $content.html(tmpHtml);
+
+            var me = this;
+            this.datepicker = this.$( "#datePicker");
+            this.datepicker.mobipick({
+                change: function(evt){
+                    var date = $( this ).val();
+                    var dateObject = $( this ).mobipick( "option", "date" );
+                    var day = date.split("-")[2];
+                    var month = date.split("-")[1];
+                    var year = date.split("-")[0];
+                    var dateStr = day+month+year;
+                    app_router.navigate("date/"+dateStr,  {trigger: true});
+                },
+                cancel: function(evt){
+                    var route = Backbone.history.fragment;
+                    //http://stackoverflow.com/questions/8550841/trigger-same-location-route
+                    if(route == ""){
+                        Backbone.history.loadUrl(route);
+                    } else {
+                        app_router.navigate("",  {trigger: true});
+                    }
+                }
+            });
+            this.datepicker.change(function(evt){
+                var date = $( this ).val();
+                // JavaScript Date object
+                var dateObject = $( this ).mobipick( "option", "date" );
+            });
 
             // $.mobile.initializePage();
             $content.trigger('create'); //jqueryMobile init

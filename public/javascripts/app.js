@@ -44,6 +44,7 @@ $(document).ready(function(){
             $(".date-selection .tomorrowName").addClass("ui-btn-active");
             var me = this;
             var currentDate = new Date();
+            currentDate = new Date(currentDate.getTime() - 8 * 60 * 60 * 1000); //we party till 8 :)
             var tomorrow = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000);
             var day = tomorrow.getDate(); if(day<10) day = "0" + day;
             var month = tomorrow.getMonth() + 1; if(month<10) month = "0" + month;
@@ -216,7 +217,9 @@ $(document).ready(function(){
 
         update: function(date, callback){
             var me = this;
+            //TODO refactor the following lines
             var currentDate = new Date();
+            currentDate = new Date(currentDate.getTime() - 8 * 60 * 60 * 1000); //we party till 8 :)
             this.date = currentDate;
             this.day = date ? date.substr(0,2) : ""+currentDate.getDate();
             if(this.day.length==1) this.day = "0" + this.day;
@@ -270,7 +273,11 @@ $(document).ready(function(){
             _.each(events, function(event){
                 event.title = event.title || 'N/A'
             });
-            var todayNum = new Date().getDay();
+
+            //TODO refactor all dates code
+            var currentDate = new Date();
+            currentDate = new Date(currentDate.getTime() - 8 * 60 * 60 * 1000); //we party till 8 :)
+            var todayNum = currentDate.getDay();
             var daysMap = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
             this.$(".todayName .ui-btn-text").html(daysMap[todayNum]);
             this.$(".tomorrowName .ui-btn-text").html(daysMap[(todayNum+1)%7]);

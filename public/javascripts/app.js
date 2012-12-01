@@ -246,11 +246,7 @@ $(document).ready(function(){
                 cancel: function(evt){
                     var route = Backbone.history.fragment;
                     //http://stackoverflow.com/questions/8550841/trigger-same-location-route
-                    if(route == ""){
-                        Backbone.history.loadUrl(route);
-                    } else {
-                        app_router.navigate("",  {trigger: true});
-                    }
+                    Backbone.history.loadUrl(route);
                 }
             });
             this.$(".date-selection").show();

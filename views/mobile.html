@@ -23,6 +23,10 @@
 
     <div data-role="page" id="eventsPage">
             <div data-role="header">
+                <a href="#/locations" data-rel="dialog" data-role="button" data-mini="true" data-inline="true">
+                    <img class="countryIcon"/>
+                </a>
+
                 <h1 class="logo-header">
                     <a><img class="logo" src="/images/radvisor_logo.png"/></a>
                 </h1>
@@ -77,20 +81,8 @@
     </div>
 
 
-    <script id="events-template" type="text/x-underscore-template">            
-        Here's what's happening in
-        <a href="#/locations" data-rel="dialog" data-role="button" data-mini="true" data-inline="true">
-            <img class="countryIcon" src="{{location.img}}" />
-            {{location.name}}
-        </a>
-        {% if(isTonight){ %}
-            tonight,
-        {% }else{ %}
-            on
-        {% } %}
-        <a href="#/dates" data-role="button" data-mini="true" data-inline="true">{{date}}</a>
-
-        <ul class="listView" data-role="listview" data-inset="true">
+    <script id="events-template" type="text/x-underscore-template">
+        <ul class="listView" data-role="listview">
             {% _.each(events, function(event) { %}
                 <li class="eventLi">
                     <a href="#/event/{{event.id}}" data-transition="pop">

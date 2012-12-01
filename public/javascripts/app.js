@@ -212,6 +212,7 @@ $(document).ready(function(){
             if (locationData.name=="All Regions") {
                 locationData.name = locationData.country; //no use in displaying "All Regions"
             }
+            $(".countryIcon").attr("src", locationData.img);
             var events = this.model.toJSON(); 
             _.each(events, function(event){
                 event.title = event.title || 'N/A'

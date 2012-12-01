@@ -32,7 +32,9 @@ $(document).ready(function(){
             }
             //TODO in the future we should force reloading the model when a new location cookie is set
             var me = this;
+            $.mobile.showPageLoadingMsg();
             eventsView.update(date, function(){
+                $.mobile.hidePageLoadingMsg();
                 me.changePage(eventsView);    
             });
         },
@@ -48,8 +50,9 @@ $(document).ready(function(){
             var year = tomorrow.getFullYear();
             var dateStr = "" + day + month + year;
 
-            // app_router.navigate("",  {trigger: true});
+            $.mobile.showPageLoadingMsg();
             eventsView.update(dateStr, function(){
+                $.mobile.hidePageLoadingMsg();
                 me.changePage(eventsView);
             });
         },
@@ -64,6 +67,7 @@ $(document).ready(function(){
             var me = this;
             $.mobile.showPageLoadingMsg();
             eventView.update(id, function(){
+                $.mobile.hidePageLoadingMsg();
                 me.changePage(eventView);
             });
         },

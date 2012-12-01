@@ -253,6 +253,7 @@ $(document).ready(function(){
                     }
                 }
             });
+            this.$(".date-selection").show();
             // $.mobile.initializePage();
             $content.trigger('create'); //jqueryMobile init
             // $("#mainFooter").hide();

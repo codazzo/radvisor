@@ -137,11 +137,11 @@ $.widget( "sustainablepace.mobipick", $.mobile.widget, {
 			this._setOption( "originalDate", this._getDate() );
 			this.updateDateInput();
 			this.element.trigger("change");
-			if(this.options.change && typeof this.options.change === "function"){
-				this.options.change.apply(this.element, arguments);
-			}
 		} else {
 			this._setOption( "date", this.options.originalDate );
+		}
+		if(this.options.change && typeof this.options.change === "function"){
+			this.options.change.apply(this.element, arguments);
 		}
 		this._close();
 		return false;

@@ -16,6 +16,7 @@ $(document).ready(function(){
     var AppRouter = Backbone.Router.extend({ 
         routes: {
             "": "events",
+            "tomorrow": "tomorrow",
             "date/:id": "events",
             "locations": "locations", //locations view
             "event/:id": "getEvent",
@@ -24,13 +25,36 @@ $(document).ready(function(){
         },
      
         events: function(date) {
+            $(".date-selection .ui-btn-active").removeClass("ui-btn-active");
+            if (date) {
+                $(".date-selection .calendar").addClass("ui-btn-active");
+            } else {
+                $(".date-selection .todayName").addClass("ui-btn-active");
+            }
             //TODO in the future we should force reloading the model when a new location cookie is set
             var me = this;
             eventsView.update(date, function(){
                 me.changePage(eventsView);    
             });
         },
-     
+
+        tomorrow : function(){
+            $(".date-selection .ui-btn-active").removeClass("ui-btn-active");
+            $(".date-selection .tomorrowName").addClass("ui-btn-active");
+            var me = this;
+            var currentDate = new Date();
+            var tomorrow = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000);
+            var day = tomorrow.getDate(); if(day<10) day = "0" + day;
+            var month = tomorrow.getMonth() + 1; if(month<10) month = "0" + month;
+            var year = tomorrow.getFullYear();
+            var dateStr = "" + day + month + year;
+
+            // app_router.navigate("",  {trigger: true});
+            eventsView.update(dateStr, function(){
+                me.changePage(eventsView);
+            });
+        },
+
         locations: function() {
             var me = this;
             locationsView.update();
@@ -189,6 +213,10 @@ $(document).ready(function(){
             _.each(events, function(event){
                 event.title = event.title || 'N/A'
             });
+            var todayNum = new Date().getDay();
+            var daysMap = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            this.$(".todayName .ui-btn-text").html(daysMap[todayNum]);
+            this.$(".tomorrowName .ui-btn-text").html(daysMap[(todayNum+1)%7]);
             var tmpHtml = this.template({
                 location: locationData,
                 events: events,

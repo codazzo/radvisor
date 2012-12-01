@@ -171,17 +171,9 @@ $(document).ready(function(){
             this.model.setDate(dateStr);
 
             //init models... TODO no need to fetch them every time
-            var isTonight;
-            if (date) {
-                isTonight = false;
-            } else {
-                isTonight = true;
-            }
             this.model.fetch({
                 success: function(model, response, options){
-                    me.render({
-                        isTonight: isTonight
-                    });
+                    me.render();
                     callback();
                 }
             });
@@ -228,8 +220,7 @@ $(document).ready(function(){
             var tmpHtml = this.template({
                 location: locationData,
                 events: events,
-                date: dateStr,
-                isTonight: options.isTonight
+                date: dateStr
             });
 
             $content = this.$el.find("[data-role=content]");

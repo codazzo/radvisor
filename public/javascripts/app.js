@@ -106,7 +106,7 @@ $(document).ready(function(){
                 tempDiv.find("[href]").each(function(index, el){
                     var $this = $(this);
                     var theHref = $this.attr("href");
-                    $this.attr('href', "#" + theHref);
+                    if(theHref[0]!="#") $this.attr('href', "#" + theHref);
                 });
                 baseJSON.extraInfo[key] = tempDiv.html();
             });

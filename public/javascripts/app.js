@@ -253,12 +253,6 @@ $(document).ready(function(){
                     }
                 }
             });
-            this.datepicker.change(function(evt){
-                var date = $( this ).val();
-                // JavaScript Date object
-                var dateObject = $( this ).mobipick( "option", "date" );
-            });
-
             // $.mobile.initializePage();
             $content.trigger('create'); //jqueryMobile init
             // $("#mainFooter").hide();

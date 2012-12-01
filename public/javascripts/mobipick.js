@@ -137,6 +137,9 @@ $.widget( "sustainablepace.mobipick", $.mobile.widget, {
 			this._setOption( "originalDate", this._getDate() );
 			this.updateDateInput();
 			this.element.trigger("change");
+			if(this.options.change && typeof this.options.change === "function"){
+				this.options.change.apply(this, arguments);
+			}
 		} else {
 			this._setOption( "date", this.options.originalDate );
 		}
@@ -146,6 +149,9 @@ $.widget( "sustainablepace.mobipick", $.mobile.widget, {
 	_cancelDate: function() {
 		this._setOption( "date", this.options.originalDate );
 		this._confirmDate();
+		if(this.options.cancel && typeof this.options.cancel === "function"){
+			this.options.cancel.apply(this, arguments);
+		}
 		return false;
 	},
 	_cancelDateOnEsc: function( evt ) {

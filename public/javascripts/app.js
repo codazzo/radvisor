@@ -80,6 +80,7 @@ $(document).ready(function(){
         },
      
         changePage:function (page) {
+            setTimeout(window.scrollTo(1,1),0); //hide url bar
             $.mobile.changePage(page.$el, {transition:"none", changeHash: false});
         }
     });

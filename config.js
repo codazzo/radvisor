@@ -1,5 +1,6 @@
 var express = require('express'),
-    path = require('path');
+    path = require('path'),
+    uglifier = require('./uglify');
 
 var app = express();
 

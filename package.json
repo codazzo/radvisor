@@ -14,7 +14,8 @@
       "cookies": "*",
       "mongodb": ">= 0.9.6-7",
       "mongojs": "*",
-      "node-inspector": "*"
+      "node-inspector": "*",
+      "uglify-js": "*"
   },
   "engines": {
       "node": ">= 0.8",

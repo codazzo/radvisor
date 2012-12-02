@@ -168,7 +168,27 @@
         </ul>
     </script>
 
+    <script type="text/javascript">
+        _.templateSettings = {
+            evaluate    : /\{%([\s\S]+?)%\}/g,
+            interpolate : /\{\{(.+?)\}\}/g,
+            escape : /\{\{\{(.+?)\}\}\}/g
+        };
+    </script>
+    <script src="/javascripts/app/class.js"></script>
+    <script src="/javascripts/app/models/dj.js"></script>
+    <script src="/javascripts/app/models/event.js"></script>
+    <script src="/javascripts/app/models/eventCache.js"></script>
+    <script src="/javascripts/app/models/events.js"></script>
+    <script src="/javascripts/app/models/eventsByDate.js"></script>
+    <script src="/javascripts/app/models/locations.js"></script>
+    <script src="/javascripts/app/router.js"></script>
+    <script src="/javascripts/app/views/dj.js"></script>
+    <script src="/javascripts/app/views/event.js"></script>
+    <script src="/javascripts/app/views/events.js"></script>
+    <script src="/javascripts/app/views/locations.js"></script>
     <script src="/javascripts/app.js"></script>
+
     <script src="/minified/libs.js"></script>
 
     <script type="text/javascript">

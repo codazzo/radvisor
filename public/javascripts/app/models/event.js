@@ -1,0 +1,27 @@
+radvisor.Event = Backbone.Model.extend({
+    urlBase: '/event/',
+
+    initialize: function(id){
+        this.id = id; //thought it was automatic?
+    },
+
+    url: function(){
+        return this.urlBase + this.id
+    },
+
+    toJSON: function(){
+        //sanitize href's with '#' so the backboune Router can intercept them
+        var baseJSON = Backbone.Model.prototype.toJSON.apply(this, arguments);
+        _.each(baseJSON.extraInfo, function(value, key){
+            var tempDiv = $("<div/>");
+            tempDiv.html(value);
+            tempDiv.find("[href]").each(function(index, el){
+                var $this = $(this);
+                var theHref = $this.attr("href");
+                if(theHref[0]!="#") $this.attr('href', "#" + theHref);
+            });
+            baseJSON.extraInfo[key] = tempDiv.html();
+        });
+        return baseJSON;
+    }
+});

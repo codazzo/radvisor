@@ -25,12 +25,24 @@ app.get("*.less", function(req, res) {
     });
 });
 
+
+/*
+* Serve resources under /public. This is a hack because '/public' shouldn't be in the source map url
+* TODO do this better
+*/
+var publicRouter = function(req, res){
+    var originalUrl = req.originalUrl;
+    var choppedUrl = originalUrl.substr('/public'.length, originalUrl.length);
+    res.redirect(choppedUrl);
+}
+
 var routes = {
     '/' : ui.mobile,
     '/regions': regions,
     '/events/*': events,
     '/event/*': event,
-    '/dj/*': dj
+    '/dj/*': dj,
+    '/public/*' : publicRouter
 }
 _.each(routes, function(handler, route){
     app.get(route, handler);

@@ -156,32 +156,6 @@
                 <div class="ui-block-a"><a href="#" type="submit" data-theme="d">Cancel</a></div>
                 <div class="ui-block-b"><button id="locationSubmit" type="submit" data-theme="b">Submit</button></div>
         </fieldset>
-        <!--
-        <div class="locationsList" data-role="collapsible-set" data-inset="false">
-            {% _.each(regions, function(region){ %}
-                <div data-role="collapsible" data-theme="b" class="regionLi">
-                    <h2>
-                        <img class="countryIcon" src="{{region.img}}" />
-                        {{region.name}}
-                    </h2>
-                    <ul class="regionContent" data-role="listview">
-                    {% _.each(region.regions, function(subregion){ %}
-                        <li class="region">
-                            <a href="#"
-                                data-id = "{{subregion.id}}"
-                                data-country = "{{region.name}}"
-                                data-name="{{subregion.name}}"
-                                data-img = "{{region.img}}"
-                                class="location">
-                                    {{subregion.name}}
-                            </a>
-                        </li>
-                    {% }); %}
-                    </ul>
-                </div>
-            {% }); %}
-        </div>
-        -->
     </script>
 
     <script id="dj-template" type="text/x-underscore-template">

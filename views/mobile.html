@@ -91,7 +91,7 @@
     </script>
 
     <script id="event-template" type="text/x-underscore-template">
-        {% if(img){ %}
+        {% if ( typeof(img) != 'undefined' ) { %}
             <img class="eventImg" src="{{img}}" />
         {% } %}
         <ul class=".nobullets">
@@ -158,7 +158,7 @@
 
     <script id="dj-template" type="text/x-underscore-template">
         <h2>{{name}}</h2>
-        {% if(img){ %}
+        {% if ( typeof(img) != 'undefined' ) { %}
             <div><img class="eventImg" src="{{img}}" /></div>
         {% } %}
         <ul>

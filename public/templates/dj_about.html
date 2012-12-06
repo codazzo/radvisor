@@ -1,6 +1,9 @@
 {% if ( typeof(img) != 'undefined' ) { %}
     <div><img class="eventImg" src="{{img}}" /></div>
 {% } %}
+
+{{bio}}
+
 <ul>
     {% _.each(links, function(value, key){ %}
         <li><a href="http://{{value}}">{{key}}</a></li>

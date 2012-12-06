@@ -34,10 +34,12 @@ radvisor.DjView = Backbone.View.extend({
         var tmpHtml;
         if(this.template_about_html){
             tmpHtml = this.template_about_html;
+            this.contentEl.html(tmpHtml);
         } else {
             tmpHtml = this.template_about(this.modelJSON);
+            this.contentEl.html(tmpHtml);
+            this.template_about_html = this.contentEl.html();
         }
-        this.contentEl.html(tmpHtml);
 
         this.contentEl.trigger('create'); //refactoring potential
     },
@@ -51,19 +53,19 @@ radvisor.DjView = Backbone.View.extend({
         var tmpHtml;
         if(this.template_tracks_html){
             tmpHtml = this.template_tracks_html;
+            this.contentEl.html(tmpHtml);
         } else {
             tmpHtml = this.template_tracks(this.modelJSON);
-        }
-        this.contentEl.html(tmpHtml);
-
-        var tmpHtml = this.template_tracks(this.modelJSON);
-        this.model.getUserTracks(function(trackCollection){
-            me.contentEl.html(tmpHtml);
-            var resTracksView = new radvisor.TracksView({
-                 model: trackCollection
+            this.contentEl.html(tmpHtml);
+            this.model.getUserTracks(function(trackCollection){
+                me.contentEl.html(tmpHtml);
+                var resTracksView = new radvisor.TracksView({
+                     model: trackCollection
+                });
+                resTracksView.render();
+                me.template_tracks_html = me.contentEl.html();
             });
-            resTracksView.render();
-        });
+        }
 
     },
 

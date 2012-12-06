@@ -1,14 +1,18 @@
 radvisor.DjView = Backbone.View.extend({
     el: "#djPage",
+    
     template: _.template($("#dj-template").html()),
-    template_about: _.template($("#dj-about-template").html()),
-    template_tracks: _.template($("#dj-tracks-template").html()),
-    template_events: _.template($("#dj-events-template").html()),
+    templates: {
+        about: _.template($("#dj-about-template").html()),
+        tracks: _.template($("#dj-tracks-template").html()),
+        events: _.template($("#dj-events-template").html())
+    },
+    templates_html: {},
 
     events: {
-        'click .dj-events' : 'showEvents',
-        'click .dj-tracks' : 'showTracks',
-        'click .dj-about' : 'showAbout'
+        'click .dj-events' : 'showSection',
+        'click .dj-tracks' : 'showSection',
+        'click .dj-about' : 'showSection'
     },
 
     initialize: function(date){
@@ -30,43 +34,31 @@ radvisor.DjView = Backbone.View.extend({
         });
     },
 
-    showAbout: function(){
-        var tmpHtml;
-        if(this.template_about_html){
-            tmpHtml = this.template_about_html;
-            this.contentEl.html(tmpHtml);
-        } else {
-            tmpHtml = this.template_about(this.modelJSON);
-            this.contentEl.html(tmpHtml);
-            this.template_about_html = this.contentEl.html();
+    showSection: function(evt){
+        var me = this;
+        var sectionName = $(evt.currentTarget).data("section");
+        var tmpHtml = this.templates_html[sectionName];
+        if (!tmpHtml) {
+            tmpHtml = this.templates[sectionName](this.modelJSON);
+            this.templates_html[sectionName] = tmpHtml;
         }
 
-        this.contentEl.trigger('create'); //refactoring potential
-    },
-
-    showEvents: function(){
-        //TODO
-    },
-
-    showTracks: function(){
-        var me = this;
-        var tmpHtml;
-        if(this.template_tracks_html){
-            tmpHtml = this.template_tracks_html;
-            this.contentEl.html(tmpHtml);
-        } else {
-            tmpHtml = this.template_tracks(this.modelJSON);
-            this.contentEl.html(tmpHtml);
+        if (sectionName=="tracks") {
+            $.mobile.showPageLoadingMsg();
             this.model.getUserTracks(function(trackCollection){
+                $.mobile.hidePageLoadingMsg();
                 me.contentEl.html(tmpHtml);
                 var resTracksView = new radvisor.TracksView({
                      model: trackCollection
                 });
                 resTracksView.render();
-                me.template_tracks_html = me.contentEl.html();
+                me.templates_html[tracks] = me.contentEl.html();
             });
+        }else {
+            this.contentEl.html(tmpHtml);
         }
 
+        this.contentEl.trigger('create');
     },
 
     render: function() {

@@ -78,96 +78,32 @@
 
 
     <script id="events-template" type="text/x-underscore-template">
-        <ul class="listView" data-role="listview">
-            {% _.each(events, function(event) { %}
-                <li class="eventLi">
-                    <a href="#/event/{{event.id}}" data-transition="pop">
-                        <img class="ui-li-thumb ui-corner-tl" src="{{event.img}}" />
-                        <h3 class="ui-li-heading">{{event.title}}</h3>
-                        <p class="ui-li-desc">{{event.venue}}</p>
-                        <span class="ilb ui-li-count">{{event.ppl}}</span>
-                    </a>
-                </li>
-            {% }); %}
-        </ul>    
+        {{events}}
     </script>
 
     <script id="event-template" type="text/x-underscore-template">
-        {% if ( typeof(img) != 'undefined' ) { %}
-            <img class="eventImg" src="{{img}}" />
-        {% } %}
-        <ul class=".nobullets">
-            <li>
-                <span class="key">Venue</span>: {{venue}}
-            </li>
-            <li><span class="key">Address</span>: {{address}} (<a href="http://maps.google.com/maps?q={{address}}">map</a>)
-            </li>
-            <li><span class="key">Date</span>: {{date}}</li>
-            <li><span class="key">Time</span>: {{time}}</li>
-        </ul>
-        <hr/>
-            {% _.each(extraInfo, function(value, key){ %}
-                <b>{{key}}</b>
-                <div>{{value}}</div>
-                <br/>
-            {% }) %}
-            <hr/>
-            {{extraStrings}}
+        {{event}}
     </script>
 
     <script id="locations-template" type="text/x-underscore-template">
-            <div class="ui-grid-a oneline">
-                <div class="ui-block-a">
-                    <label>Country:</label>
-                </div>
-                <select class="ui-block-b" id="countrySelect">
-                    {% _.each(regions, function(region){ %}
-                        <option
-                            {% if(region.name == currentCountry){ %}
-                                selected="selected"
-                            {% } %}
-                            data-img = "{{region.img}}"
-                        >
-                            {{region.name}}
-                        </option>
-                    {% }); %}
-                </select>
-            </div>
-            <div class="ui-grid-a oneline">
-                <div class="ui-block-a">
-                    <label>City:</label>
-                </div>
-                <select class="ui-block-b" id="regionSelect">
-                    {% _.each(countryRegions, function(countryRegion){ %}
-                        <option
-                            {% if(countryRegion.name == currentRegion){ %}
-                                selected="selected"
-                            {% } %}
-                            data-id = "{{countryRegion.id}}"
-                            data-name="{{countryRegion.name}}"
-                        >
-                            {{countryRegion.name}}
-                        </option>
-                    {% }); %}
-                </select>
-            </div>
-
-        <fieldset class="ui-grid-a">
-                <div class="ui-block-a"><a href="#" type="submit" data-theme="d">Cancel</a></div>
-                <div class="ui-block-b"><button id="locationSubmit" type="submit" data-theme="b">Submit</button></div>
-        </fieldset>
+        {{locations}}
     </script>
 
     <script id="dj-template" type="text/x-underscore-template">
-        <h2>{{name}}</h2>
-        {% if ( typeof(img) != 'undefined' ) { %}
-            <div><img class="eventImg" src="{{img}}" /></div>
-        {% } %}
-        <ul>
-            {% _.each(links, function(value, key){ %}
-                <li><a href="http://{{value}}">{{key}}</a></li>
-            {% }); %}
-        </ul>
+        {{dj}}
+    </script>
+    <script id="dj-about-template" type="text/x-underscore-template">
+        {{dj_about}}
+    </script>
+    <script id="dj-tracks-template" type="text/x-underscore-template">
+        {{dj_tracks}}
+    </script>
+    <script id="dj-events-template" type="text/x-underscore-template">
+        {{dj_events}}
+    </script>
+
+    <script id="track-template" type="text/x-handlebars-template">
+        {{track}}
     </script>
 
     <script type="text/javascript">
@@ -180,6 +116,14 @@
 
     <script src="/minified/app.js"></script>
     <script src="/minified/libs.js"></script>
+
+    <script src="http://connect.soundcloud.com/sdk.js"></script>
+    <script type="text/JavaScript">
+      SC.initialize({
+          client_id: "4ff5e4db53c28af7f588fe2a9bf80208",
+          redirect_uri: "unused"
+      });
+    </script>
 
     <script type="text/javascript">
       var _gaq = _gaq || [];

@@ -1,0 +1,22 @@
+{% if ( typeof(img) != 'undefined' ) { %}
+    <img class="eventImg" src="{{img}}" />
+{% } %}
+<ul class=".nobullets">
+    <li>
+        <span class="key">Venue</span>: {{venue}}
+    </li>
+    <li><span class="key">Address</span>: {{address}} (<a href="http://maps.google.com/maps?q={{address}}">map</a>)
+    </li>
+    <li><span class="key">Date</span>: {{date}}</li>
+    <li><span class="key">Time</span>: {{time}}</li>
+</ul>
+
+<hr/>
+
+{% _.each(extraInfo, function(value, key){ %}
+    <b>{{key}}</b>
+    <div>{{value}}</div>
+    <br/>
+{% }) %}
+<hr/>
+{{extraStrings}}

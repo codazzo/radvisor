@@ -25,6 +25,7 @@ radvisor.DjView = Backbone.View.extend({
         this.model.fetch({
             success: function(model, response, options){
                 me.modelJSON = model.toJSON();
+                me.templates_html = {}; //invalidate template html cache
                 me.render();
                 me.contentEl = me.$(".dj-content");
                 //me.showAbout();

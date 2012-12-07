@@ -21,6 +21,7 @@ radvisor.DjView = Backbone.View.extend({
 
     update: function(name, callback){
         var me = this;
+        this.model.clear();
         this.model.set({name: name});
         this.model.fetch({
             success: function(model, response, options){

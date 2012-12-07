@@ -22,7 +22,7 @@
         </li>
         <li>
             <!-- class="ui-disabled-NOPE" -->
-            <a class='dj-tracks' data-section='tracks'>
+            <a class='dj-tracks {% if (typeof(sc_tracks)=="undefined") { %} ui-disabled {% } %} ' data-section='tracks'>
                 Tracks
             </a>
         </li>

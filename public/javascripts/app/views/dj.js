@@ -44,22 +44,16 @@ radvisor.DjView = Backbone.View.extend({
             this.templates_html[sectionName] = tmpHtml;
         }
 
-        if (sectionName=="tracks") {
-            $.mobile.showPageLoadingMsg();
-            this.model.getUserTracks(function(trackCollection){
-                $.mobile.hidePageLoadingMsg();
-                me.contentEl.html(tmpHtml);
-                var resTracksView = new radvisor.TracksView({
-                     model: trackCollection
-                });
-                resTracksView.render();
-                me.templates_html[tracks] = me.contentEl.html();
-            });
-        }else {
-            this.contentEl.html(tmpHtml);
-        }
-
+        this.contentEl.html(tmpHtml);
         this.contentEl.trigger('create');
+        if (sectionName=="tracks") {
+            var trackCollection = new radvisor.TrackCollection(me.model.get("sc_tracks"));
+            var resTracksView = new radvisor.TracksView({
+                 model: trackCollection
+            });
+            resTracksView.render();
+            me.templates_html[tracks] = me.contentEl.html();
+        }
     },
 
     render: function() {

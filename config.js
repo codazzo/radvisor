@@ -20,6 +20,8 @@ app.configure(function(){
     if ('production' == app.get('env')) {
         app.set('db_uri', 'mongodb://heroku_app9447256:dkmdaactsstuot0bq60bie9ips@ds043497.mongolab.com:43497/heroku_app9447256');
     }
+
+    app.set('sc_client_id', '4ff5e4db53c28af7f588fe2a9bf80208');
 });
 
 app.configure('development', function(){

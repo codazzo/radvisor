@@ -1,0 +1,12 @@
+<a class="track-entry" data-role="button">
+   <div class="play-button">
+       {% if (streamable) { %}
+           {% if(playing){ %}
+                <i class="icon-pause"></i> 
+           {% } else { %}
+                <i class="icon-play"></i> 
+           {% } %}
+           <span class="ui-icon-play">{{title}}</span>
+       {% } %}
+   </div>
+</a>

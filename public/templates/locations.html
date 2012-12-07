@@ -1,0 +1,40 @@
+<div class="ui-grid-a oneline">
+    <div class="ui-block-a">
+        <label>Country:</label>
+    </div>
+    <select class="ui-block-b" id="countrySelect">
+        {% _.each(regions, function(region){ %}
+            <option
+                {% if(region.name == currentCountry){ %}
+                    selected="selected"
+                {% } %}
+                data-img = "{{region.img}}"
+            >
+                {{region.name}}
+            </option>
+        {% }); %}
+    </select>
+</div>
+<div class="ui-grid-a oneline">
+    <div class="ui-block-a">
+        <label>City:</label>
+    </div>
+    <select class="ui-block-b" id="regionSelect">
+        {% _.each(countryRegions, function(countryRegion){ %}
+            <option
+                {% if(countryRegion.name == currentRegion){ %}
+                    selected="selected"
+                {% } %}
+                data-id = "{{countryRegion.id}}"
+                data-name="{{countryRegion.name}}"
+            >
+                {{countryRegion.name}}
+            </option>
+        {% }); %}
+    </select>
+</div>
+
+<fieldset class="ui-grid-a">
+        <div class="ui-block-a"><a href="#" type="submit" data-theme="d">Cancel</a></div>
+        <div class="ui-block-b"><button id="locationSubmit" type="submit" data-theme="b">Submit</button></div>
+</fieldset>

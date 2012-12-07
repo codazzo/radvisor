@@ -61,6 +61,12 @@
             font-weight: bold;
         }
     }
+
+    .ui-content {
+        a[data-role=button]:first-child, br + a[data-role=button] {
+            margin-left: -0.6em;
+        }
+    }
     
 }
 
@@ -81,5 +87,21 @@
 #djPage {
     div[data-role=content]{
         padding-top: 0px;
+    }
+
+    .soundcloud_img {
+        margin: 0.5em 0em 0em 0.5em;
+    }
+    #tracks {
+        li {
+            display: block;
+        }
+        i {
+            display: inline-block;
+        }
+
+        .track-entry {
+            text-align: left;
+        }
     }
 }

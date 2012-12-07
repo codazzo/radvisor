@@ -4,6 +4,7 @@ radvisor.EventView = Backbone.View.extend({
 
     initialize: function(){
         this.model = new radvisor.EventCache();
+        this.wrapper = $("<div/>");
     },
 
     update: function(id, callback){
@@ -25,9 +26,22 @@ radvisor.EventView = Backbone.View.extend({
 
         this.$el.find("h1.title").html(eventJSON.title);
         $content = this.$el.find("[data-role=content]");
-        $content.html(tmpHtml);
+        $content.html(this.decorate(tmpHtml));
         // $.mobile.initializePage();
         $content.trigger('create'); //jqueryMobile init
+    },
+
+    decorate: function(html){
+         var attrs = 'data-role="button" data-inline="true" data-mini="true"';
+         this.wrapper.html(html);
+         this.wrapper.find("a").filter(function(){
+            return this.href.indexOf('/dj/') != -1;
+         }).attr({
+            'data-role': 'button',
+            'data-inline': 'true',
+            'data-mini': 'true'
+         });
+         return this.wrapper.html();
     },
 
     cleanView: function(){

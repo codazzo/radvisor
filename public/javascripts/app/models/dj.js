@@ -1,7 +1,7 @@
 radvisor.Dj = Backbone.Model.extend({
-  urlBase: '/dj/',
+    urlBase: '/dj/',
 
-  url: function(){
-    return this.urlBase + this.get("name");
-  }
+    url: function(){
+        return this.urlBase + this.get("name");
+    }
 });

@@ -1,5 +1,9 @@
 <!DOCTYPE html> 
-<html manifest="/manifest.appcache">
+<html
+    {{#if env.isProduction }}
+        manifest="/manifest.appcache"
+    {{/if}}
+ >
 <head>
     <title>¡RADvisor!</title> 
     <meta name="viewport" content="width=device-width, initial-scale=1"> 
@@ -116,31 +120,37 @@
         };
     </script>
 
+    <script type="text/javascript">
+        {{{nbl}}}
+        function loadLibs(){
+            nbl.l(['/minified/libs.js',
+                'public/stylesheets/mobipick.css',
+                'public/stylesheets/font-awesome-more.less.css',
+                'public/stylesheets/themes/all_themes_with_soundcloud.min.css',
+                function(){
+                    radvisor.bus.trigger("loaded:datepicker");
+                }
+            ]);
+        }
+    </script>
     {{#if env.isProduction }}
         <script type="text/javascript">
-            {{{nbl}}}
             nbl.l([ 3500,
                 '/minified/app.js',
                 function(){
-                    setTimeout(function(){
-                        nbl.l(['/minified/libs.js',
-                            'public/stylesheets/mobipick.css',
-                            'public/stylesheets/font-awesome-more.less.css',
-                            'public/stylesheets/themes/all_themes_with_soundcloud.min.css',
-                            function(){
-                                radvisor.bus.trigger("loaded:datepicker");
-                            }
-                        ]);
-                    }, 10)
+                    setTimeout(loadLibs)
                 }
             ]);
         </script>
     {{else}}
         {{#each deps}}
             {{#each this.files}}
-                <script src="{{../path}}{{this}}"></script>
+                <script src="{{this}}"></script>
             {{/each}}
         {{/each}}
+        <script type="text/javascript">
+            loadLibs();
+        </script>
     {{/if}}
     
 

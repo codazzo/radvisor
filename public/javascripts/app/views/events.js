@@ -86,6 +86,18 @@ radvisor.EventsView = Backbone.View.extend({
         $content.html(tmpHtml);
 
         var me = this;
+        if($.fn.mobipick){
+            this.initDatepicker();
+        }else{
+            radvisor.bus.on("loaded:datepicker", function(){
+                this.initDatepicker();
+            }, this);
+        }
+        this.$(".date-selection").show();
+        $content.trigger('create'); //jqueryMobile init
+    },
+
+    initDatepicker: function(){
         this.datepicker = this.$( "#datePicker");
         this.datepicker.mobipick({
             change: function(evt){
@@ -103,9 +115,5 @@ radvisor.EventsView = Backbone.View.extend({
                 Backbone.history.loadUrl(route);
             }
         });
-        this.$(".date-selection").show();
-        // $.mobile.initializePage();
-        $content.trigger('create'); //jqueryMobile init
-        // $("#mainFooter").hide();
     }
 });

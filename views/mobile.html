@@ -123,7 +123,9 @@
             nbl.l([ 3500,
                 '/minified/app.js',
                 function(){
-                    nbl.l('/minified/libs.js')
+                    nbl.l(['/minified/libs.js', function(){
+                        radvisor.bus.trigger("loaded:datepicker");
+                    }]);
                 }
             ]);
         </script>

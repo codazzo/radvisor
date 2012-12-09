@@ -120,14 +120,16 @@
             nbl.l([ 3500,
                 '/minified/app.js',
                 function(){
-                    nbl.l(['/minified/libs.js',
-                        'public/stylesheets/mobipick.css',
-                        'public/stylesheets/font-awesome-more.less.css',
-                        'public/stylesheets/themes/all_themes_with_soundcloud.min.css',
-                        function(){
-                            radvisor.bus.trigger("loaded:datepicker");
-                        }
-                    ]);
+                    setTimeout(function(){
+                        nbl.l(['/minified/libs.js',
+                            'public/stylesheets/mobipick.css',
+                            'public/stylesheets/font-awesome-more.less.css',
+                            'public/stylesheets/themes/all_themes_with_soundcloud.min.css',
+                            function(){
+                                radvisor.bus.trigger("loaded:datepicker");
+                            }
+                        ]);
+                    }, 10)
                 }
             ]);
         </script>

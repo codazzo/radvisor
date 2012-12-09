@@ -3,11 +3,8 @@
 <head> 
     <title>¡RADvisor!</title> 
     <meta name="viewport" content="width=device-width, initial-scale=1"> 
-    <link rel="stylesheet" href="public/stylesheets/styles.less" />
-    <link rel="stylesheet" href="public/stylesheets/font-awesome-more.less" />
+    <link rel="stylesheet" href="public/stylesheets/styles.less.css" />
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
-    <link rel="stylesheet" href="stylesheets/themes/all_themes_with_soundcloud.min.css" />
-    <link rel="stylesheet" href="stylesheets/mobipick.css" />
 
     <!--script src="http://192.168.2.102:8080/target/target-script-min.js" ></script-->
     <!--script src="http://192.168.12.63:8080/target/target-script-min.js" ></script-->
@@ -123,9 +120,14 @@
             nbl.l([ 3500,
                 '/minified/app.js',
                 function(){
-                    nbl.l(['/minified/libs.js', function(){
-                        radvisor.bus.trigger("loaded:datepicker");
-                    }]);
+                    nbl.l(['/minified/libs.js',
+                        'public/stylesheets/mobipick.css',
+                        'public/stylesheets/font-awesome-more.less.css',
+                        'public/stylesheets/themes/all_themes_with_soundcloud.min.css',
+                        function(){
+                            radvisor.bus.trigger("loaded:datepicker");
+                        }
+                    ]);
                 }
             ]);
         </script>

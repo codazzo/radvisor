@@ -14,7 +14,7 @@ var ui = require('./routes/ui'),
 
 var app = config.app;
 
-app.get("*.less", function(req, res) {
+app.get("*.less.*", function(req, res) {
     var path = __dirname + req.url;
     fs.readFile(path, "utf8", function(err, data) {
         if (err) throw err;

@@ -81,3 +81,8 @@ li.mobipick-hide {
 	zoom:1;
 	*display: inline;
 }
+.mobipick-set {
+	background: -webkit-gradient(linear, 0 0, 0 100%, from(#08C), to(#04C)) !important;
+	color: white !important;
+	text-shadow: none !important;
+}

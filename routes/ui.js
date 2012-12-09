@@ -31,7 +31,7 @@ var templates = {
 var templatesRootPath = 'public/templates/';
 var uiTemplateSource = "" + fs.readFileSync('views/mobile.html'); //not sure why we must coerce to string
 var uiTemplate = handlebars.compile(uiTemplateSource);
-
+var nbl = "" + fs.readFileSync('public/javascripts/libs/nbl.plus.min.js');
 exports.mobile = function(req, res){
     var cookies = new Cookies( req, res );
     var locationCookie = cookies.get("ra_location");
@@ -45,7 +45,8 @@ exports.mobile = function(req, res){
         env: {
             isProduction: app.get('env') == 'production'
         },
-        deps: config.deps
+        deps: config.deps,
+        nbl: nbl
     };
 
     _.each(templates, function(value, key){

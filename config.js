@@ -34,7 +34,7 @@ var libDeps = {
         // "jquery.mobile-1.2.0.js",
         // "underscore.js",
         // "backbone.js",
-        "jquery-cookie.js",
+        // "jquery-cookie.js",
         "xdate-dev.js",
         "xdate.i18n.js",
         "mobipick.js"
@@ -45,6 +45,7 @@ var libDeps = {
 
 var appDeps = {
     files: [
+        "../libs/jquery-cookie.js",
         "class.js",
         "models/dj.js",
         "models/event.js",

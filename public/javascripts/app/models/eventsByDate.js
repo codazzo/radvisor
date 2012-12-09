@@ -11,6 +11,9 @@ radvisor.EventsByDate = Backbone.Collection.extend({
             date: dateStr,
             events: events
         });
+        if(typeof(localStorage)!='undefined') {
+            localStorage.setItem('events-' + dateStr, JSON.stringify(events));
+        }
     },
 
     getEvents: function(dateStr, success){
@@ -18,6 +21,17 @@ radvisor.EventsByDate = Backbone.Collection.extend({
         var eventsByDate = this.find(function(el){
             return el.get("date") == dateStr;
         });
+        if(!eventsByDate && typeof(localStorage) != 'undefined') { 
+            var storedEvents = localStorage.getItem('events-' + dateStr); //try looking events up in localstorage
+            if(storedEvents) {
+                var eventsArray = JSON.parse(storedEvents);
+                this.addEvents(dateStr, new radvisor.Events(eventsArray));
+                //TODO find better way to get eventsByDate plz
+                eventsByDate = this.find(function(el){
+                    return el.get("date") == dateStr;
+                });
+            }
+        }
         if(eventsByDate) {
             //use cached copy
             success(eventsByDate.get('events'));

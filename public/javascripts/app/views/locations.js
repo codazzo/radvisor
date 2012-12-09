@@ -49,6 +49,7 @@ radvisor.LocationsView = Backbone.View.extend({
         * the cache must be invalidated since the location has changed.
         */
         radvisor.bus.trigger('reset:cache');
+        localStorage.clear(); //clear all cache in localStorage 
 
         radvisor.router.navigate("",  {trigger: true});
         $.mobile.showPageLoadingMsg();

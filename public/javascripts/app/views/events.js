@@ -38,25 +38,6 @@ radvisor.EventsView = Backbone.View.extend({
         this.datepicker.tap();
     },
 
-    getDate: function(){
-        if(!this.date){
-            var date = new Date();
-            return {
-                date: date,
-                day: ""+date.getDate(),
-                month: date.getMonth() + 1,
-                year: ""+date.getFullYear()
-            }
-        } else {
-            return {
-                date: this.date,
-                day: this.day,
-                month: this.month,
-                year: this.year
-            }
-        }
-    },
-
     render: function(options) {
         var dateStr = this.day + "/"+ this.month + "/" + this.year;
         var locationData = $.parseJSON($.cookie("ra_location"));

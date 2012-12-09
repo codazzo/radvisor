@@ -3,7 +3,8 @@ var config = require('./config'),
     db = require("./db"),
     http = require('http'),
     less = require("less"),
-    _ = require("underscore");
+    _ = require("underscore"),
+    uglifier = require('./public/uglify'); //minification is performed here //TODO find better pattern?
 
 var ui = require('./routes/ui'),
     events = require('./routes/events'),

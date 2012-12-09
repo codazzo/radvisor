@@ -1,6 +1,5 @@
 var express = require('express'),
-    path = require('path'),
-    uglifier = require('./public/uglify');
+    path = require('path');
 
 var app = express();
 
@@ -28,6 +27,46 @@ app.configure('development', function(){
     app.use(express.errorHandler());
 });
 
+var libDeps = {
+        files: [
+        //the folllowing files are served directly by the CDN
+        // "jquery-1.8.3.js",
+        // "jquery.mobile-1.2.0.js",
+        // "underscore.js",
+        // "backbone.js",
+        "jquery-cookie.js",
+        "xdate-dev.js",
+        "xdate.i18n.js",
+        "mobipick.js"
+    ],
+    path: "/javascripts/libs/",
+    name: "libs.js"
+}
+
+var appDeps = {
+    files: [
+        "class.js",
+        "models/dj.js",
+        "models/event.js",
+        "models/eventCache.js",
+        "models/events.js",
+        "models/eventsByDate.js",
+        "models/locations.js",
+        "models/track.js",
+        "router.js",
+        "views/dj.js",
+        "views/event.js",
+        "views/events.js",
+        "views/locations.js",
+        "views/track.js",
+        "views/tracks.js",
+        "app.js"
+    ],
+    path: "/javascripts/app/",
+    name: "app.js"
+}
+
 module.exports = {
-    app: app
+    app: app,
+    deps: [libDeps, appDeps]
 }

@@ -15,7 +15,8 @@
       "mongodb": ">= 0.9.6-7",
       "mongojs": "*",
       "node-inspector": "*",
-      "uglify-js": "*"
+      "uglify-js": "*",
+      "handlebars": "*"
   },
   "engines": {
       "node": ">= 0.8",

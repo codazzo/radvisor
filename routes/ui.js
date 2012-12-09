@@ -11,14 +11,11 @@ var defaultLocation = {
 
 var $ = require('jquery');
 var _ = require('underscore');
+var handlebars = require('handlebars');
 var fs = require('fs');
 var Cookies = require("cookies");
-
-_.templateSettings = {
-    evaluate    : /\{%([\s\S]+?)%\}/g,
-    interpolate : /\{\{(.+?)\}\}/g,
-    escape : /\{\{\{(.+?)\}\}\}/g
-};
+var config = require('../config');
+var app = config.app;
 
 var templates = {
     dj: 'dj.html',
@@ -33,7 +30,7 @@ var templates = {
 
 var templatesRootPath = 'public/templates/';
 var uiTemplateSource = "" + fs.readFileSync('views/mobile.html'); //not sure why we must coerce to string
-var uiTemplate = _.template(uiTemplateSource);
+var uiTemplate = handlebars.compile(uiTemplateSource);
 
 exports.mobile = function(req, res){
     var cookies = new Cookies( req, res );
@@ -43,10 +40,17 @@ exports.mobile = function(req, res){
         res.cookie("ra_location", JSON.stringify(defaultLocation), { path: '/'});
     }
 
-    var templateContents = {};
+    var uiData = {
+        templates : {},
+        env: {
+            isProduction: app.get('env') == 'production'
+        },
+        deps: config.deps
+    };
+
     _.each(templates, function(value, key){
-        templateContents[key] = ""+fs.readFileSync(templatesRootPath + value);
+        uiData.templates[key] =  "" + fs.readFileSync(templatesRootPath + value);
     });
-    var resContent = uiTemplate(templateContents);
+    var resContent = uiTemplate(uiData);
     res.send(resContent);
 };

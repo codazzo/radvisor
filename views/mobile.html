@@ -78,32 +78,32 @@
 
 
     <script id="events-template" type="text/x-underscore-template">
-        {{events}}
+        {{{ this.templates.events }}}
     </script>
 
     <script id="event-template" type="text/x-underscore-template">
-        {{event}}
+        {{{ templates.event }}}
     </script>
 
     <script id="locations-template" type="text/x-underscore-template">
-        {{locations}}
+        {{{ templates.locations }}}
     </script>
 
     <script id="dj-template" type="text/x-underscore-template">
-        {{dj}}
+        {{{ templates.dj }}}
     </script>
     <script id="dj-about-template" type="text/x-underscore-template">
-        {{dj_about}}
+        {{{ templates.dj_about }}}
     </script>
     <script id="dj-tracks-template" type="text/x-underscore-template">
-        {{dj_tracks}}
+        {{{ templates.dj_tracks }}}
     </script>
     <script id="dj-events-template" type="text/x-underscore-template">
-        {{dj_events}}
+        {{{ templates.dj_events }}}
     </script>
 
-    <script id="track-template" type="text/x-handlebars-template">
-        {{track}}
+    <script id="track-template" type="text/x-underscore-template">
+        {{{ templates.track }}}
     </script>
 
     <script type="text/javascript">
@@ -114,8 +114,17 @@
         };
     </script>
 
-    <script src="/minified/app.js"></script>
-    <script src="/minified/libs.js"></script>
+    {{#if env.isProduction }}
+        <script src="/minified/app.js"></script>
+        <script src="/minified/libs.js"></script>
+    {{else}}
+        {{#each deps}}
+            {{#each this.files}}
+                <script src="{{../path}}{{this}}"></script>
+            {{/each}}
+        {{/each}}
+    {{/if}}
+    
 
     <script src="http://connect.soundcloud.com/sdk.js"></script>
     <script type="text/JavaScript">

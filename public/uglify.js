@@ -1,51 +1,14 @@
 var UglifyJS = require("uglify-js"),
 	_ = require("underscore"),
-	fs = require('fs');
+	fs = require('fs'),
+	conf = require('../config');
 
-var libConf = {
-		files: [
-		//the folllowing files are served directly by the CDN
-		// "jquery-1.8.3.js",
-		// "jquery.mobile-1.2.0.js",
-		// "underscore.js",
-		// "backbone.js",
-		"jquery-cookie.js",
-		"xdate-dev.js",
-		"xdate.i18n.js",
-		"mobipick.js"
-	],
-	path: "./public/javascripts/libs/",
-	name: "libs.js"
-}
 
-var appConf = {
-	files: [
-		"class.js",
-		"models/dj.js",
-		"models/event.js",
-		"models/eventCache.js",
-		"models/events.js",
-		"models/eventsByDate.js",
-		"models/locations.js",
-		"models/track.js",
-		"router.js",
-		"views/dj.js",
-		"views/event.js",
-		"views/events.js",
-		"views/locations.js",
-		"views/track.js",
-		"views/tracks.js",
-		"app.js"
-	],
-	path: "./public/javascripts/app/",
-	name: "app.js"
-}
-
-var confs = [libConf, appConf];
+var deps = conf.deps;
 var mapsPath = "http://localhost:3000/minified/";
-
-_.each(confs, function(conf){
-	var path = conf.path;
+var rootPath = "./public";
+_.each(deps, function(conf){
+	var path = rootPath + conf.path;
 	var files = conf.files;
 	var name = conf.name;
 	var mapName = name + ".map";

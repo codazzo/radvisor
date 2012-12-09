@@ -1,0 +1,36 @@
+CACHE MANIFEST
+      
+# This is a comment
+
+CACHE:
+
+/
+
+http://code.jquery.com/jquery-1.8.2.min.js
+http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js
+http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css
+http://code.jquery.com/mobile/1.2.0/images/ajax-loader.gif
+
+/javascripts/libs/jqm-config.js
+
+http://underscorejs.org/underscore-min.js
+http://backbonejs.org/backbone-min.js
+http://connect.soundcloud.com/sdk.js
+
+/minified/app.js
+/minified/libs.js
+
+http://www.google-analytics.com/ga.js
+
+/public/stylesheets/styles.less.css
+
+/stylesheets/mobipick.css
+/stylesheets/themes/all_themes_with_soundcloud.min.css
+/public/stylesheets/font-awesome-more.less.css
+/stylesheets/themes/images/icons-18-white.png
+
+/images/radvisor_logo.png
+/images/calendar4.png
+
+NETWORK:
+*

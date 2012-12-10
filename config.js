@@ -47,6 +47,7 @@ var appDeps = {
     files: [
         "../libs/jquery-cookie.js",
         "class.js",
+        "utils.js",
         "models/dj.js",
         "models/event.js",
         "models/eventCache.js",

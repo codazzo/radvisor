@@ -40,10 +40,7 @@ var AppRouter = Backbone.Router.extend({
         var currentDate = new Date();
         currentDate = new Date(currentDate.getTime() - 8 * 60 * 60 * 1000); //we party till 8 :)
         var tomorrow = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000);
-        var day = tomorrow.getDate(); if(day<10) day = "0" + day;
-        var month = tomorrow.getMonth() + 1; if(month<10) month = "0" + month;
-        var year = tomorrow.getFullYear();
-        var dateStr = "" + day + month + year;
+        var dateStr = radvisor.getDateStr(tomorrow);
 
         $.mobile.showPageLoadingMsg();
         eventsView.update(dateStr, function(){

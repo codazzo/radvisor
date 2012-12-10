@@ -15,13 +15,10 @@ radvisor.EventsView = Backbone.View.extend({
         //TODO refactor the following lines
         var currentDate = new Date();
         currentDate = new Date(currentDate.getTime() - 8 * 60 * 60 * 1000); //we party till 8 :)
-        this.date = currentDate;
-        this.day = date ? date.substr(0,2) : ""+currentDate.getDate();
-        if(this.day.length==1) this.day = "0" + this.day;
-        this.month = date ? date.substr(2,2) : ""+ (currentDate.getMonth() + 1); //lame. so lame.
-        if(this.month.length==1) this.month = "0" + this.month;
-        this.year = date ? date.substr(4,4) : currentDate.getFullYear();
-        var dateStr = "" + this.day + this.month + this.year;
+        var dateStr = date || radvisor.getDateStr(currentDate);
+        this.day = dateStr.substr(0,2);
+        this.month = dateStr.substr(2,2);
+        this.year = dateStr.substr(4,4);
 
         this.model.getEvents(dateStr, function(eventsModel){
             if(me.cachedModel != eventsModel){

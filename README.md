@@ -18,5 +18,5 @@ Install npm, node, mongo. Clone the repo locally, then `npm install` will instal
 * Launch the app with (`node app`)
 
 ## Can I haz?
-Point your mobile browser to [http://restfuladvisor.herokuapp.com](http://restfuladvisor.herokuapp.com) and play.
+Point your mobile browser to [http://radvisor.net](http://radvisor.net) and play.
 **WARNING** this is still in alpha stage. Suggestions and forks are welcome!

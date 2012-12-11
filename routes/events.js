@@ -15,7 +15,7 @@ module.exports = function(req, res){
         locationId = defaultLocation;
     }
 
-    var dateStr = req.params[0];    
+    var dateStr = req.params[0];
     var options = {
         day: dateStr.substr(0,2),
         month: dateStr.substr(2,2),

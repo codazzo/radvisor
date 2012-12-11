@@ -60,7 +60,7 @@ exports.mobile = function(req, res){
     });
 
     var uiData = {
-        templates : {},
+        templates: {},
         env: {
             isProduction: app.get('env') == 'production'
         },

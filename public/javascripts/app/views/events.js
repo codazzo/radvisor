@@ -3,7 +3,7 @@ radvisor.EventsView = Backbone.View.extend({
     template: _.template($("#events-template").html()),
 
     events: {
-        'tap .calendar' : 'pickDate'
+        'tap .calendar': 'pickDate'
     },
 
     initialize: function(date){
@@ -76,7 +76,7 @@ radvisor.EventsView = Backbone.View.extend({
     },
 
     initDatepicker: function(){
-        this.datepicker = this.$( "#datePicker");
+        this.datepicker = this.$("#datePicker");
         this.datepicker.mobipick({
             change: function(evt){
                 var date = $( this ).val();
@@ -87,6 +87,7 @@ radvisor.EventsView = Backbone.View.extend({
                 var dateStr = day+month+year;
                 radvisor.router.navigate("date/"+dateStr,  {trigger: true});
             },
+
             cancel: function(evt){
                 var route = Backbone.history.fragment;
                 //http://stackoverflow.com/questions/8550841/trigger-same-location-route

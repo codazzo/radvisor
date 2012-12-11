@@ -1,10 +1,10 @@
 radvisor.TrackView = Backbone.View.extend({
     template: _.template($("#track-template").html()),
     events: {
-        "click .ui-icon-play"  : 'togglePlay',
-        "click .ui-icon-pause" : 'togglePlay'
+        "click .ui-icon-play": 'togglePlay',
+        "click .ui-icon-pause": 'togglePlay'
     },
-    
+
     initialize: function(options){
         var me = this;
         this.el = this.options.el;
@@ -13,7 +13,7 @@ radvisor.TrackView = Backbone.View.extend({
         this.model.bind('change', this.render, this);
         this.model.bind('selected', this.render, this);
     },
-    
+
     togglePlay: function(evt){
         if (!this.model.get('streamable')) {
             return;
@@ -37,7 +37,7 @@ radvisor.TrackView = Backbone.View.extend({
             });
         }
     },
-    
+
     render: function(){
         var trackJSON = this.model.toJSON();
         var tmpHtml = this.template(trackJSON);

@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html
     {{#if env.isProductionDISABLED }}
         manifest="/manifest.appcache"
@@ -6,58 +6,62 @@
  >
 <head>
     <title>&iexcl;RADvisor!</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="public/stylesheets/styles.less.css">
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css">
 
     <link rel="apple-touch-icon" href="/images/radvisor_iphone.png">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-    <!--script src="http://192.168.2.102:8080/target/target-script-min.js" ></script-->
-    <!--script src="http://192.168.12.63:8080/target/target-script-min.js" ></script-->
 
     <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
     <script src="/javascripts/libs/jqm-config.js"></script>
     <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.2/underscore-min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.2/backbone-min.js"></script>
-</head> 
-<body> 
+</head>
+<body>
 
     <div data-role="page" id="eventsPage">
-            <div data-role="header">
-                <a href="#/locations" data-rel="dialog" data-role="button" data-mini="true" data-inline="true">
-                    <img class="countryIcon">
+        <div data-role="header">
+            <a href="#/locations" data-rel="dialog" data-role="button" data-mini="true" data-inline="true">
+                <img class="countryIcon">
+            </a>
+
+            <h1 class="logo-header">
+                <a>
+                    <img class="logo" src="{{{images.logo}}}">
                 </a>
+            </h1>
+        </div>
 
-                <h1 class="logo-header">
-                    <a>
-                        <img class="logo" src="{{{images.logo}}}">
+        <div data-role="navbar" class="date-selection" style="display:none;">
+            <ul>
+                <li>
+                    <a href="#" class="todayName">.</a>
+                </li>
+                <li>
+                    <a href="#/tomorrow" class="tomorrowName">.</a>
+                </li>
+                <li>
+                    <a class="calendar">
+                        <img src="{{{images.calendar}}}">
                     </a>
-                </h1>
-            </div>
+                    <input id="datePicker" type="text" style="display:none;">
+                </li>
+            </ul>
+        </div>
 
-            <div data-role="navbar" class="date-selection" style="display:none;">
-                <ul>
-                    <li><a href="#" class="todayName">.</a></li>
-                    <li><a href="#/tomorrow" class="tomorrowName">.</a></li>
-                    <li>
-                        <a class="calendar">
-                            <img src="{{{images.calendar}}}">
-                        </a>
-                        <input id="datePicker" type="text" style="display:none;">
-                    </li>
-                </ul>
-            </div>
-
-            <div data-role="content">
-            </div>
-            <div data-role="footer" class="footer">
-                <h6 class="oneline">
-                    This is a hack by <a href="http://twitter.com/codazzo">codazzo</a>.
-                    Send <a href="mailto:info@radvisor.net">feedback</a>!
-                </h6>
-                <h6>Copyright &copy; 2012 <a href="http://www.residentadvisor.net/">Resident Advisor Ltd.</a></h6>
-            </div>
+        <div data-role="content">
+        </div>
+        <div data-role="footer" class="footer">
+            <h6 class="oneline">
+                This is a hack by <a href="http://twitter.com/codazzo">codazzo</a>.
+                Send <a href="mailto:info@radvisor.net">feedback</a>!
+            </h6>
+            <h6>
+                Copyright &copy; 2012 <a href="http://www.residentadvisor.net/">Resident Advisor Ltd.</a>
+            </h6>
+        </div>
     </div>
 
     <div data-role="page" id="eventPage">
@@ -119,9 +123,9 @@
 
     <script type="text/javascript">
         _.templateSettings = {
-            evaluate    : /\{%([\s\S]+?)%\}/g,
-            interpolate : /\{\{(.+?)\}\}/g,
-            escape : /\{\{\{(.+?)\}\}\}/g
+            evaluate: /\{%([\s\S]+?)%\}/g,
+            interpolate: /\{\{(.+?)\}\}/g,
+            escape: /\{\{\{(.+?)\}\}\}/g
         };
     </script>
 
@@ -161,14 +165,14 @@
             loadLibs();
         </script>
     {{/if}}
-    
+
 
     <script src="http://connect.soundcloud.com/sdk.js"></script>
-    <script type="text/JavaScript">
-      SC.initialize({
-          client_id: "4ff5e4db53c28af7f588fe2a9bf80208",
-          redirect_uri: "unused"
-      });
+    <script type="text/javascript">
+        SC.initialize({
+            client_id: "4ff5e4db53c28af7f588fe2a9bf80208",
+            redirect_uri: "unused"
+        });
     </script>
 
     <script type="text/javascript">

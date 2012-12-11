@@ -17,11 +17,11 @@
     }
 
     .countryIcon {
-        vertical-align: top;    
+        vertical-align: top;
     }
 
     .eventLi {
-        
+
         a {
             padding: 0em;
             padding-left: 5em;
@@ -67,7 +67,7 @@
             margin-left: -0.6em;
         }
     }
-    
+
 }
 
 

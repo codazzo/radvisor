@@ -43,7 +43,7 @@ var api_routes = {
     '/events/*': events,
     '/event/*': event,
     '/dj/*': dj,
-    '/public/*' : publicRouter,
+    '/public/*': publicRouter,
     '/venue/*': venue
 }
 

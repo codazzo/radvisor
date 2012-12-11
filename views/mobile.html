@@ -126,11 +126,15 @@
             nbl.l(['/minified/libs.js',
                 'public/stylesheets/mobipick.css',
                 'public/stylesheets/font-awesome-more.less.css',
-                'public/stylesheets/themes/all_themes_with_soundcloud.min.css',
-                function(){
+                'public/stylesheets/themes/all_themes_with_soundcloud.min.css'
+            ]);
+            // nbl callback is not triggered so we check if the libs are loaded with an interval //FIXME do this better
+            var datepickerLoaderInt = setInterval(function(){
+                if($.fn.mobipick){
+                    clearInterval(datepickerLoaderInt);
                     radvisor.bus.trigger("loaded:datepicker");
                 }
-            ]);
+            }, 500);
         }
     </script>
     {{#if env.isProduction }}

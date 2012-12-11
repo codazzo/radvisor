@@ -4,7 +4,7 @@ Version: 0.0.7
 
 CACHE:
 
-/
+#/
 
 http://code.jquery.com/jquery-1.8.2.min.js
 http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js
@@ -17,7 +17,7 @@ http://underscorejs.org/underscore-min.js
 http://backbonejs.org/backbone-min.js
 http://connect.soundcloud.com/sdk.js
 
-/minified/app.js
+#/minified/app.js
 /minified/libs.js
 
 http://www.google-analytics.com/ga.js

@@ -1,4 +1,4 @@
-var AppRouter = Backbone.Router.extend({ 
+var AppRouter = Backbone.Router.extend({
     routes: {
         "": "events",
         "tomorrow": "tomorrow",
@@ -28,7 +28,7 @@ var AppRouter = Backbone.Router.extend({
         $.mobile.showPageLoadingMsg();
         eventsView.update(date, function(){
             $.mobile.hidePageLoadingMsg();
-            me.changePage(eventsView);    
+            me.changePage(eventsView);
         });
     },
 
@@ -54,7 +54,7 @@ var AppRouter = Backbone.Router.extend({
         this.locationsView.update();
         me.changePage(this.locationsView);
     },
- 
+
     getEvent: function(id) {
         var me = this;
         $.mobile.showPageLoadingMsg();
@@ -72,7 +72,7 @@ var AppRouter = Backbone.Router.extend({
             me.changePage(djView);
         });
     },
- 
+
     changePage:function (page) {
         $.mobile.changePage(page.$el, {transition:"none", changeHash: false});
     }

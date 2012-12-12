@@ -5,7 +5,8 @@ var AppRouter = Backbone.Router.extend({
         "date/:id": "events",
         "locations": "locations", //locations view
         "event/:id": "getEvent",
-        "dj/:name": "dj"
+        "dj/:name": "dj",
+        "map": "map"
     },
 
     initialize: function(){
@@ -13,6 +14,7 @@ var AppRouter = Backbone.Router.extend({
         this.eventsView = new radvisor.EventsView();
         this.eventView = new radvisor.EventView();
         this.djView = new radvisor.DjView();
+        this.mapView = new radvisor.MapView();
     },
 
     events: function(date) {
@@ -73,6 +75,12 @@ var AppRouter = Backbone.Router.extend({
             $.mobile.hidePageLoadingMsg();
             me.changePage(djView);
         });
+    },
+
+    map: function (date){
+        var me = this;
+        this.mapView.render(date);
+        me.changePage(this.mapView);
     },
 
     changePage:function (page) {

@@ -11,7 +11,7 @@ module.exports = function(options, callback){
     var djName = options.name;
     var urlBase = "http://www.residentadvisor.net/dj/";
     var url = urlBase + djName;
-    
+    var scLinkRegexp = /.*soundcloud.com\/[a-zA-Z0-9-_]+\/?$/;
     jsdom.env(
         url,
         ["http://code.jquery.com/jquery.js"],
@@ -50,9 +50,8 @@ module.exports = function(options, callback){
             });
             resObj.links = linksObj;
 
-
             var scLink = linksObj['soundcloud'];
-            if(scLink){
+            if (scLink && scLinkRegexp.test(scLink)) {
                 var djTokens = scLink.split("/");
                 var djName = djTokens[djTokens.length-1];
 
@@ -67,7 +66,7 @@ module.exports = function(options, callback){
                         callback(resObj);
                     },
                     success:function(res, status, xhr){
-                        if(!res) {
+                        if(!res || res.length == 0) {
                             callback(resObj); //no users found TODO do this better
                         }
                         var userID = res[0].id; //TODO better check?
@@ -90,9 +89,8 @@ module.exports = function(options, callback){
                         });
                     }
                 });
-
-            }else{
-            callback(resObj);
+            } else {
+                callback(resObj);
             }
         }
     );

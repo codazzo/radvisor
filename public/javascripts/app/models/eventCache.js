@@ -1,4 +1,6 @@
 radvisor.EventCache = Backbone.Collection.extend({
+    model: radvisor.Event,
+    
     initialize: function(){
         var me = this;
         radvisor.bus.on("reset:cache", function(){

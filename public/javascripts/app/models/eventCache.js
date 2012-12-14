@@ -30,7 +30,9 @@ radvisor.EventCache = Backbone.Collection.extend({
             success(event);
         } else {
             //fetch event
-            var event = new radvisor.Event(eventId);
+            var event = new radvisor.Event({
+                id: eventId
+            });
             event.fetch({
                 success: function(model, response, options){
                     me.add(model);

@@ -3,10 +3,6 @@ radvisor.Event = Backbone.Model.extend({
 
     hostedLinks: ['/dj/'],
 
-    initialize: function(id){
-        this.id = id; //thought it was automatic?
-    },
-
     url: function(){
         return this.urlBase + this.id
     },

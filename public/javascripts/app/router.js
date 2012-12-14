@@ -68,7 +68,9 @@ var AppRouter = Backbone.Router.extend({
     dj: function(name){
         var me = this;
         var djView = this.djView;
+        $.mobile.showPageLoadingMsg();
         djView.update(name, function(){
+            $.mobile.hidePageLoadingMsg();
             me.changePage(djView);
         });
     },

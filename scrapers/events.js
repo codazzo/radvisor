@@ -37,6 +37,10 @@ module.exports = function(options, callback){
                     isRAticket = true;
                 }
                 var eventAtVenue = titleEl.text();
+                var venueAnchor = titleEl.children('a').filter(function(){
+                    return this.href.indexOf('club-detail') != -1;
+                });
+                var venueId = venueAnchor && venueAnchor.length ? venueAnchor[0].href.split('id=')[1] : null;
                 var eventName = titleEl.children().first().text();
                 var venueName = eventAtVenue.substr(eventName.length+4, eventAtVenue.length); //" at "
                 if(isRAticket){
@@ -47,6 +51,7 @@ module.exports = function(options, callback){
                     id: idHref.split("?")[1],
                     title: eventName,
                     venue: venueName,
+                    venueId: venueId,
                     img: host+$ev.find(".im-list").find("img").attr("src"),
                     info: $ev.children(".pt1.grey").text(),
                     ppl: $ev.children(".pt1").find(".f10").find(".grey").text().split(" ")[0]

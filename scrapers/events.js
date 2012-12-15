@@ -29,7 +29,7 @@ module.exports = function(options, callback){
                     return el.indexOf("event") != -1
                 });
                 if (!idHref) return; //no event id: dirty data! skip
-                
+
                 var titleEl = $ev.children(".black");
                 var isRAticket;
                 if(!titleEl.length){

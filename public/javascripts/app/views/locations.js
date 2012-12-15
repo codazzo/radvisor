@@ -6,8 +6,8 @@ radvisor.LocationsView = Backbone.View.extend({
     el: "#locationsPage",
     template: _.template($("#locations-template").html()),
     events: {
-        "click #locationSubmit" : "setLocation",
-        "change #countrySelect" : "changeCountry"
+        "click #locationSubmit": "setLocation",
+        "change #countrySelect": "changeCountry"
     },
 
     initialize: function(date){
@@ -49,7 +49,7 @@ radvisor.LocationsView = Backbone.View.extend({
         * the cache must be invalidated since the location has changed.
         */
         radvisor.bus.trigger('reset:cache');
-        localStorage.clear(); //clear all cache in localStorage 
+        localStorage.clear(); //clear all cache in localStorage
 
         radvisor.router.navigate("",  {trigger: true});
         $.mobile.showPageLoadingMsg();

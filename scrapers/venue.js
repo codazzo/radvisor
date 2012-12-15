@@ -1,6 +1,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var jsdom = require("jsdom");
+var gmaps = require("googlemaps");
 
 var host = "http://www.residentadvisor.net/";
 
@@ -41,8 +42,16 @@ module.exports = function(options, callback){
             });
             var logo = window.document.getElementById("_contentmain__clublogo");
             resObj.logo = logo ? host+logo.src : null;
-
-            callback(resObj);
+            if (propsMap.address) {
+                gmaps.geocode(propsMap.address, function(err, data) {
+                    latlng = data['results'][0]['geometry']['location'];
+                    resObj.location = latlng;
+                    callback(resObj);
+                });
+            } else {
+                resObj.location = null;
+                callback(resObj);
+            }
         }
     );
 }

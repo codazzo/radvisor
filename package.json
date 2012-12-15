@@ -16,7 +16,8 @@
       "mongojs": "*",
       "node-inspector": "*",
       "uglify-js": "*",
-      "handlebars": "*"
+      "handlebars": "*",
+      "googlemaps": "*"
   },
   "engines": {
       "node": ">= 0.8",

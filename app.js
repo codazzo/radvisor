@@ -38,8 +38,7 @@ var publicRouter = function(req, res){
     res.redirect(choppedUrl);
 }
 
-var routes = {
-    '/' : ui.mobile,
+var api_routes = {
     '/regions': regions,
     '/events/*': events,
     '/event/*': event,
@@ -47,9 +46,15 @@ var routes = {
     '/public/*' : publicRouter,
     '/venue/*': venue
 }
-_.each(routes, function(handler, route){
-    app.get(route, handler);
+
+_.each(api_routes, function(handler, route){
+    app.get(route, function(req, res){
+        res.set('Content-Type', 'application/json');
+        handler(req, res);
+    });
 });
+
+app.get('/', ui.mobile);
 
 http.createServer(app).listen(app.get('port'), function(){
     console.log("Express server listening on port " + app.get('port'));

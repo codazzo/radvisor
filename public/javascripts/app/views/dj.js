@@ -1,6 +1,6 @@
 radvisor.DjView = Backbone.View.extend({
     el: "#djPage",
-    
+
     template: _.template($("#dj-template").html()),
     templates: {
         about: _.template($("#dj-about-template").html()),
@@ -10,9 +10,9 @@ radvisor.DjView = Backbone.View.extend({
     templates_html: {},
 
     events: {
-        'click .dj-events' : 'showSection',
-        'click .dj-tracks' : 'showSection',
-        'click .dj-about' : 'showSection'
+        'click .dj-events': 'showSection',
+        'click .dj-tracks': 'showSection',
+        'click .dj-about': 'showSection'
     },
 
     initialize: function(date){

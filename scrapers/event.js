@@ -1,6 +1,6 @@
 var $ = require('jquery');
 var _ = require('underscore');
-var jsdom = require("jsdom");
+var jsdom = require('jsdom');
 
 var host = "http://www.residentadvisor.net/";
 
@@ -8,7 +8,7 @@ module.exports = function(options, callback){
     var eventId = options.eventId;
     var urlBase = "http://www.residentadvisor.net/event.aspx?";
     var url = urlBase + eventId;
-    
+
     jsdom.env(
         url,
         ["http://code.jquery.com/jquery.js"],
@@ -17,18 +17,18 @@ module.exports = function(options, callback){
             var title = topData.children("div").text();
             var infoRows = topData.find("table tr");
 
-            var getRowdata = function(node){
+            var getRowData = function(node){
                 return node.children("td").eq(1).text()
             }
 
-            var date = getRowdata(infoRows.eq(1));
-            var time = getRowdata(infoRows.eq(2));
+            var date = getRowData(infoRows.eq(1));
+            var time = getRowData(infoRows.eq(2));
 
             //a bit involved but this accounts for slashes in the venue name
-            var venueStr = getRowdata(infoRows.eq(3));
+            var venueStr = getRowData(infoRows.eq(3));
             var slashTokens = venueStr.split("/");
             var venueAddress = venueStr.split("/")[slashTokens.length-1].trim();
-            var venueName = venueStr.substr(0, venueStr.length - venueAddress.length - 2); //-2 accounts for '/ '            
+            var venueName = venueStr.substr(0, venueStr.length - venueAddress.length - 2); //-2 accounts for '/ '
             var cost = getRowdata(infoRows.eq(4));
 
             var infoPanes = window.$("#_contentmain_EventDisplay").find("tr").first().children("td");

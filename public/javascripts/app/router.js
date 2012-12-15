@@ -32,7 +32,7 @@ var AppRouter = Backbone.Router.extend({
         });
     },
 
-    tomorrow : function(){
+    tomorrow: function(){
         var eventsView = this.eventsView;
         $(".date-selection .ui-btn-active").removeClass("ui-btn-active");
         $(".date-selection .tomorrowName").addClass("ui-btn-active");

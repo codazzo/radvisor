@@ -10,7 +10,8 @@ var ui = require('./routes/ui'),
     events = require('./routes/events'),
     event = require('./routes/event'),
     regions = require('./routes/regions'),
-    dj = require('./routes/dj');
+    dj = require('./routes/dj'),
+    venue = require('./routes/venue');
 
 var app = config.app;
 
@@ -43,7 +44,8 @@ var routes = {
     '/events/*': events,
     '/event/*': event,
     '/dj/*': dj,
-    '/public/*' : publicRouter
+    '/public/*' : publicRouter,
+    '/venue/*': venue
 }
 _.each(routes, function(handler, route){
     app.get(route, handler);

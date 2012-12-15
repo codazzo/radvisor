@@ -1,4 +1,4 @@
-var resources = ["regions", "events", "event", "dj"];
+var resources = ["regions", "events", "event", "dj", "venue"];
 var _ = require("underscore");
 
 var scrapers = {};

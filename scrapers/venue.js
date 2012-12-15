@@ -9,7 +9,7 @@ module.exports = function(options, callback){
     var venueId = options.venueId;
     var urlBase = "http://www.residentadvisor.net/club-detail.aspx?id=";
     var url = urlBase + venueId;
-    
+
     jsdom.env(
         url,
         ["http://code.jquery.com/jquery.js"],

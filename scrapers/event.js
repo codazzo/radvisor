@@ -29,7 +29,7 @@ module.exports = function(options, callback){
             var slashTokens = venueStr.split("/");
             var venueAddress = venueStr.split("/")[slashTokens.length-1].trim();
             var venueName = venueStr.substr(0, venueStr.length - venueAddress.length - 2); //-2 accounts for '/ '
-            var cost = getRowdata(infoRows.eq(4));
+            var cost = getRowData(infoRows.eq(4));
 
             var infoPanes = window.$("#_contentmain_EventDisplay").find("tr").first().children("td");
             var mainInfo = infoPanes.eq(0);

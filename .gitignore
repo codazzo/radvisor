@@ -5,3 +5,4 @@
 /config/loginData.js
 /public/cache/*
 !/public/cache/.*
+node_modules

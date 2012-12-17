@@ -16,9 +16,6 @@ radvisor.EventsView = Backbone.View.extend({
         var currentDate = new Date();
         currentDate = new Date(currentDate.getTime() - 8 * 60 * 60 * 1000); //we party till 8 :)
         var dateStr = date || radvisor.getDateStr(currentDate);
-        this.day = dateStr.substr(0,2);
-        this.month = dateStr.substr(2,2);
-        this.year = dateStr.substr(4,4);
 
         this.model.getEvents(dateStr, function(eventsModel){
             if(me.cachedModel != eventsModel){
@@ -36,7 +33,6 @@ radvisor.EventsView = Backbone.View.extend({
     },
 
     render: function(options) {
-        var dateStr = this.day + "/"+ this.month + "/" + this.year;
         var locationData = $.parseJSON($.cookie("ra_location"));
         if (locationData.name=="All Regions") {
             locationData.name = locationData.country; //no use in displaying "All Regions"
@@ -55,9 +51,7 @@ radvisor.EventsView = Backbone.View.extend({
         this.$(".todayName .ui-btn-text").html(daysMap[todayNum]);
         this.$(".tomorrowName .ui-btn-text").html(daysMap[(todayNum+1)%7]);
         var tmpHtml = this.template({
-            location: locationData,
-            events: events,
-            date: dateStr
+            events: events
         });
 
         $content = this.$el.find("[data-role=content]");
@@ -76,11 +70,12 @@ radvisor.EventsView = Backbone.View.extend({
     },
 
     initDatepicker: function(){
+        var me = this;
         this.datepicker = this.$("#datePicker");
         this.datepicker.mobipick({
             change: function(evt){
-                var date = $( this ).val();
-                var dateObject = $( this ).mobipick( "option", "date" );
+                var date = me.datepicker.val();
+                var dateObject = me.datepicker.mobipick( "option", "date" );
                 var day = date.split("-")[2];
                 var month = date.split("-")[1];
                 var year = date.split("-")[0];

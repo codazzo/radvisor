@@ -30,7 +30,7 @@ radvisor.DjView = Backbone.View.extend({
                 me.render();
                 me.contentEl = me.$(".dj-content");
                 //me.showAbout();
-                me.$("a.dj-about").click(); //also selects the button
+                me.$("a.dj-about").trigger('click'); //also selects the button
                 callback();
             }
         });

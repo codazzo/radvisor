@@ -46,11 +46,10 @@ module.exports = function(options, callback){
             resObj.name = window.$('h1.title2 span').first().text();
             if (propsMap.address) {
                 gmaps.geocode(resObj.address, function(err, data) {
-                    if(data !== undefined) {
-                        latlng = data['results'][0]['geometry']['location'];
-                        resObj.location = latlng;
-                        callback(resObj);
+                    if (data) {
+                       resObj.location  = data['results'][0]['geometry']['location'];
                     }
+                    callback(resObj);
                 });
             } else {
                 resObj.location = null;

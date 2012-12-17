@@ -24,8 +24,23 @@
         }
     }
 
-    .countryIcon {
-        vertical-align: top;
+    .ui-header {
+        > a {
+            top: 5px; //align map and country icons
+        }
+        .countryIcon {
+            vertical-align: top;
+        }
+
+        .map-icon {
+            .ui-btn-inner {
+                padding-top: 0.15em;
+                padding-bottom: 0.1em;
+            }
+            .icon-map {
+                font-size: 1.7em;
+            }
+        }        
     }
 
     .eventLi {

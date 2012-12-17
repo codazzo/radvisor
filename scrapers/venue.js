@@ -3,13 +3,13 @@ var _ = require('underscore');
 var jsdom = require("jsdom");
 var gmaps = require("googlemaps");
 
-var host = "http://www.residentadvisor.net/";
+var host = "http://www.residentadvisor.net";
 
 module.exports = function(options, callback){
     var venueId = options.venueId;
     var urlBase = "http://www.residentadvisor.net/club-detail.aspx?id=";
     var url = urlBase + venueId;
-    
+
     jsdom.env(
         url,
         ["http://code.jquery.com/jquery.js"],

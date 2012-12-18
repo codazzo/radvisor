@@ -54,7 +54,7 @@ radvisor.MapView = Backbone.View.extend({
             });
         });
         $('#map_canvas').gmap().bind('init', function(evt, map){
-            $('#map_canvas').gmap('getCurrentPosition', function(position, status){
+            me.getCurrentPosition(function(position, status){
                 if (status === 'OK'){
                     var clientPosition = new google.maps.LatLng(position.coords.latitude,
                                                                 position.coords.longitude);
@@ -71,5 +71,21 @@ radvisor.MapView = Backbone.View.extend({
     cleanView: function(){
         this.$el.html(""); //hack to avoid superimposing event pages
         this.$el.closest("#mapPage").find("h1.title").html("");
+    },
+
+    getCurrentPosition: function(callback, geoPositionOptions) {
+        if ( navigator.geolocation ) {
+            navigator.geolocation.getCurrentPosition ( 
+                function(result) {
+                        callback(result, 'OK');
+                }, 
+                function(error) {
+                        callback(null, error);
+                }, 
+                geoPositionOptions 
+            );      
+        } else {
+            callback(null, 'NOT_SUPPORTED');
+        }
     }
 });

@@ -6,10 +6,6 @@ radvisor.EventsView = Backbone.View.extend({
         'tap .calendar': 'pickDate'
     },
 
-    initialize: function(date){
-        this.model = new radvisor.EventsByDate(date);
-    },
-
     update: function(date, callback){
         var me = this;
         //TODO refactor the following lines

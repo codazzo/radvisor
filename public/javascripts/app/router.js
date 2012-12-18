@@ -10,17 +10,22 @@ var AppRouter = Backbone.Router.extend({
     },
 
     initialize: function(){
+        this.eventsByDate  = new radvisor.EventsByDate(); //common events model for Events and Map views
         this.locationsView = new radvisor.LocationsView();
-        this.eventsView = new radvisor.EventsView();
+        this.eventsView = new radvisor.EventsView({
+            model: this.eventsByDate
+        });
         this.eventView = new radvisor.EventView();
         this.djView = new radvisor.DjView();
-        this.mapView = new radvisor.MapView();
+        this.mapView = new radvisor.MapView({
+            model: this.eventsByDate
+        });
     },
 
-    events: function(date) {
+    events: function(dateStr) {
         var eventsView = this.eventsView;
         $(".date-selection .ui-btn-active").removeClass("ui-btn-active");
-        if (date) {
+        if (dateStr) {
             $(".date-selection .calendar").addClass("ui-btn-active");
         } else {
             $(".date-selection .todayName").addClass("ui-btn-active");
@@ -28,7 +33,7 @@ var AppRouter = Backbone.Router.extend({
         //TODO in the future we should force reloading the model when a new location cookie is set
         var me = this;
         $.mobile.showPageLoadingMsg();
-        eventsView.update(date, function(){
+        eventsView.update(dateStr, function(){
             $.mobile.hidePageLoadingMsg();
             me.changePage(eventsView);
         });
@@ -77,10 +82,14 @@ var AppRouter = Backbone.Router.extend({
         });
     },
 
-    map: function (date){
+    map: function() {
         var me = this;
-        this.mapView.render(date);
-        me.changePage(this.mapView);
+        var mapView = this.mapView;
+        $.mobile.showPageLoadingMsg();
+        mapView.update(function(){
+            $.mobile.hidePageLoadingMsg();
+            me.changePage(mapView);
+        });
     },
 
     changePage:function (page) {

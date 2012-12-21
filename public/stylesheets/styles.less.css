@@ -12,7 +12,15 @@
 #eventsPage{
     .ui-block-c {
         .ui-btn-inner {
-            padding: 0.25em;
+            font-size: 1.5em;
+            padding-top: 0.15em;
+            padding-bottom: 0.2em;
+        }
+    }
+
+    .ui-block-a,.ui-block-b,.ui-block-c {
+        > a {
+            height: 2.3em;            
         }
     }
 

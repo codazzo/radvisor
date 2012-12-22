@@ -10,7 +10,8 @@ radvisor.EventsByDate = Backbone.Collection.extend({
         var todayLexical = radvisor.getLexicalDate(todayStr);
         //clean old events from cache
         var eventKeys = [];
-        if(typeof(localStorage) != 'undefined'){
+        this.useLocalStorage = false;
+        if(this.useLocalStorage && typeof(localStorage) != 'undefined' ){
             for(var i=0, ll=localStorage.length; i<ll; i++) {
                 eventKeys.push(localStorage.key(i));
             }
@@ -35,7 +36,7 @@ radvisor.EventsByDate = Backbone.Collection.extend({
             date: dateStr,
             events: events
         });
-        if(typeof(localStorage)!='undefined') {
+        if(this.useLocalStorage && typeof(localStorage)!='undefined') {
             localStorage.setItem('events-' + dateStr, JSON.stringify(events));
         }
     },
@@ -59,7 +60,7 @@ radvisor.EventsByDate = Backbone.Collection.extend({
         var eventsByDate = this.find(function(el){
             return el.get("date") == dateStr;
         });
-        if(!eventsByDate && typeof(localStorage) != 'undefined') { 
+        if(!eventsByDate && this.useLocalStorage && typeof(localStorage) != 'undefined') { 
             var storedEvents = localStorage.getItem('events-' + dateStr); //try looking events up in localStorage
             if(storedEvents) {
                 var eventsArray = JSON.parse(storedEvents);

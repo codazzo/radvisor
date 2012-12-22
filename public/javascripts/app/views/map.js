@@ -9,6 +9,7 @@ radvisor.MapView = Backbone.View.extend({
         $content.trigger('create');
 
         this.map_canvas = $('#map_canvas');
+        $(window).resize(_.bind(this.fixGoogleMapLayout, this));
     },
 
     update: function(callback){
@@ -16,67 +17,60 @@ radvisor.MapView = Backbone.View.extend({
 
         this.model.getEvents(null, function(eventsModel){
             //TODO this code is duplicated among views, could be refactored
-            callback(); //changing the page first or google maps is resized incorrectly
             if(me.cachedModel != eventsModel){
-                me.render();
+                me.cachedModel = eventsModel;
+                _.defer(_.bind(me.render, me)); //otherwise maps gets zoomed out to earth on 2nd view
             }
-            me.cachedModel = eventsModel;
+            callback();
+            me.fixGoogleMapLayout();
         });
     },
 
-
-    render: function() {
-        var me = this;
-
+    fixGoogleMapLayout: function(){
         //FIXME
         // 82: The sum of the header height plus the upper and bottom margins.
         this.map_canvas.height($('body').innerHeight() - 82); // <magicnumber/>
-        $(window).resize(function(){
-            me.map_canvas.height($('body').innerHeight() - 82);
-        });
+        this.map_canvas.gmap('refresh');
+    },
 
+    render: function() {
+        // this.map_canvas.bind('init', _.bind(this.centerMapFromGeolocation, this));
+        this.map_canvas.gmap('clear', 'markers');
         this.addVenueMarkers();
         this.centerMapFromGeolocation();
     },
 
     addVenueMarkers: function(){
         var me = this;
-        this.map_canvas.gmap({'zoom': 10}).bind('init', function() {
-            var eventsData = me.cachedModel;
-            eventsData.each(function(event) {
-                // FIXME: We have to do something about the id-less venues
-                if (!event.has("venueId")) return;
 
-                var infoWinContent = '<a href="#/event/' + event.get("id") + '">' +
-                                     event.get("title") + ' at ' + event.get("venue") + '</a>';
-                var venueURI = '/venue/' + event.get("venueId");
-                $.getJSON(venueURI, function(venue){
-                    me.map_canvas.gmap('addMarker', {
-                        'position': new google.maps.LatLng(venue['location']['lat'],
-                                                           venue['location']['lng']),
-                        'bounds': true
-                    }).click(function() {
-                        me.map_canvas.gmap('openInfoWindow', {'content': infoWinContent}, this);
-                    });
+        var eventsData = me.cachedModel;
+        eventsData.each(function(event) {
+            var infoWinContent = '<a href="#/event/' + event.get("id") + '">' + event.get("title") + ' at ' + event.get("venue").name + '</a>';
+            var venue = event.get('venue');
+            if (venue.location) {
+                var position = new google.maps.LatLng(venue.location.lat, venue.location.lng);
+                me.map_canvas.gmap('addMarker', {
+                    'position': position,
+                    'bounds': true
+                }).click(function() {
+                    me.map_canvas.gmap('openInfoWindow', {'content': infoWinContent}, this);
                 });
-            });
+            }
         });
     },
 
     centerMapFromGeolocation: function(){
         var me = this;
-        this.map_canvas.gmap().bind('init', function(evt, map){
-            me.getCurrentPosition(function(position, status){
-                if (status === 'OK'){
-                    var clientPosition = new google.maps.LatLng(position.coords.latitude,
-                                                                position.coords.longitude);
-                    me.map_canvas.gmap({'center': clientPosition});
-                    me.map_canvas.gmap('addMarker', {
-                        'position': clientPosition,
-                        'icon': 'http://maps.google.com/mapfiles/ms/micons/blue-dot.png',
-                    });
-                }
-            });
+        me.getCurrentPosition(function(position, status){
+            if (status === 'OK'){
+                var clientPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                console.log("fot pos. lat: "+position.coords.latitude + ", long: "+position.coords.longitude);
+                me.map_canvas.gmap({'center': clientPosition});
+                me.map_canvas.gmap('addMarker', {
+                    'position': clientPosition,
+                    'icon': 'http://maps.google.com/mapfiles/ms/micons/blue-dot.png',
+                });
+            }
         });
     },
 

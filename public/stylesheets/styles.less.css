@@ -32,12 +32,15 @@
             vertical-align: top;
         }
 
-        .map-icon {
+        .map-icon, .locations-icon {
             .ui-btn-inner {
                 padding-top: 0.15em;
                 padding-bottom: 0.1em;
+                .ui-btn-text {
+                    * { vertical-align: middle; }
+                }
             }
-            .icon-map {
+            i {
                 font-size: 1.7em;
             }
         }        
@@ -95,11 +98,6 @@
 
 
 #locationsPage {
-    .countryIcon{
-        position: relative;
-        left: -3px;
-    }
-
     label {
         float: right;
         margin-top: 1.2em;

@@ -47,10 +47,10 @@ module.exports = function(options, callback){
             resObj.logo = logo ? host+logo.src : null;
             resObj.id = venueId;
             resObj.name = window.$('h1.title2 span').first().text();
-            if (propsMap.address) {
+            if (resObj.address) {
                 gmaps.geocode(resObj.address, function(err, data) {
-                    if (data) {
-                       resObj.location  = data['results'][0]['geometry']['location'];
+                    if (data && data.results.length) {
+                        resObj.location  = data.results[0].geometry.location;
                     }
                     callback(resObj);
                 });

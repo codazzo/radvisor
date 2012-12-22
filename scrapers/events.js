@@ -23,6 +23,9 @@ module.exports = function(options, callback){
 
             var resArray = [];
             var count = 0;
+            if (!eventDivs.length) {
+                callback([]); //no events found
+            }
             _.each(eventDivs, function(ev){
                 var $ev = $(ev);
                 var hrefs = _.map($ev.find("a[href]"), function(el){
@@ -72,6 +75,9 @@ module.exports = function(options, callback){
                     });
                 } else {
                     resArray.push(eventObj);
+                    if(resArray.length == count) {
+                        callback(resArray);
+                    }
                 }
             });
             

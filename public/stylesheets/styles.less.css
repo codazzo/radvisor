@@ -24,8 +24,26 @@
         }
     }
 
-    .countryIcon {
-        vertical-align: top;
+    .ui-header {
+        > a {
+            top: 5px; //align map and country icons
+        }
+        .countryIcon {
+            vertical-align: top;
+        }
+
+        .map-icon, .locations-icon {
+            .ui-btn-inner {
+                padding-top: 0.15em;
+                padding-bottom: 0.1em;
+                .ui-btn-text {
+                    * { vertical-align: middle; }
+                }
+            }
+            i {
+                font-size: 1.7em;
+            }
+        }        
     }
 
     .eventLi {
@@ -80,11 +98,6 @@
 
 
 #locationsPage {
-    .countryIcon{
-        position: relative;
-        left: -3px;
-    }
-
     label {
         float: right;
         margin-top: 1.2em;
@@ -110,6 +123,15 @@
 
         .track-entry {
             text-align: left;
+        }
+    }
+}
+
+#mapPage {
+    .logo-header{
+        margin: .4em 10% .4em;
+        .logo {
+            height: 1.8em;
         }
     }
 }

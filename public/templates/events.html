@@ -1,12 +1,5 @@
 <ul class="listView" data-role="listview">
     {% _.each(events, function(event) { %}
-        <li class="eventLi">
-            <a href="#/event/{{event.id}}" data-transition="pop">
-                <img class="ui-li-thumb ui-corner-tl" src="{{event.img}}" />
-                <h3 class="ui-li-heading">{{event.title}}</h3>
-                <p class="ui-li-desc">{{event.venue.name}}</p>
-                <span class="ilb ui-li-count">{{event.ppl}}</span>
-            </a>
-        </li>
+        {% print(eventTemplate(event)); %}
     {% }); %}
 </ul>

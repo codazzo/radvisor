@@ -1,6 +1,7 @@
 radvisor.EventsView = Backbone.View.extend({
     el: "#eventsPage",
     template: _.template($("#events-template").html()),
+    eventTemplate: _.template($("#listevent-template").html()),
 
     events: {
         'tap .calendar': 'pickDate'
@@ -47,7 +48,8 @@ radvisor.EventsView = Backbone.View.extend({
         this.$(".todayName .ui-btn-text").html(daysMap[todayNum]);
         this.$(".tomorrowName .ui-btn-text").html(daysMap[(todayNum+1)%7]);
         var tmpHtml = this.template({
-            events: events
+            events: events,
+            eventTemplate: this.eventTemplate
         });
 
         $content = this.$el.find("[data-role=content]");

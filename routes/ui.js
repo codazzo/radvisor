@@ -27,7 +27,8 @@ var templates = {
     events: 'events.html',
     locations: 'locations.html',
     track: 'track.html',
-    map: 'map.html'
+    map: 'map.html',
+    list_event: 'list_event.html'
 }
 
 var images = {

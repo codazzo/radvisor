@@ -65,19 +65,28 @@ module.exports = function(options, callback){
                     ppl: $ev.children(".pt1").find(".f10").find(".grey").text().split(" ")[0]
                 };
 
+                function callbackIfAllScraped(){
+                    if(resArray.length == count) {
+                        resArray = _.sortBy(resArray, function(el){
+                            var pplInt;
+                            try{
+                                pplInt = -parseInt(el.ppl);
+                            } catch (e) { /*TODO */}
+                            return pplInt;
+                        });
+                        callback(resArray);
+                    }
+                }
+
                 if (venueId) {
                     db.get("venue", {venueId: venueId}, function(venueData){
                         _.extend(eventObj.venue, venueData);
                         resArray.push(eventObj);
-                        if(resArray.length == count) {
-                            callback(resArray);
-                        }
+                        callbackIfAllScraped();
                     });
                 } else {
                     resArray.push(eventObj);
-                    if(resArray.length == count) {
-                        callback(resArray);
-                    }
+                    callbackIfAllScraped();
                 }
             });
             

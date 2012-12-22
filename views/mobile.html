@@ -18,13 +18,15 @@
     <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.2/underscore-min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.2/backbone-min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true"></script>
+    <script src="http://jquery-ui-map.googlecode.com/svn/trunk/ui/jquery.ui.map.js"></script>
 </head>
 <body>
 
     <div data-role="page" id="eventsPage">
         <div data-role="header">
-            <a href="#/locations" data-rel="dialog" data-role="button" data-mini="true" data-inline="true">
-                <img class="countryIcon">
+            <a href="#/locations" data-rel="dialog" data-role="button" data-mini="true" data-inline="true" class="locations-icon">
+                <i class="icon-flag"></i>
             </a>
 
             <h1 class="logo-header">
@@ -32,6 +34,10 @@
                     <img class="logo" src="{{{images.logo}}}">
                 </a>
             </h1>
+
+            <a href="#/map" data-rel="dialog" data-role="button" data-mini="true" data-inline="true" class="map-icon">
+                <i class="icon-map"></i>
+            </a>
         </div>
 
         <div data-role="navbar" class="date-selection" style="display:none;">
@@ -53,6 +59,7 @@
 
         <div data-role="content">
         </div>
+
         <div data-role="footer" class="footer">
             <h6 class="oneline">
                 This is a hack by <a href="http://twitter.com/codazzo">codazzo</a>.
@@ -65,30 +72,41 @@
     </div>
 
     <div data-role="page" id="eventPage">
-            <div data-role="header">
-                <a class="goback" data-icon="back">Back</a>
-                <h1 class="title"></h1>
-            </div>
-            <div data-role="content">
-            </div>
+        <div data-role="header">
+            <a class="goback" data-icon="back">Back</a>
+            <h1 class="title"></h1>
+        </div>
+        <div data-role="content">
+        </div>
     </div>
 
     <div data-role="page" id="locationsPage">
-            <div data-role="header">
-                <a class="goback" data-icon="back">Back</a>
-                <h1 class="title">Choose your location</h1>
-            </div>
-            <div data-role="content">
-            </div>
+        <div data-role="header">
+            <a class="goback" data-icon="back">Back</a>
+            <h1 class="title">Choose your location</h1>
+        </div>
+        <div data-role="content">
+        </div>
     </div>
 
     <div data-role="page" id="djPage">
-            <div data-role="header">
-                <a class="goback" data-icon="back">Back</a>
-                <h1 class="title"></h1>
-            </div>
-            <div data-role="content">
-            </div>
+        <div data-role="header">
+            <a class="goback" data-icon="back">Back</a>
+            <h1 class="title"></h1>
+        </div>
+        <div data-role="content">
+        </div>
+    </div>
+
+    <div data-role="page" id="mapPage">
+        <div data-role="header">
+            <a class="goback" data-icon="back">Back</a>
+            <h1 class="logo-header">
+                <img class="logo" src="{{{images.logo}}}">
+            </h1>
+        </div>
+        <div data-role="content">
+        </div>
     </div>
 
 
@@ -119,6 +137,10 @@
 
     <script id="track-template" type="text/x-underscore-template">
         {{{ templates.track }}}
+    </script>
+
+    <script id="map-template" type="text/x-underscore-template">
+        {{{ templates.map }}}
     </script>
 
     <script type="text/javascript">

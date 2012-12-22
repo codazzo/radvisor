@@ -40,8 +40,22 @@ radvisor.EventsByDate = Backbone.Collection.extend({
         }
     },
 
+    /**
+    * Async function to get an events collection.
+    * TODO make location choice explicit
+    * @param {String} dateStr If provided, events are returned for that date. Otherwise,
+    *                 events are returned for the last dateStr used,
+    *                 otherwise for today (up until 8AM the next day)
+    */
     getEvents: function(dateStr, success){
         var me = this;
+
+        var currentDate = new Date();
+        currentDate = new Date(currentDate.getTime() - 8 * 60 * 60 * 1000); //we party till 8 :)
+        var dateStr = dateStr || this.cachedDateStr || radvisor.getDateStr(currentDate);
+
+        this.cachedDateStr = dateStr;
+        
         var eventsByDate = this.find(function(el){
             return el.get("date") == dateStr;
         });

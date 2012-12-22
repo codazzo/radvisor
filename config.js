@@ -62,6 +62,7 @@ var appDeps = {
         "views/locations.js",
         "views/track.js",
         "views/tracks.js",
+        "views/map.js",
         "app.js"
     ],
     path: "/javascripts/app/",

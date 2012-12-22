@@ -14,6 +14,9 @@ module.exports = function(options, callback){
         url,
         ["http://code.jquery.com/jquery.js"],
         function (errors, window) {
+            if (errors && errors.length) {
+                callback();
+            }
             var propsMap = {
                 address: 'Address',
                 phone: 'Phone',
@@ -42,10 +45,13 @@ module.exports = function(options, callback){
             });
             var logo = window.document.getElementById("_contentmain__clublogo");
             resObj.logo = logo ? host+logo.src : null;
-            if (propsMap.address) {
-                gmaps.geocode(propsMap.address, function(err, data) {
-                    latlng = data['results'][0]['geometry']['location'];
-                    resObj.location = latlng;
+            resObj.id = venueId;
+            resObj.name = window.$('h1.title2 span').first().text();
+            if (resObj.address) {
+                gmaps.geocode(resObj.address, function(err, data) {
+                    if (data && data.results.length) {
+                        resObj.location  = data.results[0].geometry.location;
+                    }
                     callback(resObj);
                 });
             } else {

@@ -14,6 +14,9 @@ module.exports = function(options, callback){
         url,
         ["http://code.jquery.com/jquery.js"],
         function (errors, window) {
+            if (errors && errors.length) {
+                callback();
+            }
             var propsMap = {
                 address: 'Address',
                 phone: 'Phone',

@@ -1,3 +1,5 @@
+var db = require("../db");
+
 var $ = require('jquery');
 var _ = require('underscore');
 var jsdom = require("jsdom");
@@ -20,6 +22,7 @@ module.exports = function(options, callback){
             var eventDivs = window.$(".hr-dark").nextAll().not(".hr");
 
             var resArray = [];
+            var count = 0;
             _.each(eventDivs, function(ev){
                 var $ev = $(ev);
                 var hrefs = _.map($ev.find("a[href]"), function(el){
@@ -29,7 +32,7 @@ module.exports = function(options, callback){
                     return el.indexOf("event") != -1
                 });
                 if (!idHref) return; //no event id: dirty data! skip
-
+                count++;
                 var titleEl = $ev.children(".black");
                 var isRAticket;
                 if(!titleEl.length){
@@ -50,16 +53,28 @@ module.exports = function(options, callback){
                 var eventObj = {
                     id: idHref.split("?")[1],
                     title: eventName,
-                    venue: venueName,
-                    venueId: venueId,
+                    venue: {
+                        id: venueId,
+                        name: venueName
+                    },
                     img: host+$ev.find(".im-list").find("img").attr("src"),
                     info: $ev.children(".pt1.grey").text(),
                     ppl: $ev.children(".pt1").find(".f10").find(".grey").text().split(" ")[0]
                 };
-                resArray.push(eventObj);
-            });
 
-            callback(resArray);
+                if (venueId) {
+                    db.get("venue", {venueId: venueId}, function(venueData){
+                        _.extend(eventObj.venue, venueData);
+                        resArray.push(eventObj);
+                        if(resArray.length == count) {
+                            callback(resArray);
+                        }
+                    });
+                } else {
+                    resArray.push(eventObj);
+                }
+            });
+            
         }
     );
 }

@@ -1,6 +1,7 @@
 radvisor.MapView = Backbone.View.extend({
     el: "#mapPage",
     template: _.template($("#map-template").html()),
+    eventTemplate: _.template($("#listevent-template").html()),
 
     initialize: function(){
         this.wrapper = $("<div/>");
@@ -9,6 +10,14 @@ radvisor.MapView = Backbone.View.extend({
         $content.trigger('create');
 
         this.map_canvas = $('#map_canvas');
+        var homeLoc = new google.maps.LatLng(52.522867, 13.416297); //map requires a center position
+        var mapOptions = {
+          zoom: 10,
+          center: homeLoc,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        this.overlays = [];
+        this.map = new google.maps.Map(this.map_canvas[0], mapOptions);
         $(window).resize(_.bind(this.fixGoogleMapLayout, this));
     },
 
@@ -30,33 +39,56 @@ radvisor.MapView = Backbone.View.extend({
         //FIXME
         // 82: The sum of the header height plus the upper and bottom margins.
         this.map_canvas.height($('body').innerHeight() - 82); // <magicnumber/>
-        this.map_canvas.gmap('refresh');
+        google.maps.event.trigger(this.map, 'resize');
     },
 
     render: function() {
         // this.map_canvas.bind('init', _.bind(this.centerMapFromGeolocation, this));
-        this.map_canvas.gmap('clear', 'markers');
+        this.clearOverlays();
         this.addVenueMarkers();
         this.centerMapFromGeolocation();
+    },
+
+    clearOverlays: function(){
+        _.each(this.overlays, function(overlay){
+            overlay.setMap(null);
+        });
     },
 
     addVenueMarkers: function(){
         var me = this;
 
         var eventsData = me.cachedModel;
+        var bounds = new google.maps.LatLngBounds();
+        var infowindow = new google.maps.InfoWindow({
+            maxWidth: 400
+        });
+
         eventsData.each(function(event) {
             var infoWinContent = '<a href="#/event/' + event.get("id") + '">' + event.get("title") + ' at ' + event.get("venue").name + '</a>';
+            var infoNodeWrapper = $("<div class='infoNodeWrapper' />")
+            var infoNode = $("<ul class='listView' data-role='listview'>");
+            infoNode.append(me.eventTemplate(event.toJSON()));
+            infoNodeWrapper.append(infoNode);
             var venue = event.get('venue');
             if (venue.location) {
                 var position = new google.maps.LatLng(venue.location.lat, venue.location.lng);
-                me.map_canvas.gmap('addMarker', {
-                    'position': position,
-                    'bounds': true
-                }).click(function() {
-                    me.map_canvas.gmap('openInfoWindow', {'content': infoWinContent}, this);
+                var marker = new google.maps.Marker({
+                    position: position,
+                    map: me.map,
+                    title: event.get('title')
                 });
+                me.overlays.push(marker);
+                
+                google.maps.event.addListener(marker, 'click', function() {
+                    infowindow.setContent(infoNodeWrapper[0]);
+                    infowindow.open(me.map, marker);
+                    infoNodeWrapper.trigger('create');
+                });
+                bounds.extend(position);
             }
         });
+        this.map.fitBounds(bounds);
     },
 
     centerMapFromGeolocation: function(){
@@ -64,11 +96,13 @@ radvisor.MapView = Backbone.View.extend({
         me.getCurrentPosition(function(position, status){
             if (status === 'OK'){
                 var clientPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                console.log("fot pos. lat: "+position.coords.latitude + ", long: "+position.coords.longitude);
-                me.map_canvas.gmap({'center': clientPosition});
-                me.map_canvas.gmap('addMarker', {
-                    'position': clientPosition,
-                    'icon': 'http://maps.google.com/mapfiles/ms/micons/blue-dot.png',
+                console.log("got pos. lat: " + position.coords.latitude + ", long: " + position.coords.longitude);
+                // me.map_canvas.gmap({'center': clientPosition}); // center map around events instead
+                var marker = new google.maps.Marker({
+                    position: clientPosition,
+                    map: me.map,
+                    title: 'you are here',
+                    icon: 'http://maps.google.com/mapfiles/ms/micons/blue-dot.png'
                 });
             }
         });

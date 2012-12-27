@@ -1,18 +1,3 @@
-<!--
-<div class="ui-grid-d">
-    <div class="ui-block-a"></div>
-    <div class="ui-block-b">
-        <button>About</button>
-    </div>
-    <div class="ui-block-c">
-        <button>Tracks</button>
-    </div>
-    <div class="ui-block-d">
-        <button>Links</play-button>
-    </div>
-    <div class="ui-block-e"></div>
-</div>
--->
 <div data-role="navbar">
     <ul>
         <li>
@@ -40,33 +25,3 @@
 
 <div class='dj-content'>
 </div>
-
-<script id="dj-about-template" type="text/x-underscore-template">
-    <!-- yo dawg -->
-    {% if ( typeof(img) != 'undefined' ) { %}
-        <div><img class="eventImg" src="{{img}}" /></div>
-    {% } %}
-    <ul>
-        {% _.each(links, function(value, key){ %}
-            <li><a href="http://{{value}}">{{key}}</a></li>
-        {% }); %}
-    </ul>
-</script>
-
-
-<script id="dj-tracks-template" type="text/x-underscore-template">
-    <div class="ui-grid-solo">
-        <div class="ui-block-a">
-            <div class="ui-body-f">
-                <!--i class="icon-soundcloud"></i-->
-                <img class="soundcloud_img" src="https://a2.sndcdn.com/assets/images/header/logo-9d9b1d3c.png" />
-                <div id="tracks">
-                </div>
-            </div>
-        </div>
-    </div>
-</script>
-
-<script id="dj-events-template" type="text/x-underscore-template">
-    EVENTS
-</script>

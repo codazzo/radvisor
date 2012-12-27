@@ -9,6 +9,13 @@
     }
 }
 
+.soundcloud-bg {
+    .gradient(#FF6300, #FF2300);
+    border: 1px solid #BBB;
+    color: #333;
+    text-shadow: 0 1px 0 white;
+}
+
 #eventsPage{
     .ui-block-c {
         .ui-btn-inner {

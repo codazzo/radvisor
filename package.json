@@ -17,7 +17,8 @@
       "node-inspector": "*",
       "uglify-js": "*",
       "handlebars": "*",
-      "googlemaps": "*"
+      "googlemaps": "*",
+      "gm": "1.8.x"
   },
   "engines": {
       "node": ">= 0.8",

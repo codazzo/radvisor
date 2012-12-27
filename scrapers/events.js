@@ -4,7 +4,10 @@ var $ = require('jquery');
 var _ = require('underscore');
 var jsdom = require("jsdom");
 
+var gm = require("gm");
+
 var host = "http://www.residentadvisor.net";
+var imageMagick = gm.subClass({ imageMagick: true });
 
 module.exports = function(options, callback){
     var urlBase = "http://www.residentadvisor.net/events.aspx";
@@ -15,17 +18,20 @@ module.exports = function(options, callback){
         locationId = options.locationId;
 
     var url = urlBase + "?ai=" + locationId + "&mn=" + month + "&yr=" + year + "&dy=" + day + "&v=day";
+    var spritePath = 'cache/' + 'events-' + locationId + '-' + year + '-' + month + '-' + day + '.jpg';
     jsdom.env(
         url,
         ["http://code.jquery.com/jquery.js"],
         function (errors, window) {
             var eventDivs = window.$(".hr-dark").nextAll().not(".hr");
 
-            var resArray = [];
+            var eventsArray = [];
             var count = 0;
             if (!eventDivs.length) {
                 callback([]); //no events found
             }
+            var imgSprite = imageMagick();
+
             _.each(eventDivs, function(ev){
                 var $ev = $(ev);
                 var hrefs = _.map($ev.find("a[href]"), function(el){
@@ -53,6 +59,9 @@ module.exports = function(options, callback){
                     venueName = eventAtVenue.split(" at ")[1];
                     eventName = eventAtVenue.substr(0, eventAtVenue.length-venueName.length-4);
                 }
+                var eventImg = host+$ev.find(".im-list").find("img").attr("src");
+                imgSprite.append(eventImg);
+
                 var eventObj = {
                     id: idHref.split("?")[1],
                     title: eventName,
@@ -60,32 +69,39 @@ module.exports = function(options, callback){
                         id: venueId,
                         name: venueName
                     },
-                    img: host+$ev.find(".im-list").find("img").attr("src"),
+                    img: eventImg,
+                    sprite: spritePath,
                     info: $ev.children(".pt1.grey").text(),
                     ppl: $ev.children(".pt1").find(".f10").find(".grey").text().split(" ")[0]
                 };
 
                 function callbackIfAllScraped(){
-                    if(resArray.length == count) {
-                        resArray = _.sortBy(resArray, function(el){
+                    if(eventsArray.length == count) {
+                        eventsArray = _.sortBy(eventsArray, function(el){
                             var pplInt;
                             try{
                                 pplInt = -parseInt(el.ppl);
                             } catch (e) { /*TODO */}
                             return pplInt;
                         });
-                        callback(resArray);
+                        _.each(eventsArray, function(el, index){
+                            el.index = index;
+                        });
+                        imgSprite.write('public/' + spritePath, function(err, stdout, stderr, cmd){
+                            console.log("image sprite written to disk: " + spritePath);
+                            callback(eventsArray);
+                        });
                     }
                 }
 
                 if (venueId) {
                     db.get("venue", {venueId: venueId}, function(venueData){
                         _.extend(eventObj.venue, venueData);
-                        resArray.push(eventObj);
+                        eventsArray.push(eventObj);
                         callbackIfAllScraped();
                     });
                 } else {
-                    resArray.push(eventObj);
+                    eventsArray.push(eventObj);
                     callbackIfAllScraped();
                 }
             });

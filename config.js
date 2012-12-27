@@ -1,5 +1,6 @@
 var express = require('express'),
-    path = require('path');
+    path = require('path'),
+    fs = require('fs');
 
 var app = express();
 
@@ -36,6 +37,9 @@ app.configure(function(){
 app.configure('development', function(){
     app.use(express.errorHandler());
 });
+
+//create cache directory if missing
+fs.mkdir('public/cache');
 
 var libDeps = {
         files: [

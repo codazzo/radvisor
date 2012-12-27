@@ -32,8 +32,7 @@ var templates = {
 }
 
 var images = {
-    logo: 'radvisor_logo.png',
-    calendar: 'calendar4.png'
+    logo: 'radvisor_logo.png'
 }
 
 var templatesRootPath = 'public/templates/';

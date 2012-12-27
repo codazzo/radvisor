@@ -34,8 +34,8 @@
 
         .map-icon, .locations-icon {
             .ui-btn-inner {
-                padding-top: 0.15em;
-                padding-bottom: 0.1em;
+                padding-top: 0.35em;
+                padding-bottom: 0em;
                 .ui-btn-text {
                     * { vertical-align: middle; }
                 }

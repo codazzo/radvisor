@@ -39,10 +39,10 @@ var images = {
 var templatesRootPath = 'public/templates/';
 var imagesRootPath = 'public/images/';
 
-var uiTemplateSource = "" + fs.readFileSync('views/mobile.html'); //not sure why we must coerce to string
+var uiTemplateSource = "" + fs.readFileSync('views/mobile.html'); //FIXME not sure why we must coerce to string. check below too.
 var uiTemplate = handlebars.compile(uiTemplateSource);
 
-var nbl = "" + fs.readFileSync('public/javascripts/libs/nbl.plus.min.js'); //including nbl inline in html
+var scriptLoader = "" + fs.readFileSync('public/javascripts/libs/head.load.min.js'); //including script loader inline in html
 
 exports.mobile = function(req, res){
     var cookies = new Cookies( req, res );
@@ -67,7 +67,7 @@ exports.mobile = function(req, res){
             isProduction: app.get('env') == 'production'
         },
         deps: config.deps,
-        nbl: nbl,
+        scriptLoader: scriptLoader,
         images: imagesSRCs
     };
 

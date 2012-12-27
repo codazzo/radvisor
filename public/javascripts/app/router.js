@@ -10,6 +10,7 @@ var AppRouter = Backbone.Router.extend({
     },
 
     initialize: function(){
+        var me = this;
         this.eventsByDate  = new radvisor.EventsByDate(); //common events model for Events and Map views
         this.locationsView = new radvisor.LocationsView();
         this.eventsView = new radvisor.EventsView({
@@ -17,8 +18,10 @@ var AppRouter = Backbone.Router.extend({
         });
         this.eventView = new radvisor.EventView();
         this.djView = new radvisor.DjView();
-        this.mapView = new radvisor.MapView({
-            model: this.eventsByDate
+        radvisor.bus.on("loaded:gmaps", function(){
+            me.mapView = new radvisor.MapView({
+                model: me.eventsByDate
+            });
         });
     },
 

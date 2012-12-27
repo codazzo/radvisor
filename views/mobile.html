@@ -18,7 +18,6 @@
     <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.2/underscore-min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.2/backbone-min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true"></script>
 </head>
 <body>
 
@@ -153,32 +152,37 @@
             escape: /\{\{\{(.+?)\}\}\}/g
         };
     </script>
+    <link rel="stylesheet" type="text/css" href="public/stylesheets/mobipick.css">
+    <link rel="stylesheet" type="text/css" href="public/stylesheets/font-awesome-more.less.css">
+    <link rel="stylesheet" type="text/css" href="public/stylesheets/themes/all_themes_with_soundcloud.min.css">
 
     <script type="text/javascript">
-        {{{nbl}}}
+        {{{scriptLoader}}}
+    </script>
+
+    <script type="text/javascript">
         function loadLibs(){
-            nbl.l(['/minified/libs.js',
-                'public/stylesheets/mobipick.css',
-                'public/stylesheets/font-awesome-more.less.css',
-                'public/stylesheets/themes/all_themes_with_soundcloud.min.css'
-            ]);
-            // nbl callback is not triggered so we check if the libs are loaded with an interval //FIXME do this better
-            var datepickerLoaderInt = setInterval(function(){
-                if($.fn.mobipick){
-                    clearInterval(datepickerLoaderInt);
+            head.js(
+                '/minified/libs.js',
+                'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&callback=initializeGoogleMaps',
+                function(){
                     radvisor.bus.trigger("loaded:datepicker");
                 }
-            }, 500);
+            );
+        }
+        //https://developers.google.com/maps/documentation/javascript/tutorial#asynch
+        function initializeGoogleMaps(){
+            if (typeof(google) != 'undefined' && google.maps) {
+                radvisor.bus.trigger("loaded:gmaps");
+            }
         }
     </script>
+
     {{#if env.isProduction }}
         <script type="text/javascript">
-            nbl.l([ 3500,
-                '/minified/app.js',
-                function(){
-                    setTimeout(loadLibs)
-                }
-            ]);
+            head.js(['/minified/app.js'], function(){ 
+                setTimeout(loadLibs)
+            });
         </script>
     {{else}}
         {{#each deps}}

@@ -61,8 +61,11 @@ var AppRouter = Backbone.Router.extend({
 
     locations: function() {
         var me = this;
-        this.locationsView.update();
-        me.changePage(this.locationsView);
+        $.mobile.showPageLoadingMsg();
+        this.locationsView.update(function(){
+            $.mobile.hidePageLoadingMsg();
+            me.changePage(me.locationsView);
+        });
     },
 
     getEvent: function(id) {

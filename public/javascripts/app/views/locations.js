@@ -15,14 +15,18 @@ radvisor.LocationsView = Backbone.View.extend({
     },
 
     update: function(callback){
-        if (this.isLoaded) return;
+        if (this.isLoaded){
+            if (callback) callback();
+            return;
+        }
         var me = this;
         this.model.fetch({
             success: function(model, response, options){
                 me.render();
+                me.isLoaded = true;
+                if (callback) callback();
             }
         });
-        this.isLoaded = true;
     },
 
     changeCountry: function(evt){

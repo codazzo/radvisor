@@ -5,7 +5,7 @@ var _ = require('underscore');
 var jsdom = require("jsdom");
 
 var host = "http://www.residentadvisor.net";
-var client_id = app.get('sc_client_id');
+var client_id = app.get('scClientID');
 
 module.exports = function(options, callback){
     var djName = options.name;

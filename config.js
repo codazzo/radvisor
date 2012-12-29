@@ -13,14 +13,24 @@ app.configure(function(){
     app.use(app.router);
     app.use(express.static(path.join(__dirname, 'public')));
 
-    if ('development' == app.get('env')) {
-        app.set('db_uri', 'mongodb://localhost/restful_advisor');
-    }
-    if ('production' == app.get('env')) {
-        app.set('db_uri', 'mongodb://heroku_app9447256:dkmdaactsstuot0bq60bie9ips@ds043497.mongolab.com:43497/heroku_app9447256');
+    var servicesConf;
+    try {
+        //if there's a services config file, use it
+        var env = app.get('env');
+        servicesConf = require('./config-services').getConf(env);
+    } catch (e) {
+        //try to read settings from env variables (e.g. heroku conf), otherwise use defaults
+        var mongoURI = process.env.MONGOLAB_URI || 'mongodb://localhost/restful_advisor';
+        var scClientID = process.env.SC_CLIENT_ID || ''; //you need to get one :P
+        servicesConf = {
+            mongoURI: mongoURI,
+            scClientID: scClientID
+        }
     }
 
-    app.set('sc_client_id', '4ff5e4db53c28af7f588fe2a9bf80208');
+    console.log('CONFIG: ' + JSON.stringify(servicesConf));
+    app.set('db_uri', servicesConf.mongoURI);
+    app.set('scClientID', servicesConf.scClientID);
 });
 
 app.configure('development', function(){

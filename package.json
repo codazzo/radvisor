@@ -18,7 +18,8 @@
       "uglify-js": "*",
       "handlebars": "*",
       "googlemaps": "*",
-      "gm": "1.8.x"
+      "gm": "1.8.x",
+      "cloudinary": "0.2.x"
   },
   "engines": {
       "node": ">= 0.8",

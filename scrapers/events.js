@@ -1,3 +1,5 @@
+var config = require('../config');
+var app = config.app;
 var db = require("../db");
 
 var $ = require('jquery');
@@ -5,6 +7,8 @@ var _ = require('underscore');
 var jsdom = require("jsdom");
 
 var gm = require("gm");
+var cloudinary = require('cloudinary');
+cloudinary.config(app.get('cloudinaryConf'));
 
 var host = "http://www.residentadvisor.net";
 var imageMagick = gm.subClass({ imageMagick: true });
@@ -18,7 +22,7 @@ module.exports = function(options, callback){
         locationId = options.locationId;
 
     var url = urlBase + "?ai=" + locationId + "&mn=" + month + "&yr=" + year + "&dy=" + day + "&v=day";
-    var spritePath = 'cache/' + 'events-' + locationId + '-' + year + '-' + month + '-' + day + '.jpg';
+    var spriteURL = 'cache/' + 'events-' + locationId + '-' + year + '-' + month + '-' + day + '.jpg';
     jsdom.env(
         url,
         ["http://code.jquery.com/jquery.js"],
@@ -70,7 +74,7 @@ module.exports = function(options, callback){
                         name: venueName
                     },
                     img: eventImg,
-                    sprite: spritePath,
+                    sprite: spriteURL,
                     info: $ev.children(".pt1.grey").text(),
                     ppl: $ev.children(".pt1").find(".f10").find(".grey").text().split(" ")[0]
                 };
@@ -87,9 +91,15 @@ module.exports = function(options, callback){
                         _.each(eventsArray, function(el, index){
                             el.index = index;
                         });
-                        imgSprite.write('public/' + spritePath, function(err, stdout, stderr, cmd){
-                            console.log("image sprite written to disk: " + spritePath);
-                            callback(eventsArray);
+                        var spritePath = 'public/' + spriteURL;
+                        imgSprite.write(spritePath, function(err, stdout, stderr, cmd){
+                            console.log("image sprite written to disk: " + spriteURL);
+                            cloudinary.uploader.upload(spritePath, function(result) {
+                                _.each(eventsArray, function(el, index){
+                                    el.sprite = result.url;
+                                });
+                                callback(eventsArray);
+                            });
                         });
                     }
                 }

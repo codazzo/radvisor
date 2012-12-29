@@ -30,13 +30,14 @@ module.exports = function(options, callback){
             var eventDivs = window.$(".hr-dark").nextAll().not(".hr");
 
             var eventsArray = [];
-            var count = 0;
+            var wellFormedEventDivs = 0;
+            var venuesBeingScraped = 0;
             if (!eventDivs.length) {
                 callback([]); //no events found
             }
             var imgSprite = imageMagick();
 
-            _.each(eventDivs, function(ev){
+            _.each(eventDivs, function(ev, index){
                 var $ev = $(ev);
                 var hrefs = _.map($ev.find("a[href]"), function(el){
                     return $(el).attr("href")
@@ -45,7 +46,7 @@ module.exports = function(options, callback){
                     return el.indexOf("event") != -1
                 });
                 if (!idHref) return; //no event id: dirty data! skip
-                count++;
+                wellFormedEventDivs++;
                 var titleEl = $ev.children(".black");
                 var isRAticket;
                 if(!titleEl.length){
@@ -79,43 +80,46 @@ module.exports = function(options, callback){
                     ppl: $ev.children(".pt1").find(".f10").find(".grey").text().split(" ")[0]
                 };
 
-                function callbackIfAllScraped(){
-                    if(eventsArray.length == count) {
-                        eventsArray = _.sortBy(eventsArray, function(el){
-                            var pplInt;
-                            try{
-                                pplInt = -parseInt(el.ppl);
-                            } catch (e) { /*TODO */}
-                            return pplInt;
-                        });
-                        _.each(eventsArray, function(el, index){
-                            el.index = index;
-                        });
-                        var spritePath = 'public/' + spriteURL;
-                        imgSprite.write(spritePath, function(err, stdout, stderr, cmd){
-                            console.log("image sprite written to disk: " + spriteURL);
-                            cloudinary.uploader.upload(spritePath, function(result) {
-                                _.each(eventsArray, function(el, index){
-                                    el.sprite = result.url;
-                                });
-                                callback(eventsArray);
-                            });
-                        });
-                    }
-                }
 
                 if (venueId) {
+                    venuesBeingScraped++;
                     db.get("venue", {venueId: venueId}, function(venueData){
+                        venuesBeingScraped--;
                         _.extend(eventObj.venue, venueData);
                         eventsArray.push(eventObj);
                         callbackIfAllScraped();
                     });
                 } else {
                     eventsArray.push(eventObj);
-                    callbackIfAllScraped();
                 }
             });
-            
+            callbackIfAllScraped();
+
+            function callbackIfAllScraped(){
+                if(eventsArray.length == wellFormedEventDivs && venuesBeingScraped == 0) {
+                    eventsArray = _.sortBy(eventsArray, function(el){
+                        var pplInt;
+                        try{
+                            pplInt = -parseInt(el.ppl);
+                        } catch (e) { /*TODO */}
+                        return pplInt;
+                    });
+                    _.each(eventsArray, function(el, index){
+                        el.index = index;
+                    });
+                    var spritePath = 'public/' + spriteURL;
+                    imgSprite.write(spritePath, function(err, stdout, stderr, cmd){
+                        console.log("image sprite written to disk: " + spriteURL);
+                        cloudinary.uploader.upload(spritePath, function(result) {
+                            _.each(eventsArray, function(el, index){
+                                el.sprite = result.url;
+                            });
+                            callback(eventsArray);
+                        });
+                    });
+                }
+            }
+
         }
     );
 }

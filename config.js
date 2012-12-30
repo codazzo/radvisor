@@ -21,7 +21,7 @@ app.configure(function(){
         servicesConf = require('./config-services').getConf(env);
     } catch (e) {
         //try to read settings from env variables (e.g. heroku conf), otherwise use defaults
-        var mongoURI = process.env.MONGOLAB_URI || 'mongodb://localhost/restful_advisor';
+        var mongoURI = process.env.MONGOLAB_URI || 'mongodb://localhost/radvisor';
         var scClientID = process.env.SC_CLIENT_ID || ''; //you need to get one :P
         var cloudinaryConf = process.env.CLOUDINARY_CONF ? JSON.parse(process.env.CLOUDINARY_CONF) : {};
         servicesConf = {

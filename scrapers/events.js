@@ -1,10 +1,17 @@
+var config = require('../config');
+var app = config.app;
 var db = require("../db");
 
 var $ = require('jquery');
 var _ = require('underscore');
 var jsdom = require("jsdom");
 
+var gm = require("gm");
+var cloudinary = require('cloudinary');
+cloudinary.config(app.get('cloudinaryConf'));
+
 var host = "http://www.residentadvisor.net";
+var imageMagick = gm.subClass({ imageMagick: true });
 
 module.exports = function(options, callback){
     var urlBase = "http://www.residentadvisor.net/events.aspx";
@@ -15,18 +22,22 @@ module.exports = function(options, callback){
         locationId = options.locationId;
 
     var url = urlBase + "?ai=" + locationId + "&mn=" + month + "&yr=" + year + "&dy=" + day + "&v=day";
+    var spriteURL = 'cache/' + 'events-' + locationId + '-' + year + '-' + month + '-' + day + '.jpg';
     jsdom.env(
         url,
         ["http://code.jquery.com/jquery.js"],
         function (errors, window) {
             var eventDivs = window.$(".hr-dark").nextAll().not(".hr");
 
-            var resArray = [];
-            var count = 0;
+            var eventsArray = [];
+            var wellFormedEventDivs = 0;
+            var venuesBeingScraped = 0;
             if (!eventDivs.length) {
                 callback([]); //no events found
             }
-            _.each(eventDivs, function(ev){
+            var imgSprite = imageMagick().interlace('Line'); //create a progressive JPEG
+
+            _.each(eventDivs, function(ev, index){
                 var $ev = $(ev);
                 var hrefs = _.map($ev.find("a[href]"), function(el){
                     return $(el).attr("href")
@@ -35,7 +46,7 @@ module.exports = function(options, callback){
                     return el.indexOf("event") != -1
                 });
                 if (!idHref) return; //no event id: dirty data! skip
-                count++;
+                wellFormedEventDivs++;
                 var titleEl = $ev.children(".black");
                 var isRAticket;
                 if(!titleEl.length){
@@ -53,6 +64,9 @@ module.exports = function(options, callback){
                     venueName = eventAtVenue.split(" at ")[1];
                     eventName = eventAtVenue.substr(0, eventAtVenue.length-venueName.length-4);
                 }
+                var eventImg = host+$ev.find(".im-list").find("img").attr("src");
+                imgSprite.append(eventImg);
+
                 var eventObj = {
                     id: idHref.split("?")[1],
                     title: eventName,
@@ -60,36 +74,52 @@ module.exports = function(options, callback){
                         id: venueId,
                         name: venueName
                     },
-                    img: host+$ev.find(".im-list").find("img").attr("src"),
+                    img: eventImg,
+                    sprite: spriteURL,
                     info: $ev.children(".pt1.grey").text(),
                     ppl: $ev.children(".pt1").find(".f10").find(".grey").text().split(" ")[0]
                 };
 
-                function callbackIfAllScraped(){
-                    if(resArray.length == count) {
-                        resArray = _.sortBy(resArray, function(el){
-                            var pplInt;
-                            try{
-                                pplInt = -parseInt(el.ppl);
-                            } catch (e) { /*TODO */}
-                            return pplInt;
-                        });
-                        callback(resArray);
-                    }
-                }
 
                 if (venueId) {
+                    venuesBeingScraped++;
                     db.get("venue", {venueId: venueId}, function(venueData){
+                        venuesBeingScraped--;
                         _.extend(eventObj.venue, venueData);
-                        resArray.push(eventObj);
+                        eventsArray.push(eventObj);
                         callbackIfAllScraped();
                     });
                 } else {
-                    resArray.push(eventObj);
-                    callbackIfAllScraped();
+                    eventsArray.push(eventObj);
                 }
             });
-            
+            callbackIfAllScraped();
+
+            function callbackIfAllScraped(){
+                if(eventsArray.length == wellFormedEventDivs && venuesBeingScraped == 0) {
+                    eventsArray = _.sortBy(eventsArray, function(el){
+                        var pplInt;
+                        try{
+                            pplInt = -parseInt(el.ppl);
+                        } catch (e) { /*TODO */}
+                        return pplInt;
+                    });
+                    _.each(eventsArray, function(el, index){
+                        el.index = index;
+                    });
+                    var spritePath = 'public/' + spriteURL;
+                    imgSprite.write(spritePath, function(err, stdout, stderr, cmd){
+                        console.log("image sprite written to disk: " + spriteURL);
+                        cloudinary.uploader.upload(spritePath, function(result) {
+                            _.each(eventsArray, function(el, index){
+                                el.sprite = result.url;
+                            });
+                            callback(eventsArray);
+                        });
+                    });
+                }
+            }
+
         }
     );
 }

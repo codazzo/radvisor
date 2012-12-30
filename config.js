@@ -1,5 +1,6 @@
 var express = require('express'),
-    path = require('path');
+    path = require('path'),
+    fs = require('fs');
 
 var app = express();
 
@@ -22,20 +23,26 @@ app.configure(function(){
         //try to read settings from env variables (e.g. heroku conf), otherwise use defaults
         var mongoURI = process.env.MONGOLAB_URI || 'mongodb://localhost/restful_advisor';
         var scClientID = process.env.SC_CLIENT_ID || ''; //you need to get one :P
+        var cloudinaryConf = process.env.CLOUDINARY_CONF ? JSON.parse(process.env.CLOUDINARY_CONF) : {};
         servicesConf = {
             mongoURI: mongoURI,
-            scClientID: scClientID
+            scClientID: scClientID,
+            cloudinaryConf: cloudinaryConf
         }
     }
 
     console.log('CONFIG: ' + JSON.stringify(servicesConf));
     app.set('db_uri', servicesConf.mongoURI);
     app.set('scClientID', servicesConf.scClientID);
+    app.set('cloudinaryConf', servicesConf.cloudinaryConf);
 });
 
 app.configure('development', function(){
     app.use(express.errorHandler());
 });
+
+//create cache directory if missing
+fs.mkdir('public/cache');
 
 var libDeps = {
         files: [

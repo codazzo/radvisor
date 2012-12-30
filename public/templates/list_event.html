@@ -1,6 +1,9 @@
 <li class="eventLi">
     <a href="#/event/{{id}}" data-transition="pop">
-        <img class="ui-li-thumb ui-corner-tl" src="{{img}}" />
+        <span
+            class="event-thumbnail"
+            style="background-image: url('{{sprite}}'); background-position: 0em -{{2*index}}em;">
+        </span>
         <h3 class="ui-li-heading">{{title}}</h3>
         <p class="ui-li-desc">{{venue.name}}</p>
         <span class="ilb ui-li-count">{{ppl}}</span>

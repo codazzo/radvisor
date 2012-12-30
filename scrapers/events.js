@@ -35,7 +35,7 @@ module.exports = function(options, callback){
             if (!eventDivs.length) {
                 callback([]); //no events found
             }
-            var imgSprite = imageMagick();
+            var imgSprite = imageMagick().interlace('Line'); //create a progressive JPEG
 
             _.each(eventDivs, function(ev, index){
                 var $ev = $(ev);

@@ -96,7 +96,11 @@ module.exports = function(options, callback){
             callbackIfAllScraped();
 
             function callbackIfAllScraped(){
-                if(eventsArray.length == wellFormedEventDivs && venuesBeingScraped == 0) {
+                if(!eventsArray.length) {
+                    console.log('[scrape][EVENTS] No events on ' + day + '/' + month + '/' + year + ' in locationID:' + locationId);
+                    callback([]);
+                    return;
+                } else if(eventsArray.length == wellFormedEventDivs && venuesBeingScraped == 0) {
                     eventsArray = _.sortBy(eventsArray, function(el){
                         var pplInt;
                         try{

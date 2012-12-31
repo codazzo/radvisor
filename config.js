@@ -15,10 +15,15 @@ app.configure(function(){
     app.use(express.static(path.join(__dirname, 'public')));
 
     var servicesConf;
+    console.log("*** ENV ***");
+    console.log(JSON.stringify(process.env));
     try {
         //if there's a services config file, use it
         var env = app.get('env');
+        console.log("loading services conf.");
         servicesConf = require('./config-services').getConf(env);
+        console.log("read conf:");
+        console.log(JSON.stringify(servicesConf));
     } catch (e) {
         //try to read settings from env variables (e.g. heroku conf), otherwise use defaults
         var mongoURI = process.env.MONGOLAB_URI || 'mongodb://localhost/radvisor';

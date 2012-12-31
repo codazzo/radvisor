@@ -22,7 +22,8 @@ module.exports = function(options, callback){
                 var countryFlag = $table.find("tr").first().find("img").first().attr("src");
                 var countryObj = {
                     name: countryName,
-                    img: host+countryFlag,
+                    //disabling img to save space as it is not used ATM
+                    // img: host + countryFlag,
                     regions: []
                 };
 

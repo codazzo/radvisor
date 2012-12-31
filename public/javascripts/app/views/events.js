@@ -56,13 +56,9 @@ radvisor.EventsView = Backbone.View.extend({
         $content.html(tmpHtml);
 
         var me = this;
-        if($.fn.mobipick){
-            this.initDatepicker();
-        }else{
-            radvisor.bus.on("loaded:datepicker", function(){
-                this.initDatepicker();
-            }, this);
-        }
+        radvisor.loading.mobipick.done(function(){
+            me.initDatepicker();
+        });
         this.$(".date-selection").show();
         $content.trigger('create'); //jqueryMobile init
     },

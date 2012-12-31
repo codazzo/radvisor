@@ -23,6 +23,17 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.2/backbone-min.js"></script>
 
     <script type="text/javascript">
+        //app namespace
+        radvisor = {
+            //loading promises
+            loading: {
+                gmaps: new $.Deferred(),
+                mobipick: new $.Deferred()
+            }
+        };
+        _.each(radvisor.loading, function(deferred, libName){
+            deferred.done(function(){console.log('loaded:'+libName)});
+        });
         radBootstrap = {{{bootstrap}}};
     </script>
 </head>
@@ -170,14 +181,14 @@
                 '/minified/libs.js',
                 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&callback=initializeGoogleMaps',
                 function(){
-                    radvisor.bus.trigger("loaded:datepicker");
+                    radvisor.loading.mobipick.resolve();
                 }
             );
         }
         //https://developers.google.com/maps/documentation/javascript/tutorial#asynch
         function initializeGoogleMaps(){
             if (typeof(google) != 'undefined' && google.maps) {
-                radvisor.bus.trigger("loaded:gmaps");
+                radvisor.loading.gmaps.resolve();
             }
         }
     </script>

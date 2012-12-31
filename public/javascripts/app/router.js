@@ -18,7 +18,7 @@ var AppRouter = Backbone.Router.extend({
         });
         this.eventView = new radvisor.EventView();
         this.djView = new radvisor.DjView();
-        radvisor.bus.on("loaded:gmaps", function(){
+        radvisor.loading.gmaps.done(function(){
             me.mapView = new radvisor.MapView({
                 model: me.eventsByDate
             });

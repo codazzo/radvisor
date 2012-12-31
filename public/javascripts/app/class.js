@@ -20,5 +20,4 @@
 
 })(Backbone, _);
 
-var radvisor = {}; //init the namespace
 radvisor.bus = new Backbone.Class;

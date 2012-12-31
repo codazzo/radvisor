@@ -46,7 +46,6 @@ module.exports = function(options, callback){
                     return el.indexOf("event") != -1
                 });
                 if (!idHref) return; //no event id: dirty data! skip
-                wellFormedEventDivs++;
                 var titleEl = $ev.children(".black");
                 var isRAticket;
                 if(!titleEl.length){
@@ -74,12 +73,13 @@ module.exports = function(options, callback){
                         id: venueId,
                         name: venueName
                     },
+                    index: wellFormedEventDivs,
                     img: eventImg,
                     sprite: spriteURL,
                     info: $ev.children(".pt1.grey").text(),
                     ppl: $ev.children(".pt1").find(".f10").find(".grey").text().split(" ")[0]
                 };
-
+                wellFormedEventDivs++;
 
                 if (venueId) {
                     venuesBeingScraped++;
@@ -107,9 +107,6 @@ module.exports = function(options, callback){
                             pplInt = -parseInt(el.ppl);
                         } catch (e) { /*TODO */}
                         return pplInt;
-                    });
-                    _.each(eventsArray, function(el, index){
-                        el.index = index;
                     });
                     var spritePath = 'public/' + spriteURL;
                     imgSprite.write(spritePath, function(err, stdout, stderr, cmd){

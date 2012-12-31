@@ -12,6 +12,11 @@ radvisor.LocationsView = Backbone.View.extend({
 
     initialize: function(date){
         this.model = new radvisor.Locations();
+        if (typeof(radBootstrap) != 'undefined' && radBootstrap.regions) {
+            this.model.add(radBootstrap.regions);
+            this.render();
+            this.isLoaded = true;
+        }
     },
 
     update: function(callback){

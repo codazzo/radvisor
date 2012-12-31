@@ -13,6 +13,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var handlebars = require('handlebars');
 var fs = require('fs');
+var db = require('../db');
 var Buffer = require('buffer').Buffer;
 var Cookies = require("cookies");
 var config = require('../config');
@@ -60,19 +61,24 @@ exports.mobile = function(req, res){
         imagesSRCs[key] = 'data:image/png;base64,' + imageEncoded;
     });
 
-    var uiData = {
-        templates: {},
-        env: {
-            isProduction: app.get('env') == 'production'
-        },
-        deps: config.deps,
-        scriptLoader: scriptLoader,
-        images: imagesSRCs
-    };
-
-    _.each(templates, function(value, key){
-        uiData.templates[key] =  "" + fs.readFileSync(templatesRootPath + value);
+    db.get("regions", {}, function(regionsArray){
+        var bootstrapData = {
+            regions: regionsArray
+        };
+        var uiData = {
+            templates: {},
+            env: {
+                isProduction: app.get('env') == 'production'
+            },
+            deps: config.deps,
+            scriptLoader: scriptLoader,
+            images: imagesSRCs,
+            bootstrap: JSON.stringify(bootstrapData)
+        };
+        _.each(templates, function(value, key){
+            uiData.templates[key] =  "" + fs.readFileSync(templatesRootPath + value);
+        });
+        var resContent = uiTemplate(uiData);
+        res.send(resContent);
     });
-    var resContent = uiTemplate(uiData);
-    res.send(resContent);
 };

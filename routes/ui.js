@@ -16,8 +16,8 @@ var fs = require('fs');
 var db = require('../db');
 var Buffer = require('buffer').Buffer;
 var Cookies = require("cookies");
-var config = require('../config');
-var app = config.app;
+var deps = require('../config/deps');
+var app = require('../app');
 
 var templates = {
     dj: 'dj.html',
@@ -70,7 +70,7 @@ exports.mobile = function(req, res){
             env: {
                 isProduction: app.get('env') == 'production'
             },
-            deps: config.deps,
+            deps: deps,
             scriptLoader: scriptLoader,
             images: imagesSRCs,
             bootstrap: JSON.stringify(bootstrapData)

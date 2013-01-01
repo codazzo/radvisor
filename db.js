@@ -1,9 +1,8 @@
-var config = require('./config');
 var scraper = require('./scraper');
 
-var app = config.app;
-var uri = app.get("db_uri");
+var app = require('app');
 
+var uri = app.get("db_uri");
 var mongojs = require('mongojs');
 var db = mongojs(uri);
 

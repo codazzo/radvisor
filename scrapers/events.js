@@ -1,5 +1,4 @@
-var config = require('../config');
-var app = config.app;
+var app = require('../app');
 var db = require("../db");
 
 var $ = require('jquery');

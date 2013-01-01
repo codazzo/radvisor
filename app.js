@@ -18,6 +18,8 @@ var ui = require('./routes/ui'),
     dj = require('./routes/dj'),
     venue = require('./routes/venue');
 
+//create cache directory if missing
+fs.mkdir('public/cache');
 
 app.get("*.less.*", function(req, res) {
     var path = __dirname + req.url;

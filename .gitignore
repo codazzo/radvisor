@@ -2,5 +2,5 @@
 /public/minified/libs.js.map
 /public/minified/app.js
 /public/minified/app.js.map
-/config-services.js
+/config/loginData.js
 /public/cache/

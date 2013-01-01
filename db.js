@@ -2,7 +2,7 @@ var scraper = require('./scraper');
 
 var app = require('app');
 
-var uri = app.get("db_uri");
+var uri = app.get('servicesConf').mongoURI;
 var mongojs = require('mongojs');
 var db = mongojs(uri);
 

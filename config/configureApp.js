@@ -1,9 +1,5 @@
 var path = require('path'),
-    express = require('express'),
-    fs = require('fs');
-
-//create cache directory if missing
-fs.mkdir('public/cache');
+    express = require('express');
 
 module.exports = function(app) {
     app.configure('development', function(){
@@ -19,30 +15,13 @@ module.exports = function(app) {
     app.use(app.router);
     app.use(express.static(path.join(__dirname, '/../public')));
 
-    var servicesConf;
     console.log("*** ENV ***");
     console.log(JSON.stringify(process.env));
-    try {
-        //if there's a services config file, use it
-        var env = app.get('env');
-        console.log("loading services conf.");
-        servicesConf = require('./services').getConf(env);
-        console.log("read conf:");
-        console.log(JSON.stringify(servicesConf));
-    } catch (e) {
-        //try to read settings from env variables (e.g. heroku conf), otherwise use defaults
-        var mongoURI = process.env.MONGOLAB_URI || 'mongodb://localhost/radvisor';
-        var scClientID = process.env.SC_CLIENT_ID || ''; //you need to get one :P
-        var cloudinaryConf = process.env.CLOUDINARY_CONF ? JSON.parse(process.env.CLOUDINARY_CONF) : {};
-        servicesConf = {
-            mongoURI: mongoURI,
-            scClientID: scClientID,
-            cloudinaryConf: cloudinaryConf
-        }
-    }
+    console.log("***********");
 
-    console.log('CONFIG: ' + JSON.stringify(servicesConf));
-    app.set('db_uri', servicesConf.mongoURI);
-    app.set('scClientID', servicesConf.scClientID);
-    app.set('cloudinaryConf', servicesConf.cloudinaryConf);
+    var servicesConf = require('./services').getConf();
+    console.log("[CONF] Services conf:");
+    console.log(JSON.stringify(servicesConf));
+
+    app.set('servicesConf', servicesConf);
 }

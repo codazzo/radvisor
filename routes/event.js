@@ -2,7 +2,7 @@ var db = require("../db");
 
 module.exports = function(req, res){
     var options = {
-        eventId: req.params[0]
+        eventId: req.params.eventId
     }
 
     db.get("event", options, function(eventData){

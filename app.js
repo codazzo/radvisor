@@ -36,9 +36,9 @@ app.get("*\.less\.css", function(req, res) {
 var apiRoutes = {
     regions: '/regions',
     events: '/events/:locationId/:dateStr',
-    event: '/event/*',
-    dj: '/dj/*',
-    venue: '/venue/*'
+    event: '/event/:eventId',
+    dj: '/dj/:name',
+    venue: '/venue/:venueId'
 }
 _.each(apiRoutes, function(route, name){
     var handler = require('./routes/' + name);

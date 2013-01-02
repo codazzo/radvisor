@@ -7,14 +7,14 @@
 <head>
     <title>&iexcl;RADvisor!</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="public/stylesheets/styles.less.css">
+    <link rel="stylesheet" href="/stylesheets/styles.less.css">
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css">
 
     <link rel="apple-touch-icon" href="/images/radvisor_iphone.png">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
-    <link rel="stylesheet" type="text/css" href="public/stylesheets/mobipick.css">
-    <link rel="stylesheet" type="text/css" href="public/images/radvicons/style.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/mobipick.css">
+    <link rel="stylesheet" type="text/css" href="/images/radvicons/style.css">
 
     <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
     <script src="/javascripts/libs/jqm-config.js"></script>
@@ -202,7 +202,7 @@
     {{else}}
         {{#each deps}}
             {{#each this.files}}
-                <script src="{{this}}"></script>
+                <script src="{{../path}}{{this}}"></script>
             {{/each}}
         {{/each}}
         <script type="text/javascript">

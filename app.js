@@ -23,8 +23,8 @@ fs.mkdir('public/cache');
 
 db.initSchema();
 
-app.get("*.less.*", function(req, res) {
-    var path = __dirname + req.url;
+app.get("*\.less\.css", function(req, res) {
+    var path = __dirname + '/public' + req.url;
     fs.readFile(path, "utf8", function(err, data) {
         if (err) throw err;
         less.render(data, function(err, css) {
@@ -35,23 +35,11 @@ app.get("*.less.*", function(req, res) {
     });
 });
 
-
-/*
-* Serve resources under /public. This is a hack because '/public' shouldn't be in the source map url
-* TODO do this better
-*/
-var publicRouter = function(req, res){
-    var originalUrl = req.originalUrl;
-    var choppedUrl = originalUrl.substr('/public'.length, originalUrl.length);
-    res.redirect(choppedUrl);
-}
-
 var api_routes = {
     '/regions': regions,
     '/events/*': events,
     '/event/*': event,
     '/dj/*': dj,
-    '/public/*': publicRouter,
     '/venue/*': venue
 }
 

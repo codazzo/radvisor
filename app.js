@@ -12,7 +12,6 @@ var express = require('express'),
 */
 var app = module.exports = express();
 configureApp(app); //configure application
-fs.mkdir('public/cache'); //create cache directory if missing
 db.initSchema(); //create collections if they're missing
 uglifier.uglifyDeps(); //create uglified files with source maps
 

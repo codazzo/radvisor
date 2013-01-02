@@ -3,4 +3,5 @@
 /public/minified/app.js
 /public/minified/app.js.map
 /config/loginData.js
-/public/cache/
+/public/cache/*
+!/public/cache/.*

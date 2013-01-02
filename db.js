@@ -1,11 +1,29 @@
-var config = require('./config');
+var _ = require('underscore');
 var scraper = require('./scraper');
-
-var app = config.app;
-var uri = app.get("db_uri");
-
 var mongojs = require('mongojs');
+
+var servicesConf = require('./config/services').getConf();
+var uri = servicesConf.mongoURI;
 var db = mongojs(uri);
+
+var collections = ['dj', 'event', 'events', 'regions', 'venue'];
+
+exports.getCollections = function(){
+    return _.clone(collections);
+}
+
+exports.getInstance = function(){
+    return db;
+}
+
+//Init DB schema (only needed on first deployment)
+exports.initSchema = function(){
+    _.each(collections, function(cName){
+        db.createCollection(cName, function(err, collection){
+            if (err) console.log("[ERROR] Error creating collection: " + collection);
+        });
+    });
+}
 
 /**
     page: pageName (e.g. "events")

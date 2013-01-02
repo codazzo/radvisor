@@ -1,5 +1,10 @@
-var config = require('./config'),
-    fs = require("fs"),
+var express = require('express'),
+    app = module.exports = express(),
+    configureApp = require('./config/configureApp');
+
+configureApp(app);
+
+var fs = require("fs"),
     db = require("./db"),
     http = require('http'),
     less = require("less"),
@@ -13,7 +18,10 @@ var ui = require('./routes/ui'),
     dj = require('./routes/dj'),
     venue = require('./routes/venue');
 
-var app = config.app;
+//create cache directory if missing
+fs.mkdir('public/cache');
+
+db.initSchema();
 
 app.get("*.less.*", function(req, res) {
     var path = __dirname + req.url;

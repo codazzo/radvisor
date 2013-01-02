@@ -1,11 +1,10 @@
-var config = require('../config');
-var app = config.app;
 var $ = require('jquery');
 var _ = require('underscore');
 var jsdom = require("jsdom");
 
 var host = "http://www.residentadvisor.net";
-var client_id = app.get('scClientID');
+var servicesConf = require('../config/services').getConf();
+var client_id = servicesConf.scClientID;
 
 module.exports = function(options, callback){
     var djName = options.name;

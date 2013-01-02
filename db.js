@@ -1,9 +1,8 @@
 var scraper = require('./scraper');
-
-var app = require('app');
-
-var uri = app.get('servicesConf').mongoURI;
 var mongojs = require('mongojs');
+
+var servicesConf = require('./config/services').getConf();
+var uri = servicesConf.mongoURI;
 var db = mongojs(uri);
 
 /**

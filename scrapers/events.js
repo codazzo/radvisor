@@ -1,4 +1,3 @@
-var app = require('../app');
 var db = require("../db");
 
 var $ = require('jquery');
@@ -7,7 +6,8 @@ var jsdom = require("jsdom");
 
 var gm = require("gm");
 var cloudinary = require('cloudinary');
-cloudinary.config(app.get('servicesConf').cloudinaryConf);
+var servicesConf = require('../config/services').getConf();
+cloudinary.config(servicesConf.cloudinaryConf);
 
 var host = "http://www.residentadvisor.net";
 var imageMagick = gm.subClass({ imageMagick: true });

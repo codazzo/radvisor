@@ -30,11 +30,6 @@ radvisor.EventsView = Backbone.View.extend({
     },
 
     render: function(options) {
-        var locationData = $.parseJSON($.cookie("ra_location"));
-        if (locationData.name=="All Regions") {
-            locationData.name = locationData.country; //no use in displaying "All Regions"
-        }
-
         var events = options.model.toJSON();
         _.each(events, function(event){
             event.title = event.title || 'N/A'

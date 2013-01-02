@@ -32,7 +32,9 @@ module.exports = function(options, callback){
             var wellFormedEventDivs = 0;
             var venuesBeingScraped = 0;
             if (!eventDivs.length) {
+                console.log('[scrape][EVENTS] No events on ' + day + '/' + month + '/' + year + ' in locationID:' + locationId);
                 callback([]); //no events found
+                return;
             }
             var imgSprite = imageMagick().interlace('Line'); //create a progressive JPEG
 
@@ -82,7 +84,11 @@ module.exports = function(options, callback){
 
                 if (venueId) {
                     venuesBeingScraped++;
-                    db.get("venue", {venueId: venueId}, function(venueData){
+                    var params = {
+                        page: 'venue',
+                        options: {venueId: venueId}
+                    }
+                    db.get(params, function(venueData){
                         venuesBeingScraped--;
                         _.extend(eventObj.venue, venueData);
                         eventsArray.push(eventObj);
@@ -96,12 +102,6 @@ module.exports = function(options, callback){
 
             function callbackIfAllScraped(){
                 if(eventsArray.length == wellFormedEventDivs && venuesBeingScraped == 0) {
-                    if(!eventsArray.length) {
-                        console.log('[scrape][EVENTS] No events on ' + day + '/' + month + '/' + year + ' in locationID:' + locationId);
-                        callback([]);
-                        return;
-                    }
-
                     eventsArray = _.sortBy(eventsArray, function(el){
                         var pplInt;
                         try{

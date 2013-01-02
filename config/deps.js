@@ -26,6 +26,7 @@ var appDeps = {
         "models/eventsByDate.js",
         "models/locations.js",
         "models/track.js",
+        "locationManager.js",
         "router.js",
         "views/dj.js",
         "views/event.js",

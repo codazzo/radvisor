@@ -2,20 +2,12 @@
  * GET home page.
  */
 
-var defaultLocation = {
-    id: "34",
-    country:"Germany",
-    name: "Berlin",
-    img: "http://www.residentadvisor.net/images/flags/de.gif"
-}
-
 var $ = require('jquery');
 var _ = require('underscore');
 var handlebars = require('handlebars');
 var fs = require('fs');
 var db = require('../db');
 var Buffer = require('buffer').Buffer;
-var Cookies = require("cookies");
 var deps = require('../config/deps');
 var app = require('../app');
 
@@ -45,13 +37,6 @@ var uiTemplate = handlebars.compile(uiTemplateSource);
 var scriptLoader = "" + fs.readFileSync('public/javascripts/libs/head.load.min.js'); //including script loader inline in html
 
 exports.mobile = function(req, res){
-    var cookies = new Cookies( req, res );
-    var locationCookie = cookies.get("ra_location");
-    var locationId;
-    if(!locationCookie) {
-        res.cookie("ra_location", JSON.stringify(defaultLocation), { path: '/'});
-    }
-
     var imagesSRCs = {};
     _.each(images, function(file, key){
         var path = imagesRootPath + file;
@@ -60,8 +45,11 @@ exports.mobile = function(req, res){
         var imageEncoded = buf.toString('base64');
         imagesSRCs[key] = 'data:image/png;base64,' + imageEncoded;
     });
-
-    db.get("regions", {}, function(regionsArray){
+    var params = {
+        page: 'regions',
+        options: {}
+    }
+    db.get(params, function(regionsArray){
         var bootstrapData = {
             regions: regionsArray
         };

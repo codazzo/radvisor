@@ -11,7 +11,6 @@
     "jsdom": "0.2.19",
     "underscore": "1.4.x",
     "less": "1.3.x",
-    "cookies": "0.3.x",
     "mongodb": "1.2.x",
     "mongojs": "0.4.x",
     "node-inspector": "0.2.x",
@@ -19,7 +18,9 @@
     "handlebars": "1.0.x",
     "googlemaps": "0.1.x",
     "gm": "1.8.x",
-    "cloudinary": "0.2.x"
+    "cloudinary": "0.2.x",
+    "date-utils": "1.2.x",
+    "async": "0.1.22"
   },
   "engines": {
     "node": ">= 0.8",

@@ -1,7 +1,3 @@
-var getLocation = function(){
-    return JSON.parse($.cookie("ra_location"));
-}
-
 radvisor.LocationsView = Backbone.View.extend({
     el: "#locationsPage",
     template: _.template($("#locations-template").html()),
@@ -49,8 +45,7 @@ radvisor.LocationsView = Backbone.View.extend({
             name: $region.children("option:selected").data("name"),
             img: $country.children("option:selected").data("img")
         }
-        var locationStr = JSON.stringify(location);
-        $.cookie('ra_location', locationStr);
+        radvisor.locationManager.setLocation(location);
 
         /*
         * reset the cache as events are identified by their date.
@@ -65,8 +60,8 @@ radvisor.LocationsView = Backbone.View.extend({
     },
 
     render: function(country) {
-        var currentCountry = country || getLocation().country;
-        var currentRegion = getLocation().name;
+        var currentCountry = country || radvisor.locationManager.getLocation().country;
+        var currentRegion = radvisor.locationManager.getLocation().name;
         var allRegions = this.model.toJSON();
         var countryRegions = _.find(allRegions, function(country){
             return country.name == currentCountry;

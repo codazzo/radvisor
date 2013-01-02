@@ -76,8 +76,10 @@ radvisor.EventsByDate = Backbone.Collection.extend({
             success(eventsByDate.get('events'));
         } else {
             //fetch events
-            var events = new radvisor.Events();
-            events.setDate(dateStr);
+            var events = new radvisor.Events({
+                locationId: radvisor.locationManager.getLocation().id,
+                dateStr: dateStr
+            });
             events.fetch({
                 success: function(model, response, options){
                     me.addEvents(dateStr, model);

@@ -1,30 +1,27 @@
 var express = require('express'),
-    app = module.exports = express(),
-    configureApp = require('./config/configureApp');
-
-configureApp(app);
-
-var fs = require("fs"),
+    fs = require("fs"),
     db = require("./db"),
     http = require('http'),
     less = require("less"),
     _ = require("underscore"),
-    uglifier = require('./public/uglify'); //minification is performed here //TODO find better pattern?
+    configureApp = require('./config/configureApp'),
+    uglifier = require('./public/uglify');
 
-var ui = require('./routes/ui'),
-    events = require('./routes/events'),
-    event = require('./routes/event'),
-    regions = require('./routes/regions'),
-    dj = require('./routes/dj'),
-    venue = require('./routes/venue');
+/*
+* Init
+*/
+var app = module.exports = express();
+configureApp(app); //configure application
+fs.mkdir('public/cache'); //create cache directory if missing
+db.initSchema(); //create collections if they're missing
+uglifier.uglifyDeps(); //create uglified files with source maps
 
-//create cache directory if missing
-fs.mkdir('public/cache');
-
-db.initSchema();
-
-app.get("*.less.*", function(req, res) {
-    var path = __dirname + req.url;
+/*
+* Routes
+*/
+//compile .less files on the fly (useful for dev)
+app.get("*\.less\.css", function(req, res) {
+    var path = __dirname + '/public' + req.url;
     fs.readFile(path, "utf8", function(err, data) {
         if (err) throw err;
         less.render(data, function(err, css) {
@@ -35,35 +32,28 @@ app.get("*.less.*", function(req, res) {
     });
 });
 
-
-/*
-* Serve resources under /public. This is a hack because '/public' shouldn't be in the source map url
-* TODO do this better
-*/
-var publicRouter = function(req, res){
-    var originalUrl = req.originalUrl;
-    var choppedUrl = originalUrl.substr('/public'.length, originalUrl.length);
-    res.redirect(choppedUrl);
+// Register API routes
+var apiRoutes = {
+    regions: '/regions',
+    events: '/events/:locationId/:dateStr',
+    event: '/event/:eventId',
+    dj: '/dj/:name',
+    venue: '/venue/:venueId'
 }
-
-var api_routes = {
-    '/regions': regions,
-    '/events/*': events,
-    '/event/*': event,
-    '/dj/*': dj,
-    '/public/*': publicRouter,
-    '/venue/*': venue
-}
-
-_.each(api_routes, function(handler, route){
+_.each(apiRoutes, function(route, name){
+    var handler = require('./routes/' + name);
     app.get(route, function(req, res){
         res.set('Content-Type', 'application/json');
         handler(req, res);
     });
 });
 
-app.get('/', ui.mobile);
+//Register UI route
+app.get('/', require('./routes/ui').mobile);
 
+/*
+* Server creation
+*/
 http.createServer(app).listen(app.get('port'), function(){
     console.log("Express server listening on port " + app.get('port'));
 });

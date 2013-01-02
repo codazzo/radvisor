@@ -3,7 +3,7 @@ var _ = require("underscore");
 
 var scrapers = {};
 _.each(resources, function(resource){
-	scrapers[resource] = require("./scrapers/" + resource);
+    scrapers[resource] = require("./scrapers/" + resource);
 });
 
 exports.scrape = function(page, options, callback){

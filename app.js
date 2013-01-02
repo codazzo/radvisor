@@ -21,6 +21,8 @@ var ui = require('./routes/ui'),
 //create cache directory if missing
 fs.mkdir('public/cache');
 
+db.initSchema();
+
 app.get("*.less.*", function(req, res) {
     var path = __dirname + req.url;
     fs.readFile(path, "utf8", function(err, data) {

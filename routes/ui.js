@@ -45,8 +45,11 @@ exports.mobile = function(req, res){
         var imageEncoded = buf.toString('base64');
         imagesSRCs[key] = 'data:image/png;base64,' + imageEncoded;
     });
-
-    db.get("regions", {}, function(regionsArray){
+    var params = {
+        page: 'regions',
+        options: {}
+    }
+    db.get(params, function(regionsArray){
         var bootstrapData = {
             regions: regionsArray
         };

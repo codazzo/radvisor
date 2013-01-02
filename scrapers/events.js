@@ -82,7 +82,11 @@ module.exports = function(options, callback){
 
                 if (venueId) {
                     venuesBeingScraped++;
-                    db.get("venue", {venueId: venueId}, function(venueData){
+                    var params = {
+                        page: 'venue',
+                        options: {venueId: venueId}
+                    }
+                    db.get(params, function(venueData){
                         venuesBeingScraped--;
                         _.extend(eventObj.venue, venueData);
                         eventsArray.push(eventObj);

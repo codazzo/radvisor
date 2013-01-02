@@ -1,11 +1,12 @@
 var db = require("../db");
 
 module.exports = function(req, res){
-    var options = {
-        eventId: req.params.eventId
+    var params = {
+        page: 'event',
+        options: {eventId: req.params.eventId}
     }
 
-    db.get("event", options, function(eventData){
+    db.get(params, function(eventData){
         var resStr = JSON.stringify(eventData);
         res.send(resStr);
     });

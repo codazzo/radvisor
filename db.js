@@ -8,6 +8,14 @@ var db = mongojs(uri);
 
 var collections = ['dj', 'event', 'events', 'regions', 'venue'];
 
+exports.getCollections = function(){
+    return _.clone(collections);
+}
+
+exports.getInstance = function(){
+    return db;
+}
+
 //Init DB schema (only needed on first deployment)
 exports.initSchema = function(){
     _.each(collections, function(cName){

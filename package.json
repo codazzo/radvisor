@@ -18,7 +18,9 @@
     "handlebars": "1.0.x",
     "googlemaps": "0.1.x",
     "gm": "1.8.x",
-    "cloudinary": "0.2.x"
+    "cloudinary": "0.2.x",
+    "date-utils": "1.2.x",
+    "async": "0.1.22"
   },
   "engines": {
     "node": ">= 0.8",

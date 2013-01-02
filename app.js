@@ -35,7 +35,7 @@ app.get("*\.less\.css", function(req, res) {
 // Register API routes
 var apiRoutes = {
     regions: '/regions',
-    events: '/events/*',
+    events: '/events/:locationId/:dateStr',
     event: '/event/*',
     dj: '/dj/*',
     venue: '/venue/*'

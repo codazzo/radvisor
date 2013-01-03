@@ -22,9 +22,15 @@ uglifier.uglifyDeps(); //create uglified files with source maps
 app.get("*\.less\.css", function(req, res) {
     var path = __dirname + '/public' + req.url;
     fs.readFile(path, "utf8", function(err, data) {
-        if (err) throw err;
+        if (err) {
+            console.log('error reading .less file: ' + path);
+            console.log(err);
+        }
         less.render(data, function(err, css) {
-            if (err) throw err;
+            if (err) {
+                console.log('error rendering .less file: ' + path);
+                console.log(err);
+            }
             res.header("Content-type", "text/css");
             res.send(css);
         });

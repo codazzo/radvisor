@@ -34,7 +34,8 @@ radvisor.EventsView = Backbone.View.extend({
         _.each(events, function(event){
             event.title = event.title || 'N/A'
         });
-
+        var location = radvisor.locationManager.getLocation();
+        var regionName = location.country + ' - ' + location.name;
         //TODO refactor all dates code
         var currentDate = new Date();
         currentDate = new Date(currentDate.getTime() - 8 * 60 * 60 * 1000); //we party till 8 :)
@@ -44,7 +45,9 @@ radvisor.EventsView = Backbone.View.extend({
         this.$(".tomorrowName .ui-btn-text").html(daysMap[(todayNum+1)%7]);
         var tmpHtml = this.template({
             events: events,
-            eventTemplate: this.eventTemplate
+            eventTemplate: this.eventTemplate,
+            regionName: regionName,
+            date: this.model.getDate()
         });
 
         $content = this.$el.find("[data-role=content]");

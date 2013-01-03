@@ -1,4 +1,9 @@
 <ul class="listView" data-role="listview">
+    {% if (events.length == 0) { %}
+        <li>
+            <h2>No events in {{regionName}} on {{date}}</h2>
+        </li>
+    {% } %}
     {% _.each(events, function(event) { %}
         {% print(eventTemplate(event)); %}
     {% }); %}

@@ -87,5 +87,10 @@ radvisor.EventsByDate = Backbone.Collection.extend({
                 }
             });
         }
+    },
+
+    getDate: function(){
+        if (!this.cachedDateStr) return '';
+        return this.cachedDateStr.substr(0, 2) + '/' + this.cachedDateStr.substr(2, 2) + '/' + this.cachedDateStr.substr(4, 4);
     }
 });

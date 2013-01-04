@@ -28,7 +28,8 @@
             //loading promises
             loading: {
                 gmaps: new $.Deferred(),
-                mobipick: new $.Deferred()
+                mobipick: new $.Deferred(),
+                soundcloud: new $.Deferred()
             }
         };
         _.each(radvisor.loading, function(deferred, libName){
@@ -180,8 +181,14 @@
             head.js(
                 '/minified/libs.js',
                 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&callback=initializeGoogleMaps',
+                'http://connect.soundcloud.com/sdk.js',
                 function(){
                     radvisor.loading.mobipick.resolve();
+                    radvisor.loading.soundcloud.resolve();
+                    SC.initialize({
+                        client_id: "4ff5e4db53c28af7f588fe2a9bf80208",
+                        redirect_uri: "unused"
+                    });
                 }
             );
         }
@@ -209,15 +216,6 @@
             loadLibs();
         </script>
     {{/if}}
-
-
-    <script src="http://connect.soundcloud.com/sdk.js"></script>
-    <script type="text/javascript">
-        SC.initialize({
-            client_id: "4ff5e4db53c28af7f588fe2a9bf80208",
-            redirect_uri: "unused"
-        });
-    </script>
 
     <script type="text/javascript">
       var _gaq = _gaq || [];

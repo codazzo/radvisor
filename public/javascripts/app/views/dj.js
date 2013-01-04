@@ -47,14 +47,16 @@ radvisor.DjView = Backbone.View.extend({
 
         this.contentEl.html(tmpHtml);
         this.contentEl.trigger('create');
-        if (sectionName=="tracks") {
-            var trackCollection = new radvisor.TrackCollection(me.model.get("sc_tracks"));
-            var resTracksView = new radvisor.TracksView({
-                 model: trackCollection
-            });
-            resTracksView.render();
-            me.templates_html[tracks] = me.contentEl.html();
-        }
+        radvisor.loading.soundcloud.done(function(){
+            if (sectionName == "tracks") {
+                var trackCollection = new radvisor.TrackCollection(me.model.get("sc_tracks"));
+                var resTracksView = new radvisor.TracksView({
+                     model: trackCollection
+                });
+                resTracksView.render();
+                me.templates_html[tracks] = me.contentEl.html();
+            }
+        });
     },
 
     render: function() {

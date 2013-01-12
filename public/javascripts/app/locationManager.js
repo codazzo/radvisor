@@ -8,7 +8,13 @@ var LocationManager = function(){
 
     var manager = {
         getLocation: function(){
-            return JSON.parse($.cookie("ra_location"));
+            var location;
+            try {
+                location = JSON.parse($.cookie("ra_location"));
+            } catch (e) {
+                location = null;
+            }
+            return location;
         },
         setLocation: function(location){
             var locationStr = JSON.stringify(location);

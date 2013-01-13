@@ -10,12 +10,31 @@ This application offers two things:
 
 
 ## Prerequisites
-Install npm, node, mongo. Clone the repo locally, then `npm install` will install all the other dependencies.
+* Install npm, node, mongo. Clone the repo locally, then `npm install` will install all the other dependencies
+* Additionally you will need to install imagemagick using your favorite package management system
+* Create the file `config/loginData.js` according to this template: 
+
+
+```
+exports.getConf = function (env) {
+    return {
+        mongoURI: 'mongodb://yourmongodb',
+        scClientID: 'Soundcloud client id',
+        cloudinaryConf: {
+            cloud_name: 'Cloudinary cloud name',
+            api_key: 'Cloudinary API key',
+            api_secret: 'Cloudinary API secret'
+        }
+    }
+}
+```
 
 
 ## Running the app
 * Launch mongo (`mongod`)
 * Launch the app with (`node app`)
+
+
 
 ## Can I haz?
 Point your mobile browser to [http://radvisor.net](http://radvisor.net) and play.

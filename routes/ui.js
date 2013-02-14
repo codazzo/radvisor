@@ -70,3 +70,7 @@ exports.mobile = function(req, res){
         res.send(resContent);
     });
 };
+
+exports.offline = function(req, res){
+   res.sendfile('views/offline.html');
+}

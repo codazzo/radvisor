@@ -54,7 +54,7 @@ _.each(apiRoutes, function(route, name){
 });
 
 //Register UI route
-app.get('/', require('./routes/ui').mobile);
+app.get('/', require('./routes/ui').offline);
 
 /*
 * Server creation
